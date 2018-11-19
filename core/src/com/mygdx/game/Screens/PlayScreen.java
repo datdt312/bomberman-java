@@ -5,46 +5,55 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.World;
-import com.mygdx.game.BomberManGame;
-import com.mygdx.game.Characters.Boomber;
-import com.mygdx.game.Tools.MapCreator;
+import com.mygdx.game.Components.Boomber;
+import com.mygdx.game.Maps.MapCreator;
+import com.mygdx.game.Managers.MapManager;
 
 public class PlayScreen implements Screen
 {
     private SpriteBatch batch;
     private OrthographicCamera camera;
 
+    private MapManager mapManager;
     private MapCreator map;
 
-    private World world = new World(new Vector2(0,0),true);
     private Boomber player;
-    private BomberManGame game;
 
     public PlayScreen()
     {
-        map = new MapCreator("core/maps/level1.tmx");
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        mapManager = new MapManager();
+        map = mapManager.getMapLevel(0);
+
+        float width_camera = Gdx.graphics.getWidth();
+        float height_camera = Gdx.graphics.getHeight();
+
+        Gdx.graphics.setWindowedMode((int)width_camera, (int)height_camera);
+        System.out.println(width_camera + " " + height_camera);
+
+        camera = new OrthographicCamera(width_camera, height_camera);
+        camera.translate(width_camera/2, height_camera/2, 0);
+        camera.update();
 
         batch = new SpriteBatch();
-        player = new Boomber(this.map);
+        player = new Boomber(this.map, this.camera);
     }
 
     @Override
     public void render(float delta)
     {
-        player.update(delta);
+        update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        map.getRenderer().setView(camera);
-        map.getRenderer().render();
+        map.render();
 
+        camera.position.x =  player.getShape().getX();
         player.draw(batch, delta);
-        batch.begin();
-        //player.getSprite().draw(batch);
-        batch.end();
+    }
+
+    public void update(float delta)
+    {
+        player.update(delta);
     }
 
     @Override
@@ -52,7 +61,6 @@ public class PlayScreen implements Screen
     {
         camera.viewportWidth = width;
         camera.viewportHeight = height;
-        camera.position.set(width/2f, height/2f, 0);
         camera.update();
     }
 
@@ -84,12 +92,6 @@ public class PlayScreen implements Screen
     @Override
     public void dispose()
     {
-        map.getMap().dispose();
-        map.getRenderer().dispose();
-    }
-
-    public World getWorld()
-    {
-        return this.world;
+        map.dispose();
     }
 }

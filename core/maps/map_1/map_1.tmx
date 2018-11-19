@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="left-up" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="5" nextobjectid="2">
+ <tileset firstgid="1" source="Wall.tsx"/>
+ <layer id="2" name="Background" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBhYwDIAGNnugaBH/T3q71F/j/qbVv4eKAAATqAD5Q==
+  </data>
+ </layer>
+ <layer id="3" name="Bricks" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAooAwAGTAAB
+  </data>
+ </layer>
+ <objectgroup id="4" name="Player">
+  <object id="1" name="Player" x="16" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <layer id="1" name="Walls" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBoAzAzErAwDA9iR7GajM41sN73BqL9H/T3qb9rSA+1vToaBKc+5gRgAWkwCtQ==
+  </data>
+ </layer>
+</map>
