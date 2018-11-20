@@ -1,0 +1,19 @@
+
+start_sprite.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+start_sprite
+  rotate: false
+  xy: 1, 1
+  size: 485, 97
+  orig: 485, 97
+  offset: 0, 0
+  index: -1
+apear_sprite
+  rotate: false
+  xy: 488, 66
+  size: 216, 32
+  orig: 216, 32
+  offset: 0, 0
+  index: -1
