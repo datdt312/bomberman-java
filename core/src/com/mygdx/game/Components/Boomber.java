@@ -35,9 +35,9 @@ public class Boomber
     private Animation animation;
     private float elapsedTime;
 
-    private float speed;
-    private int flame;
-    private int bombs;
+    private float maxSpeed;
+    private int lengthFlame;
+    private int maxBombs;
 
     private BombManager bombManager;
 
@@ -50,14 +50,13 @@ public class Boomber
         BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7);
         BOMBER_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
 
-        speed = 1f;
-        flame = 1;
-        bombs = 1;
+        maxSpeed = 2f;
+        lengthFlame = 2;
+        maxBombs = 2;
 
         shape = new Sprite();
         shape.setSize(BOMBER_WIDTH, BOMBER_HEIGHT * 1f / 2f);
-        shape.setOriginCenter();
-        shape.setPosition(this.map.getPosPlayer().x, this.map.getPosPlayer().y);
+        shape.setOriginBasedPosition(this.map.getPosPlayer().x, this.map.getPosPlayer().y);
 
         texture = new Texture("core/assets/BBM_SPRITE_MOVE_19_21.png");
         sprite = new Sprite(texture);
@@ -72,7 +71,7 @@ public class Boomber
 
         animationRegion = TextureRegion.split(texture, TILE_WIDTH, TILE_HEIGHT);
 
-        bombManager = new BombManager();
+        bombManager = new BombManager(this);
 
     }
 
@@ -83,7 +82,7 @@ public class Boomber
 
     private void handleInput(float dt)
     {
-        float step = speed;
+        float step = maxSpeed;
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
@@ -155,28 +154,50 @@ public class Boomber
                 animationFrames[index++] = animationRegion[moveSide][j];
         animation = new Animation(1f / 4f, animationFrames);
 
-        bombManager.update(dt);
+        bombManager.update(this.map,this, dt);
     }
 
     public void draw(Batch batch, float dt)
     {
-        bombManager.draw(batch,dt);
+        bombManager.draw(batch);
         batch.begin();
         if (moving)
         {
-            elapsedTime += speed * dt;
+            elapsedTime += maxSpeed * dt;
             batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
         }
         else
         {
-            elapsedTime += 2 * speed * dt;
+            elapsedTime += 2 * maxSpeed * dt;
             batch.draw(animationRegion[10][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
         }
         batch.end();
 
-
         moving = false;
     }
 
+    public float getPosX()
+    {
+        return shape.getX() + shape.getWidth() / 2;
+    }
 
+    public float getPosY()
+    {
+        return shape.getY() + shape.getHeight() / 2;
+    }
+
+    public float getMaxSpeed()
+    {
+        return maxSpeed;
+    }
+
+    public int getLengthFlame()
+    {
+        return lengthFlame;
+    }
+
+    public int getMaxBombs()
+    {
+        return maxBombs;
+    }
 }

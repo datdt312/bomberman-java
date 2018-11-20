@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class MapCreator
 {
-    private static final float UNIT_SCALE = 3f;
+    private static final float UNIT_SCALE = 4f;
     private TiledMap map;
 
     private OrthographicCamera mapCam;

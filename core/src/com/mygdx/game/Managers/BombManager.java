@@ -10,13 +10,15 @@ import java.util.ArrayList;
 public class BombManager
 {
     private ArrayList<Bomb> bomb_manage;
+    private int maxBombs;
 
-    public BombManager()
+    public BombManager(Boomber player)
     {
         bomb_manage = new ArrayList<Bomb>();
+        maxBombs = player.getMaxBombs();
     }
 
-    public void update(float dt)
+    public void update(MapCreator map, Boomber player, float dt)
     {
         for (Bomb b : bomb_manage)
         {
@@ -27,26 +29,33 @@ public class BombManager
 
     public void addNewBomb(MapCreator map, Boomber player)
     {
+        maxBombs = player.getMaxBombs();
+
         Bomb b = new Bomb(map, player);
-        bomb_manage.add(b);
+        boolean existed = false;
+        for (Bomb bomb : bomb_manage)
+        {
+            if (bomb.compareTo(b) == 0)
+                existed = true;
+        }
+        if (! existed && bomb_manage.size() < maxBombs)
+            bomb_manage.add(b);
     }
 
     public void deleteExplodedBomb()
     {
-        for (Bomb b : bomb_manage)
+        for (int i = bomb_manage.size() - 1; i >= 0; i--)
         {
-            if (b.isDone())
-            {
-                bomb_manage.remove(b);
-            }
+            if (bomb_manage.get(i).isDone())
+                bomb_manage.remove(i);
         }
     }
 
-    public void draw(Batch batch, float dt)
+    public void draw(Batch batch)
     {
         for (Bomb b : bomb_manage)
         {
-            b.draw(batch, dt);
+            b.draw(batch);
         }
     }
 }
