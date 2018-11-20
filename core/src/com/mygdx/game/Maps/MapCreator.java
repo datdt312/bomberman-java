@@ -13,9 +13,16 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Define A Map
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class MapCreator
 {
-    private static final float UNIT_SCALE = 4f;
+    private static final float UNIT_SCALE = 2f;
     private TiledMap map;
 
     private OrthographicCamera mapCam;
@@ -32,6 +39,10 @@ public class MapCreator
     private ArrayList<Rectangle> bricks;
 
 
+    /**
+     * Constructor
+     * @param path link to file map
+     */
     public MapCreator(String path)
     {
         map = new TmxMapLoader().load(path);
@@ -57,6 +68,9 @@ public class MapCreator
         renderer.setView(mapCam);
     }
 
+    /**
+     * Create Bound Of Bricks, Walls
+     */
     private void createMapRectangle()
     {
         walls = new ArrayList<Rectangle>();
@@ -100,72 +114,126 @@ public class MapCreator
         }
     }
 
+    /**
+     * Render Map
+     */
     public void render()
     {
         renderer.render();
     }
 
+    /**
+     * Dispose Map
+     */
     public void dispose()
     {
         map.dispose();
         renderer.dispose();
     }
 
+    /**
+     * Get Width Size Of Map
+     * @return Width Size Of Map
+     */
     public int getV_WIDTH()
     {
         return (int) (width_number * tileWidth * UNIT_SCALE);
     }
 
+    /**
+     * Get Height Size Of Map
+     * @return Height Size Of Map
+     */
     public int getV_HEIGHT()
     {
         return (int) (height_number * tileHeight * UNIT_SCALE);
     }
 
+    /**
+     * Get Renderer Of Map
+     * @return Renderer Of Map
+     */
     public OrthogonalTiledMapRenderer getRenderer()
     {
         return renderer;
     }
 
+    /**
+     * Get Map
+     * @return Map
+     */
     public TiledMap getMap()
     {
         return map;
     }
 
+    /**
+     * Get Bounded Walls
+     * @return Bounded Walls
+     */
     public ArrayList<Rectangle> getWalls()
     {
         return walls;
     }
 
+    /**
+     * Get Bounded Bricks
+     * @return Bounded Bricks
+     */
     public ArrayList<Rectangle> getBricks()
     {
         return bricks;
     }
 
+    /**
+     * Get Scale Of Map
+     * @return Number Scale Of Map
+     */
     public float getUNIT_SCALE()
     {
         return UNIT_SCALE;
     }
 
+    /**
+     * Get Number Of Tile In Width
+     * @return Number Of Tile In Width
+     */
     public int getWidth_number()
     {
         return width_number;
     }
 
+    /**
+     * Get Number Of Tile In Height
+     * @return Number Of Tile In Height
+     */
     public int getHeight_number()
     {
         return height_number;
     }
 
+    /**
+     * Get Width Of A Tile
+     * @return Width Of A Tile
+     */
     public int getTileWidth()
     {
         return tileWidth;
     }
 
+    /**
+     * Get Height Of A Tile
+     * @return Height Of A Tile
+     */
     public int getTileHeight()
     {
         return tileHeight;
     }
 
+    /**
+     * Get Spawn Position Of Player
+     * @return Spawn Position Of Player
+     */
     public Vector2 getPosPlayer()
     {
         return posPlayer;

@@ -4,10 +4,18 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Maps.MapCreator;
 import org.jetbrains.annotations.NotNull;
 
-
+/**
+ * Define A Bomb
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class Bomb implements Comparable<Bomb>
 {
     private float BOMB_WIDTH;
@@ -40,6 +48,11 @@ public class Bomb implements Comparable<Bomb>
     private float elapsedTime;
     private int countTime;
 
+    /**
+     * Constructor
+     * @param map map of the game
+     * @param player Player of the game
+     */
     public Bomb(MapCreator map, Boomber player)
     {
         BOMB_WIDTH = map.getTileWidth() * map.getUNIT_SCALE() * 3f / 4f;
@@ -57,6 +70,9 @@ public class Bomb implements Comparable<Bomb>
         createFlameAnimation();
     }
 
+    /**
+     * Create Status For Bomb
+     */
     public void createStatus()
     {
         exploding = false;
@@ -68,6 +84,11 @@ public class Bomb implements Comparable<Bomb>
         countTime = 0;
     }
 
+    /**
+     * Create Position For Bomb And Flames
+     * @param player Player of the game
+     * @param map map of the game
+     */
     public void createPositionOfBombAndSetupFlame(Boomber player, MapCreator map)
     {
         posX = player.getPosX();
@@ -87,10 +108,13 @@ public class Bomb implements Comparable<Bomb>
         posY += map.getTileHeight() * map.getUNIT_SCALE() / 2f;
         posY -= BOMB_HEIGHT / 2f;
 
-        x_posFlameVertical += DISTANCE_HEIGHT/2f;
-        y_posFlameHorizontal += DISTANCE_WIDTH/2f;
+        x_posFlameVertical += DISTANCE_HEIGHT / 2f;
+        y_posFlameHorizontal += DISTANCE_WIDTH / 2f;
     }
 
+    /**
+     * Create Bomb Waiting Animation
+     */
     public void createBombAnimation()
     {
         textureBomb = new Texture("core/assets/BombGreen_16_16.png");
@@ -102,6 +126,9 @@ public class Bomb implements Comparable<Bomb>
 
     }
 
+    /**
+     * Create Flame Exploding Animation
+     */
     public void createFlameAnimation()
     {
         textureFlame = new Texture("core/assets/Flame_Green_16_16.png");
@@ -129,6 +156,10 @@ public class Bomb implements Comparable<Bomb>
         }
     }
 
+    /**
+     * Update Current Animation And Status
+     * @param dt deltaTime
+     */
     public void update(float dt)
     {
         elapsedTime += dt;
@@ -159,7 +190,13 @@ public class Bomb implements Comparable<Bomb>
         }
     }
 
-    public void draw(Batch batch)
+    /**
+     * Draw Animation
+     *
+     * @param batch . . .
+     * @param map   map of the game
+     */
+    public void draw(Batch batch, MapCreator map)
     {
         //System.out.println(elapsedTime);
         if (waiting)
@@ -170,10 +207,14 @@ public class Bomb implements Comparable<Bomb>
         else if (exploding)
         {
             if (countTime < animationFlameSize)
-                drawExploding(batch);
+                drawExploding(batch, map);
         }
     }
 
+    /**
+     * Draw Bomb When Waiting For Exploding
+     * @param batch . . .
+     */
     private void drawWaiting(Batch batch)
     {
         batch.begin();
@@ -184,60 +225,184 @@ public class Bomb implements Comparable<Bomb>
         batch.end();
     }
 
-    private void drawExploding(Batch batch)
+    /**
+     * Draw Flame When Exploding
+     *
+     * @param batch . . .
+     * @param map   map of the game
+     */
+    private void drawExploding(Batch batch, MapCreator map)
     {
 
-        drawHorizontalExploding(batch);
-        drawVerticalExploding(batch);
+        drawHorizontalExploding(batch, map);
+        drawVerticalExploding(batch, map);
 
         batch.begin();
         batch.draw(flameMiddle[countTime], posX, posY, BOMB_WIDTH, BOMB_HEIGHT);
         batch.end();
     }
 
-    private void drawHorizontalExploding(Batch batch)
+    /**
+     * Draw Horizontal Flame
+     *
+     * @param batch . . .
+     * @param map   map of the game
+     */
+    private void drawHorizontalExploding(Batch batch, MapCreator map)
     {
+        boolean checkLeft = true;
+        boolean checkRight = true;
         batch.begin();
-        int i;
-        for (i = 0; i < lengthFlame; i++)
+
+        for (int i = 0; i < lengthFlame; i++)
         {
-            batch.draw(flameHorizontal[countTime], x_posFlameHorizontal - FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-            batch.draw(flameHorizontal[countTime], x_posFlameHorizontal + FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+            // Check Horizontal Flame On The Left Side
+            if (checkLeft)
+            {
+                Rectangle rect = new Rectangle(x_posFlameHorizontal - FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+                checkLeft = detectCollision(rect, map);
+                if (checkLeft)
+                    batch.draw(flameHorizontal[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            }
+
+            // Check Horizontal Flame On The Right Side
+            if (checkRight)
+            {
+                Rectangle rect = new Rectangle(x_posFlameHorizontal + FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+                checkRight = detectCollision(rect, map);
+                if (checkRight)
+                    batch.draw(flameHorizontal[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            }
         }
-        batch.draw(flameLeft[countTime], x_posFlameHorizontal - FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-        batch.draw(flameRight[countTime], x_posFlameHorizontal + FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+
+        // Check Last Horizontal Flame On The Left Side
+        if (checkLeft)
+        {
+            Rectangle rect = new Rectangle(x_posFlameHorizontal - FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+            checkLeft = detectCollision(rect, map);
+            if (checkLeft)
+                batch.draw(flameLeft[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        }
+
+        // Check Last Horizontal Flame On The Right Side
+        if (checkRight)
+        {
+            Rectangle rect = new Rectangle(x_posFlameHorizontal + FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
+            checkRight = detectCollision(rect, map);
+            if (checkRight)
+                batch.draw(flameRight[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        }
+
         batch.end();
     }
 
-    private void drawVerticalExploding(Batch batch)
+    /**
+     * Draw Vertical Flame
+     *
+     * @param batch . . .
+     * @param map   map of the game
+     */
+    private void drawVerticalExploding(Batch batch, MapCreator map)
     {
+        boolean checkUp = true;
+        boolean checkDown = true;
         batch.begin();
-        int i;
-        for (i = 0; i < lengthFlame; i++)
+
+        for (int i = 0; i < lengthFlame; i++)
         {
-            batch.draw(flameVertical[countTime], x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-            batch.draw(flameVertical[countTime], x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+            if (checkUp)
+            {
+                Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+                checkUp = detectCollision(rect, map);
+                if (checkUp)
+                    batch.draw(flameVertical[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            }
+
+            if (checkDown)
+            {
+                Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+                checkDown = detectCollision(rect, map);
+                if (checkDown)
+                    batch.draw(flameVertical[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+            }
         }
-        batch.draw(flameUp[countTime], x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-        batch.draw(flameDown[countTime], x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+
+        if (checkUp)
+        {
+            Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+            checkUp = detectCollision(rect, map);
+            if (checkUp)
+                batch.draw(flameUp[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        }
+        if (checkDown)
+        {
+            Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
+            checkDown = detectCollision(rect, map);
+            if (checkDown)
+                batch.draw(flameDown[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
+        }
+
         batch.end();
     }
 
+    /**
+     * detect Collision
+     *
+     * @param rect bound of sprite flame
+     * @param map  map of the game
+     * @return false if flame collision with some bricks, walls; true if not
+     */
+    private boolean detectCollision(Rectangle rect, MapCreator map)
+    {
+        for (Rectangle r : map.getWalls())
+        {
+            if (rect.overlaps(r))
+            {
+                return false;
+            }
+        }
+        for (Rectangle r : map.getBricks())
+        {
+            if (rect.overlaps(r))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Check when bomb is exploded
+     * @return values of done
+     */
     public boolean isDone()
     {
         return done;
     }
 
+    /**
+     * Get position X-axis of bomb
+     * @return position X-axis
+     */
     public float getPosX()
     {
         return posX;
     }
 
+    /**
+     * Get position Y-axis of bomb
+     * @return position Y-axis
+     */
     public float getPosY()
     {
         return posY;
     }
 
+    /**
+     * Comapre Two Bombs By Position
+     * @param o Not null bomb
+     * @return 0 if 2 bombs is one; 1 if not
+     */
     @Override
     public int compareTo(@NotNull Bomb o)
     {

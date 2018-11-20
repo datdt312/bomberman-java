@@ -4,9 +4,20 @@ import com.mygdx.game.Maps.MapCreator;
 
 import java.util.ArrayList;
 
+/**
+ * Manager Of Maps
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class MapManager
 {
     private ArrayList<MapCreator> map;
+
+    /**
+     * Constructor
+     */
     public MapManager()
     {
         map = new ArrayList<MapCreator>();
@@ -17,6 +28,11 @@ public class MapManager
         this.map.add(tmp);
     }
 
+    /**
+     * Get Map By Index
+     * @param i Index
+     * @return Map On Index
+     */
     public MapCreator getMapLevel(int i)
     {
         return this.map.get(i);

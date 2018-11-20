@@ -9,6 +9,13 @@ import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Managers.MapManager;
 
+/**
+ * Play Screen Of Game
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class PlayScreen implements Screen
 {
     private SpriteBatch batch;
@@ -19,6 +26,9 @@ public class PlayScreen implements Screen
 
     private Boomber player;
 
+    /**
+     * Construtor
+     */
     public PlayScreen()
     {
         mapManager = new MapManager();
@@ -38,6 +48,10 @@ public class PlayScreen implements Screen
         player = new Boomber(this.map, this.camera);
     }
 
+    /**
+     * Render Game
+     * @param delta deltaTime
+     */
     @Override
     public void render(float delta)
     {
@@ -51,11 +65,20 @@ public class PlayScreen implements Screen
         player.draw(batch, delta);
     }
 
+    /**
+     * Update Game
+     * @param delta deltaTime
+     */
     public void update(float delta)
     {
         player.update(delta);
     }
 
+    /**
+     * Resize The Size Of Screen
+     * @param width Width Of Screen
+     * @param height Height Of Screen
+     */
     @Override
     public void resize(int width, int height)
     {
@@ -74,7 +97,7 @@ public class PlayScreen implements Screen
     @Override
     public void hide()
     {
-        dispose();
+
     }
 
     @Override

@@ -5,6 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Screens.PlayScreen;
 
+/**
+ * Game BomberMan By Team HaNoiDienBienPhu
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class BomberManGame extends Game
 {
 
@@ -43,6 +50,4 @@ public class BomberManGame extends Game
     {
         super.resize(width, height);
     }
-
-
 }
