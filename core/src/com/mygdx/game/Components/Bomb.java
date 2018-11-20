@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import org.jetbrains.annotations.NotNull;
 
@@ -150,6 +151,7 @@ public class Bomb implements Comparable<Bomb>
         {
             if (elapsedTime >= timeLimitExploding / animationFlameSize * (countTime + 1))
             {
+                Music_SoundManager.getInstance().playSound("Explosion.ogg");
                 countTime++;
                 if (countTime >= animationFlameSize)
                 {

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Managers.MapManager;
+import com.mygdx.game.Scene.Hud;
 
 public class PlayScreen implements Screen
 {
@@ -16,6 +17,7 @@ public class PlayScreen implements Screen
 
     private MapManager mapManager;
     private MapCreator map;
+    private Hud hud;
 
     private Boomber player;
 
@@ -36,6 +38,8 @@ public class PlayScreen implements Screen
 
         batch = new SpriteBatch();
         player = new Boomber(this.map, this.camera);
+
+        hud = new Hud(batch, 31, 13);
     }
 
     @Override
@@ -49,11 +53,14 @@ public class PlayScreen implements Screen
 
         camera.position.x =  player.getShape().getX();
         player.draw(batch, delta);
+        hud.draw(delta);
     }
 
     public void update(float delta)
+
     {
         player.update(delta);
+        hud.update(delta);
     }
 
     @Override

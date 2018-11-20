@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BombManager;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 
 public class Boomber
@@ -128,6 +129,7 @@ public class Boomber
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         {
+            Music_SoundManager.getInstance().playSound("setBomb.mp3");
             bombManager.addNewBomb(this.map, this);
         }
     }
@@ -159,6 +161,7 @@ public class Boomber
 
     public void draw(Batch batch, float dt)
     {
+        Music_SoundManager.getInstance().playMusic("SOY.ogg", true);
         bombManager.draw(batch);
         batch.begin();
         if (moving)
