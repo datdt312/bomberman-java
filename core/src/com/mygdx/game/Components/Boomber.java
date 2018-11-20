@@ -12,6 +12,13 @@ import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BombManager;
 import com.mygdx.game.Maps.MapCreator;
 
+/**
+ * Define A Player
+ *
+ * @author HaNoiDienBienPhu
+ * @version 03.12.30.06
+ * @since 2018-11-21
+ */
 public class Boomber
 {
     private static final int TILE_WIDTH = 19;
@@ -21,7 +28,7 @@ public class Boomber
 
     private int moveSide;
     private boolean moving;
-    private boolean standing;
+    private boolean justPlanBomb;
 
     private Texture texture;
     private Sprite sprite, shape;
@@ -42,6 +49,12 @@ public class Boomber
     private BombManager bombManager;
 
 
+    /**
+     * Constructor
+     *
+     * @param map    map of the game
+     * @param camera dont know for what :v
+     */
     public Boomber(MapCreator map, OrthographicCamera camera)
     {
         this.map = map;
@@ -66,7 +79,7 @@ public class Boomber
         // MoveSide: 0 - DOWN _ _ _ 1 - RIGHT _ _ _ 2 - UP _ _ _ 3 - LEFT
         moveSide = 2;
         moving = false;
-        standing = true;
+        justPlanBomb = false;
         elapsedTime = 0;
 
         animationRegion = TextureRegion.split(texture, TILE_WIDTH, TILE_HEIGHT);
@@ -75,11 +88,19 @@ public class Boomber
 
     }
 
+    /**
+     * get Shape (Main Player Not sprite =)))) )
+     * @return
+     */
     public Sprite getShape()
     {
         return shape;
     }
 
+    /**
+     * Handle Input Of Player
+     * @param dt deltaTime
+     */
     private void handleInput(float dt)
     {
         float step = maxSpeed;
@@ -128,10 +149,14 @@ public class Boomber
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         {
-            bombManager.addNewBomb(this.map, this);
+            justPlanBomb = bombManager.addNewBomb(this.map, this);
         }
     }
 
+    /**
+     * Detect Collision With Map
+     * @return true if collision; false if not
+     */
     public boolean detectCollision()
     {
         for (Rectangle i : map.getWalls())
@@ -143,6 +168,10 @@ public class Boomber
         return false;
     }
 
+    /**
+     * Update Player
+     * @param dt deltaTime
+     */
     public void update(float dt)
     {
         handleInput(dt);
@@ -154,12 +183,18 @@ public class Boomber
                 animationFrames[index++] = animationRegion[moveSide][j];
         animation = new Animation(1f / 4f, animationFrames);
 
-        bombManager.update(this.map,this, dt);
+        bombManager.update(this.map, this, dt);
     }
 
+    /**
+     * Draw Player And Bombs
+     *
+     * @param batch
+     * @param dt
+     */
     public void draw(Batch batch, float dt)
     {
-        bombManager.draw(batch);
+        bombManager.draw(batch, this.map);
         batch.begin();
         if (moving)
         {
@@ -176,26 +211,46 @@ public class Boomber
         moving = false;
     }
 
+    /**
+     * Get Position Of Main Player On X-axis
+     * @return Position Of Main Player On X-axis
+     */
     public float getPosX()
     {
         return shape.getX() + shape.getWidth() / 2;
     }
 
+    /**
+     * Get Position Of Main Player On Y-axis
+     * @return Position Of Main Player On Y-axis
+     */
     public float getPosY()
     {
         return shape.getY() + shape.getHeight() / 2;
     }
 
+    /**
+     * Get Speed Of Player
+     * @return Speed Of Player
+     */
     public float getMaxSpeed()
     {
         return maxSpeed;
     }
 
+    /**
+     * Get Length Of Flame Of Bomb
+     * @return Length Of Flame Of Bomb
+     */
     public int getLengthFlame()
     {
         return lengthFlame;
     }
 
+    /**
+     * Get Number Of Bombs Player have
+     * @return Number Of Bombs Player have
+     */
     public int getMaxBombs()
     {
         return maxBombs;
