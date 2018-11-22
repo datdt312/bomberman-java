@@ -1,0 +1,12 @@
+
+Tile_sprite.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Title_fixed
+  rotate: false
+  xy: 0, 0
+  size: 597, 1724
+  orig: 597, 1724
+  offset: 0, 0
+  index: -1

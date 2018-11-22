@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import org.jetbrains.annotations.NotNull;
 
@@ -254,7 +255,7 @@ public class Bomb implements Comparable<Bomb>
         boolean checkLeft = true;
         boolean checkRight = true;
         batch.begin();
-
+        Music_SoundManager.getInstance().playSound("Explosion.ogg");
         for (int i = 0; i < lengthFlame; i++)
         {
             // Check Horizontal Flame On The Left Side

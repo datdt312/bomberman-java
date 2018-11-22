@@ -1,7 +1,9 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Cursor;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,38 +18,26 @@ import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Screens.SpriteMenu.BombApearSprite;
 
 public class MenuScreen implements Screen {
-
-    private static final float start_xpos = 1366 / 2.5f;
-    private static final float start_ypos = 768 / 2f;
-    private static final float quit_xpos = 1366 / 2.5f;
-    private static final float quit_ypos = 768 / 3f;
-    private static final float buttonWidth = 1366 / 5.3f;
-    private static final float buttonHeigth = 768 / 16f;
-
-    ;
     private BomberManGame game;
     private BombApearSprite bomApear;
-    private final SpriteBatch batch;
+    private SpriteBatch batch;
     private Stage stage;
-
-    private Texture startSelect;
-    private Texture startDeselect;
-    private Texture quitSelect;
-    private Texture quitDeselect;
 
     private Animation jingleBell1;
     private Animation jingleBell2;
     private Animation loadAnim;
+    private Animation title;
     private Sprite start_game;
     private Sprite quit_game;
     private Sprite loadSpri;
+    private Sprite titlesprite;
 
-    private Image img_tiltle;
     private Image img_bg;
 
     private int currentoption;
     private float statetime;
 
+    private final String path = "core/img/";
 
     public MenuScreen(BomberManGame game)
     {
@@ -56,52 +46,51 @@ public class MenuScreen implements Screen {
 
         bomApear = new BombApearSprite(game.batch, 0,0);
 
-        startSelect = new Texture("core/img/start_select.png");
-        startDeselect = new Texture("core/img/start_deselect.png");
-        quitSelect = new Texture("core/img/quit_select.png");
-        quitDeselect = new Texture("core/img/quit_deselect.png");
 
-        Texture title = new Texture("core/img/Title_fixed.png");
-        img_tiltle = new Image(title);
-        img_tiltle.setSize(1366 / 1.6f,768 / 4.8f);
-        img_tiltle.setPosition(1366 / 5.3f, 768 / 1.3f);
-
-        Texture background = new Texture("core/img/Background.png");
+        Texture background = new Texture(path + "Background.png");
         img_bg = new Image(background);
         img_bg.setSize(1366, 768);
         img_bg.setPosition(0,0);
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 0; i < 5; i++) {
-            frames.add(new TextureRegion(new TextureAtlas("core/img/start.pack")
+            frames.add(new TextureRegion(new TextureAtlas(path + "start.pack")
                     .findRegion("start_sprite"), i * 97, 0, 97, 97));
         }
 
         jingleBell1 = new Animation(0.15f, frames, Animation.PlayMode.LOOP_PINGPONG);
         start_game = new Sprite((TextureRegion) jingleBell1.getKeyFrame(0));
-        start_game.setBounds(1366 / 2.3f, 768 / 1.9f,  97 * 2, 97 * 2 );
+        start_game.setBounds(1366 / 2.5f, 768 / 3.5f,  97 * 3, 97 * 3 );
         frames.clear();
 
         for(int i = 0; i< 5; i++)
         {
-            frames.add(new TextureRegion(new TextureAtlas("core/img/quit.pack")
+            frames.add(new TextureRegion(new TextureAtlas(path + "quit.pack")
                     .findRegion("quit_sprite"), i * 97, 0, 97, 97));
 
         }
 
         jingleBell2 = new Animation(0.15f, frames, Animation.PlayMode.LOOP_PINGPONG);
         quit_game = new Sprite((TextureRegion) jingleBell2.getKeyFrame(0));
-        quit_game.setBounds(1366 / 2.3f, 768 / 1.9f,  97 * 2 , 97 * 2 );
+        quit_game.setBounds(1366 / 2.5f, 768 / 3.5f,  97 * 3 , 97 * 3 );
+        frames.clear();
+
+        for(int i = 0; i < 10; i++)
+            frames.add(new TextureRegion(new TextureAtlas(path + "Title_sprite.pack")
+                    .findRegion("Title_fixed"), 0, i * 171, 597, 171));
+        title = new Animation(0.2f, frames, Animation.PlayMode.LOOP_PINGPONG);
+        titlesprite = new Sprite((TextureRegion) title.getKeyFrame(0));
+        titlesprite.setBounds(1366 / 3.6f, 768 / 1.3f, 597, 171);
         frames.clear();
 
         for(int i = 0; i < 5; i++)
-            frames.add(new TextureRegion(new TextureAtlas("core/img/loading.pack")
+            frames.add(new TextureRegion(new TextureAtlas(path + "loading.pack")
                     .findRegion("stage_select"), i * 72, 0, 72, 74));
         for(int i = 0; i < 5; i++)
-            frames.add(new TextureRegion(new TextureAtlas("core/img/loading.pack")
+            frames.add(new TextureRegion(new TextureAtlas(path + "loading.pack")
                     .findRegion("stage_select"), i * 72, 74, 72, 74));
         for(int i = 0; i < 5; i++)
-            frames.add(new TextureRegion(new TextureAtlas("core/img/loading.pack")
+            frames.add(new TextureRegion(new TextureAtlas(path + "loading.pack")
                     .findRegion("stage_select"), i * 72, 74 * 2, 72, 74));
         loadAnim = new Animation(0.3f, frames, Animation.PlayMode.LOOP);
         loadSpri = new Sprite((TextureRegion) loadAnim.getKeyFrame(0));
@@ -149,13 +138,11 @@ public class MenuScreen implements Screen {
     }
     @Override
     public void show() {
-        Music_SoundManager.getInstance().playMusic("DRA.ogg", true);
+        Music_SoundManager.getInstance().playMusic("DDU.ogg", true);
         FitViewport viewport = new FitViewport(1366, 768);
         stage = new Stage(viewport, batch);
 
-
         stage.addActor(img_bg);
-        stage.addActor(img_tiltle);
 
     }
 
@@ -165,6 +152,7 @@ public class MenuScreen implements Screen {
         statetime += delta;
         start_game.setRegion((TextureRegion) jingleBell1.getKeyFrame(statetime));
         quit_game.setRegion((TextureRegion) jingleBell2.getKeyFrame(statetime));
+        titlesprite.setRegion((TextureRegion) title.getKeyFrame(statetime));
 
         handleinput();
 
@@ -178,24 +166,22 @@ public class MenuScreen implements Screen {
         if(Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             loadSpri.setRegion((TextureRegion) loadAnim.getKeyFrame(statetime));
             loadSpri.draw(batch);
-
+            titlesprite.setPosition(2000,800);
+            start_game.setPosition(2000, 800);
             select();
         }
 
-
-
+        titlesprite.draw(batch);
         if(currentoption == 0) {
             start_game.draw(batch);
-            game.batch.draw(startSelect, 0.9f * start_xpos, start_ypos - 60, 1.5f * buttonWidth, 1.2f * buttonHeigth);
         }
-        else game.batch.draw(startDeselect,start_xpos, start_ypos - 60, buttonWidth, buttonHeigth);
+
 
         if(currentoption == 1) {
             quit_game.draw(batch);
-            game.batch.draw(quitSelect, 0.9f * quit_xpos, quit_ypos - 60, 1.5f * buttonWidth,   1.2f * buttonHeigth);
+
         }
-        else game.batch.draw(quitDeselect, quit_xpos, quit_ypos - 60, buttonWidth, buttonHeigth);
-        // bomApear.draw(batch);
+
 
         game.batch.end();
 
@@ -208,7 +194,6 @@ public class MenuScreen implements Screen {
 
         stage.dispose();
         bomApear.dispose();
-        //bomApear.dispose();
 
     }
     @Override
@@ -218,5 +203,8 @@ public class MenuScreen implements Screen {
     @Override
     public void resume() { }
     @Override
-    public void hide() { }
+    public void hide() {
+        Music_SoundManager.getInstance().stopMusic();
+        dispose();
+    }
 }

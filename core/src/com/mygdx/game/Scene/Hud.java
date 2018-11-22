@@ -13,9 +13,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.Screens.PlayScreen;
 
 public class Hud implements Disposable
 {
+    private PlayScreen paused;
+
     private final SpriteBatch batch;
     private TextureAtlas textureAtlas;
 

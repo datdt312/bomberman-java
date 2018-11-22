@@ -1,13 +1,24 @@
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Components.Boomber;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Managers.MapManager;
+import com.mygdx.game.Scene.Hud;
 
 /**
  * Play Screen Of Game
@@ -21,16 +32,27 @@ public class PlayScreen implements Screen
     private SpriteBatch batch;
     private OrthographicCamera camera;
 
+    private BomberManGame game;
+
     private MapManager mapManager;
     private MapCreator map;
 
     private Boomber player;
+
+    //pause window
+    private Skin skin;
+    private boolean pause;
+    private Stage stage;
+    private Window pauseWindow;
+
+    private Hud hud;
 
     /**
      * Construtor
      */
     public PlayScreen()
     {
+        this.game = game;
         mapManager = new MapManager();
         map = mapManager.getMapLevel(0);
 
@@ -46,6 +68,8 @@ public class PlayScreen implements Screen
 
         batch = new SpriteBatch();
         player = new Boomber(this.map, this.camera);
+
+        hud = new Hud(batch, 31, 13);
     }
 
     /**
@@ -55,6 +79,10 @@ public class PlayScreen implements Screen
     @Override
     public void render(float delta)
     {
+
+        handleInput();
+        if(!pause)
+            update(delta);
         update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -63,6 +91,10 @@ public class PlayScreen implements Screen
 
         camera.position.x =  player.getShape().getX();
         player.draw(batch, delta);
+
+        pauseWindow.setVisible(pause);
+        stage.draw();
+        hud.draw(delta);
     }
 
     /**
@@ -71,7 +103,9 @@ public class PlayScreen implements Screen
      */
     public void update(float delta)
     {
+
         player.update(delta);
+        hud.update(delta);
     }
 
     /**
@@ -90,9 +124,53 @@ public class PlayScreen implements Screen
     @Override
     public void show()
     {
+        pause = false;
 
+        skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));
+        stage = new Stage(new FitViewport(1366, 768), batch);
+        pauseWindow = new Window("            Pause", skin);
+        pauseWindow.setPosition((1366 - pauseWindow.getWidth()) / 2, (768 - pauseWindow.getHeight()) / 2);
+        pauseWindow.setVisible(pause);
+
+        TextButton continueButton = new TextButton("Continue", skin);
+        continueButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                pause = false;
+                Music_SoundManager.getInstance().playMusic();
+            }
+        });
+
+        TextButton exitButton = new TextButton("Exit", skin);
+        exitButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+
+        });
+        pauseWindow.add(continueButton).padBottom(16f);
+        pauseWindow.row();
+        pauseWindow.add(exitButton);
+
+        stage.addActor(pauseWindow);
+        Gdx.input.setInputProcessor(stage);
 
     }
+
+    public void handleInput(){
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            pause = !pause;
+
+            if (pause) {
+                Music_SoundManager.getInstance().playSound("Pause.ogg");
+                Music_SoundManager.getInstance().pauseMusic();
+            } else {
+                Music_SoundManager.getInstance().playMusic();
+            }
+        }
+    }
+
 
     @Override
     public void hide()

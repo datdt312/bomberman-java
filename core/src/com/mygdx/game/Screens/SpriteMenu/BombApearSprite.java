@@ -91,6 +91,11 @@ public class BombApearSprite implements Disposable
         apearsprite2.draw(batch);
 
         apearsprite.draw(batch);
+        if(Gdx.input.isKeyPressed(Input.Keys.ENTER))
+        {
+            apearsprite.setPosition(2000,800);
+            apearsprite2.setPosition(2000,800);
+        }
 
         batch.end();
 

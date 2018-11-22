@@ -64,6 +64,7 @@ public class BombManager
         }
         if (! existed && bomb_manage.size() < maxBombs)
         {
+            Music_SoundManager.getInstance().playSound("setBomb.mp3");
             bomb_manage.add(b);
             return true;
         }

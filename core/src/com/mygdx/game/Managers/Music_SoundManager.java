@@ -19,7 +19,7 @@ public class Music_SoundManager implements Disposable{
                 musicPath + "SOY.ogg", musicPath + "WARRIORS.ogg", musicPath + "WTF.ogg"};
 
         String[] sounds = {soundPath + "menuselect.wav", soundPath + "selectchoice.wav", soundPath + "footstep.wav", soundPath + "pickitem.wav"
-                , soundPath + "setBomb.mp3", soundPath + "Explosion.ogg", soundPath + "EnemyDie.ogg"};
+                , soundPath + "setBomb.mp3", soundPath + "Explosion.ogg", soundPath + "EnemyDie.ogg", soundPath + "Pause.ogg"};
 
         //load sound
         for(int i = 0; i < sounds.length; i++)
@@ -65,6 +65,14 @@ public class Music_SoundManager implements Disposable{
 
     }
 
+    public void playMusic() {
+        if (currentMusic.isEmpty()) {
+            return;
+        }
+        Music music = assetManager.get(musicPath + currentMusic, Music.class);
+        music.play();
+    }
+
     public void stopMusic() {
         if (currentMusic.isEmpty()) {
             return;
@@ -74,8 +82,19 @@ public class Music_SoundManager implements Disposable{
             Music.stop();
         }
     }
+    public void pauseMusic() {
+        if (currentMusic.isEmpty()) {
+            return;
+        }
+
+        Music music = assetManager.get(musicPath + currentMusic, Music.class);
+        if (music.isPlaying()) {
+            music.pause();
+        }
+    }
+
     @Override
     public void dispose() {
-        
+        assetManager.dispose();
     }
 }
