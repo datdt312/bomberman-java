@@ -161,8 +161,7 @@ public class Balloom
         }
         else
         {
-            System.out.println(countDie);
-            if (countDie < lengthAnimation)
+            if (!done && countDie < lengthAnimation)
                 batch.draw(animation[countDie], shape.getX(), shape.getY(), BALLOOM_WIDTH, BALLOOM_HEIGHT);
             else
             {

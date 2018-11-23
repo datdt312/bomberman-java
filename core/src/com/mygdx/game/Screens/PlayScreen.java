@@ -96,6 +96,7 @@ public class PlayScreen implements Screen
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        map.draw(batch);
         map.render();
 
         camera.position.x =  player.getShape().getX();
@@ -113,7 +114,8 @@ public class PlayScreen implements Screen
      */
     public void update(float delta)
     {
-        player.update(delta);
+        map.update(delta);
+        player.update(this.map, delta);
         enemy_ballooms.update(map, delta);
         hud.update(delta);
     }

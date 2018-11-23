@@ -69,7 +69,7 @@ public class Boomber
 
         shape = new Sprite();
         shape.setSize(BOMBER_WIDTH, BOMBER_HEIGHT * 1f / 2f);
-        shape.setOriginBasedPosition(this.map.getPosPlayer().x, this.map.getPosPlayer().y);
+        shape.setOriginBasedPosition(map.getPosPlayer().x, map.getPosPlayer().y);
 
         texture = new Texture("core/assets/BBM_SPRITE_MOVE_19_21.png");
 
@@ -104,43 +104,22 @@ public class Boomber
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
-            shape.translateX(step);
-            if (detectCollision())
-            {
-                shape.translateX(- step);
-            }
             moveSide = 1;
             moving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
         {
-            shape.translateY(step);
-            if (detectCollision())
-            {
-                shape.translateY(- step);
-            }
             moveSide = 2;
             moving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
-            shape.translateX(- step);
-            if (detectCollision())
-            {
-                shape.translateX(step);
-            }
             moveSide = 3;
-
             moving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
-            shape.translateY(- step);
-            if (detectCollision())
-            {
-                shape.translateY(step);
-            }
             moveSide = 0;
             moving = true;
         }
@@ -150,11 +129,49 @@ public class Boomber
         }
     }
 
+    private void updateMovement()
+    {
+        switch (moveSide)
+        {
+            case 0:
+                shape.translateY(- maxSpeed);
+                break;
+            case 1:
+                shape.translateX(maxSpeed);
+                break;
+            case 2:
+                shape.translateY(maxSpeed);
+                break;
+            case 3:
+                shape.translateX(- maxSpeed);
+                break;
+        }
+    }
+
+    private void revertMovement()
+    {
+        switch (moveSide)
+        {
+            case 0:
+                shape.translateY(maxSpeed);
+                break;
+            case 1:
+                shape.translateX(-maxSpeed);
+                break;
+            case 2:
+                shape.translateY(-maxSpeed);
+                break;
+            case 3:
+                shape.translateX(maxSpeed);
+                break;
+        }
+    }
+
     /**
      * Detect Collision With Map
      * @return true if collision; false if not
      */
-    public boolean detectCollision()
+    public boolean detectCollision(MapCreator map)
     {
         for (Rectangle i : map.getWalls())
             if (shape.getBoundingRectangle().overlaps(i))
@@ -169,9 +186,13 @@ public class Boomber
      * Update Player
      * @param dt deltaTime
      */
-    public void update(float dt)
+    public void update(MapCreator map, float dt)
     {
         handleInput(dt);
+        if (moving)
+            updateMovement();
+        if (detectCollision(map))
+            revertMovement();
 
         animationFrames = new TextureRegion[4];
         int index = 0;
@@ -192,7 +213,9 @@ public class Boomber
     public void draw(Batch batch, float dt)
     {
         bombManager.draw(batch, this.map);
+
         batch.begin();
+
         if (moving)
         {
             elapsedTime += maxSpeed * dt;
@@ -203,6 +226,7 @@ public class Boomber
             elapsedTime += 2 * maxSpeed * dt;
             batch.draw(animationRegion[10][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
         }
+
         batch.end();
 
         moving = false;

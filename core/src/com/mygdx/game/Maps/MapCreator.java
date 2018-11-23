@@ -2,6 +2,9 @@ package com.mygdx.game.Maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
@@ -14,6 +17,8 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
+import java.util.FormatFlagsConversionMismatchException;
+import java.util.Iterator;
 
 /**
  * Define A Map
@@ -24,8 +29,27 @@ import java.util.ArrayList;
  */
 public class MapCreator
 {
+    class DestroyedBrick
+    {
+        public DestroyedBrick(Rectangle rect)
+        {
+            this.rect = rect;
+            elapsedTime = 0;
+            countTime = 3;
+            done = false;
+        }
+        public Rectangle rect;
+        public float elapsedTime;
+        public int countTime;
+        public boolean done;
+    }
+
     private static final float UNIT_SCALE = 3f;
     private TiledMap map;
+
+    private Texture texture;
+    private TextureRegion[] animation;
+    private int animationLength;
 
     private OrthographicCamera mapCam;
     private OrthogonalTiledMapRenderer renderer;
@@ -41,6 +65,7 @@ public class MapCreator
 
     private ArrayList<Rectangle> walls;
     private ArrayList<Rectangle> bricks;
+    private ArrayList<DestroyedBrick> destroyed;
 
 
     /**
@@ -67,10 +92,18 @@ public class MapCreator
         posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
 
         createBallooms();
-
-
         setupCamera();
+        setupAnimationDestroyedBricks();
+    }
 
+    private void setupAnimationDestroyedBricks()
+    {
+        texture = new Texture("core/assets/Block_Brick.png");
+        TextureRegion[][] regions = TextureRegion.split(texture, 16, 16);
+        animationLength = regions[0].length;
+        animation = new TextureRegion[animationLength];
+        for (int i=0; i<animationLength; i++)
+            animation[i] = regions[0][i];
 
     }
 
@@ -100,6 +133,7 @@ public class MapCreator
     {
         walls = new ArrayList<Rectangle>();
         bricks = new ArrayList<Rectangle>();
+        destroyed = new ArrayList<DestroyedBrick>();
         TiledMapTileLayer layers;
 
         // create Walls bodies/fixtures
@@ -139,6 +173,67 @@ public class MapCreator
         }
     }
 
+    public void destroyBrick(Rectangle r, int countTime)
+    {
+        if (countTime == 0)
+        {
+            TiledMapTileLayer temp = (TiledMapTileLayer) map.getLayers().get("Bricks");
+            deleteRectangleBrick(r);
+            temp.getCell((int) (r.getX() / tileWidth / UNIT_SCALE), (int) (r.getY() / tileHeight / UNIT_SCALE)).setTile(null);
+            destroyed.add(new DestroyedBrick(r));
+        }
+    }
+
+    private void deleteRectangleBrick(Rectangle r)
+    {
+        for (int i=bricks.size()-1; i>=0; i--)
+        {
+            if (bricks.get(i).equals(r))
+            {
+                bricks.remove(i);
+            }
+        }
+    }
+
+    public void update(float dt)
+    {
+        for (DestroyedBrick db:destroyed)
+        {
+            if (!db.done)
+            db.elapsedTime+=10*dt;
+            if (db.elapsedTime>1)
+            {
+                db.elapsedTime = 0;
+                db.countTime++;
+            }
+        }
+        deleteDestroyedBricks();
+    }
+    public void draw(Batch batch)
+    {
+        batch.begin();
+        for (DestroyedBrick db : destroyed)
+        {
+            if (!db.done && db.countTime<animationLength)
+                batch.draw(animation[db.countTime], db.rect.getX(), db.rect.getY(), db.rect.getWidth(), db.rect.getHeight());
+            else
+            {
+                db.done = true;
+            }
+        }
+        batch.end();
+    }
+
+    public void deleteDestroyedBricks()
+    {
+        for (int i = destroyed.size()-1; i>=0; i--)
+        {
+            if (destroyed.get(i).done)
+            {
+                destroyed.remove(i);
+            }
+        }
+    }
     /**
      * Render Map
      */

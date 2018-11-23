@@ -372,6 +372,7 @@ public class Bomb implements Comparable<Bomb>
         {
             if (rect.overlaps(r))
             {
+                map.destroyBrick(r,countTime);
                 return false;
             }
         }
