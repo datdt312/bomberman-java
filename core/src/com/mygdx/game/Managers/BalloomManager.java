@@ -6,6 +6,7 @@ import com.mygdx.game.Components.Balloom;
 import com.mygdx.game.Maps.MapCreator;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class BalloomManager
 {
@@ -23,17 +24,31 @@ public class BalloomManager
 
     public void update(MapCreator map, float delta)
     {
-        for (Balloom b:ballooms)
+        for (Balloom b : ballooms)
         {
-            b.update(map,delta);
+            b.update(map, delta);
         }
+        deleteDeadBalloom();
     }
 
     public void draw(Batch batch)
     {
-        for (Balloom b:ballooms)
+        for (Balloom b : ballooms)
         {
             b.draw(batch);
+        }
+    }
+
+    private void deleteDeadBalloom()
+    {
+        Iterator<Balloom> iter = ballooms.iterator();
+
+        while (iter.hasNext())
+        {
+            Balloom b = iter.next();
+
+            if (b.isDone())
+                iter.remove();
         }
     }
 

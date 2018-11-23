@@ -1,5 +1,7 @@
 package com.mygdx.game.Components;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,35 +31,39 @@ public class Balloom
     private int moveSide;
 
     private int countDie;
+    private float timeDie;
+
     private boolean isDie;
-    private boolean justDie;
+    private boolean done;
 
     public Balloom(MapCreator map, float posX, float posY)
     {
         BALLOOM_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7);
         BALLOOM_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
         shape = new Sprite();
-        shape.setSize(BALLOOM_WIDTH, BALLOOM_HEIGHT*2f/3f);
+        shape.setSize(BALLOOM_WIDTH, BALLOOM_HEIGHT * 2f / 3f);
         shape.setOriginBasedPosition(posX, posY);
 
         createAnimation();
-        countTime =0;
+        countTime = 0;
 
         speed = 1f;
         moveSide = 0;
 
         isDie = false;
-        justDie = false;
+        done = false;
+        countDie = moveLength;
     }
 
     private void createAnimation()
     {
         texture = new Texture("core/assets/Balloom.png");
-        TextureRegion[][] textureRegions = TextureRegion.split(texture, 16,16);
+        TextureRegion[][] textureRegions = TextureRegion.split(texture, 16, 16);
         lengthAnimation = textureRegions[0].length;
         moveLength = 6;
+        System.out.println("LENGTH: " + lengthAnimation);
         animation = new TextureRegion[lengthAnimation];
-        for (int i=0; i<animation.length; i++)
+        for (int i = 0; i < lengthAnimation; i++)
             animation[i] = textureRegions[0][i];
     }
 
@@ -80,20 +86,31 @@ public class Balloom
 
     public void update(MapCreator map, float dt)
     {
-        elapsedTime+=2*dt;
-        countTime = (int) elapsedTime%moveLength;
-        updateMovement();
-
-        if (detectCollision(map))
+        elapsedTime += 2 * dt;
+        countTime = (int) elapsedTime % moveLength;
+        if (! isDie)
         {
-            revertMovement();
-            moveSide = calculateDirection();
+            updateMovement();
+
+            if (detectCollision(map))
+            {
+                revertMovement();
+                moveSide = calculateDirection();
+            }
         }
-        if (isDie)
+        else
         {
-
+            timeDie += 2.5*dt;
+            if (timeDie >= 1)
+            {
+                countDie++;
+                timeDie = 0f;
+            }
         }
-
+        if (Gdx.input.isKeyJustPressed(Input.Keys.G))
+        {
+            setDie(true);
+        }
     }
 
     public void updateMovement()
@@ -102,19 +119,20 @@ public class Balloom
         switch (moveSide)
         {
             case 0:
-                shape.translateY(-speed);
+                shape.translateY(- speed);
                 break;
             case 1:
                 shape.translateY(speed);
                 break;
             case 2:
-                shape.translateX(-speed);
+                shape.translateX(- speed);
                 break;
             case 3:
                 shape.translateX(speed);
                 break;
         }
     }
+
     public void revertMovement()
     {
         switch (moveSide)
@@ -123,13 +141,13 @@ public class Balloom
                 shape.translateY(speed);
                 break;
             case 1:
-                shape.translateY(-speed);
+                shape.translateY(- speed);
                 break;
             case 2:
                 shape.translateX(speed);
                 break;
             case 3:
-                shape.translateX(-speed);
+                shape.translateX(- speed);
                 break;
         }
     }
@@ -137,17 +155,32 @@ public class Balloom
     public void draw(Batch batch)
     {
         batch.begin();
-        if (!isDie)
+        if (! isDie)
         {
             batch.draw(animation[countTime], shape.getX(), shape.getY(), BALLOOM_WIDTH, BALLOOM_HEIGHT);
         }
         else
         {
-            batch.draw()
+            System.out.println(countDie);
+            if (countDie < lengthAnimation)
+                batch.draw(animation[countDie], shape.getX(), shape.getY(), BALLOOM_WIDTH, BALLOOM_HEIGHT);
+            else
+            {
+                done = true;
+            }
         }
         batch.end();
-
     }
 
+    public void setDie(boolean die)
+    {
+        isDie = die;
+        done = false;
+        timeDie = 0;
+    }
 
+    public boolean isDone()
+    {
+        return done;
+    }
 }
