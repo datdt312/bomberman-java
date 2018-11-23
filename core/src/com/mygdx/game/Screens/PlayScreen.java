@@ -52,12 +52,12 @@ public class PlayScreen implements Screen
     /**
      * Construtor
      */
-    public PlayScreen()
+    public PlayScreen(BomberManGame game)
     {
+        this.game = game;
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
 
-        this.game = game;
         mapManager = new MapManager();
         map = mapManager.getMapLevel(0);
 
@@ -179,22 +179,13 @@ public class PlayScreen implements Screen
 
 
     @Override
-    public void hide()
-    {
-
-    }
+    public void hide() { }
 
     @Override
-    public void pause()
-    {
-
-    }
+    public void pause() { }
 
     @Override
-    public void resume()
-    {
-
-    }
+    public void resume() { }
 
     @Override
     public void dispose()

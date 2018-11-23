@@ -42,7 +42,7 @@ public class BombApearSprite implements Disposable
         }
         apear2 = new Animation<TextureRegion>(0.1f, keyFrames, Animation.PlayMode.LOOP);
         apearsprite2 = new Sprite(apear2.getKeyFrame(0));
-        apearsprite2.setBounds(1366 / 1.5f, 768 / 2.8f, 24f * scale, 32f * scale);
+        apearsprite2.setBounds(Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 2.8f, 24f * scale, 32f * scale);
         stateTime = 0;
         keyFrames.clear();
         for (int i = 0; i < 9; i++) {
@@ -50,7 +50,7 @@ public class BombApearSprite implements Disposable
         }
         apear = new Animation<TextureRegion>(0.1f, keyFrames, Animation.PlayMode.LOOP);
         apearsprite = new Sprite(apear.getKeyFrame(0));
-        apearsprite.setBounds(1366 / 3.4f, 768 / 2.8f, 24 * scale, 32 * scale);
+        apearsprite.setBounds(Gdx.graphics.getWidth() / 3.4f, Gdx.graphics.getHeight() / 2.8f, 24 * scale, 32 * scale);
         keyFrames.clear();
 
         FitViewport viewport = new FitViewport(width * SCALE, height * SCALE);

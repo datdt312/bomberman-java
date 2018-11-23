@@ -15,8 +15,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 
-import java.security.Key;
-
 public class ControlScreen implements Screen
 {
     private float WIDTH_SCREEN;
@@ -34,7 +32,8 @@ public class ControlScreen implements Screen
 
     private float timeLeft = - 980;
     private float timeRight = 910;
-    private float timecount;
+    private int count=0;
+    private boolean goout = false;
 
     private final float scale = 2.4f;
     private final String path = "core/img/";
@@ -56,7 +55,7 @@ public class ControlScreen implements Screen
         for (int i = 1; i <= 10; i++)
             frames.add(new TextureRegion(new TextureAtlas(path + "help.pack").findRegion(i + ""),
                     0, 0, 479, 320));
-        helpAnim = new Animation<TextureRegion>(0.5f, frames, Animation.PlayMode.NORMAL);
+        helpAnim = new Animation<TextureRegion>(0.32f, frames, Animation.PlayMode.LOOP_PINGPONG);
         helpSpr = new Sprite(helpAnim.getKeyFrame(0));
         helpSpr.setBounds(150, 50, 479 * 2, 320 * 2);
 
@@ -75,13 +74,11 @@ public class ControlScreen implements Screen
     @Override
     public void render(float delta)
     {
-        timeLeft += 8;
-        timeRight -= 8;
         statetime += delta;
 
         helpSpr.setRegion(helpAnim.getKeyFrame(statetime));
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY))
+        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || (timeLeft == -1000 && timeRight == 920))
         {
             RunnableAction runnableAction = new RunnableAction();
             runnableAction.setRunnable(new Runnable()
@@ -89,7 +86,7 @@ public class ControlScreen implements Screen
                 @Override
                 public void run()
                 {
-                    game.setScreen(new PlayScreen());
+                    game.setScreen(new PlayScreen(game));
                 }
             });
             stage.addAction(new SequenceAction(Actions.delay(0.2f), Actions.fadeOut(0.2f), runnableAction));
@@ -99,66 +96,67 @@ public class ControlScreen implements Screen
 
         game.batch.begin();
 
-        if (timeLeft < 0)
-            game.batch.draw(doorLeft, timeLeft, 0,
-                    doorLeft.getWidth() * scale + 230, doorLeft.getHeight() * scale);
-        else if (timeLeft >= 0)
-        {
-            timecount += delta;
-            game.batch.draw(doorLeft, 0, 0,
-                    doorLeft.getWidth() * scale + 230, doorLeft.getHeight() * scale);
-        }
-        else if (timecount >= 10f)
-        {
-            timeLeft -= 10;
-            game.batch.draw(doorLeft, timeLeft, 0,
-                    doorLeft.getWidth() * scale + 230, doorLeft.getHeight() * scale);
-        }
+        if ((timeLeft < -10 && !goout) || count <= 200 || (timeRight > -90 && !goout)) {
 
-        if (timeRight > - 90)
-            game.batch.draw(doorRight, timeRight, 0,
-                    doorRight.getWidth() * scale + 230, doorRight.getHeight() * scale);
-        else game.batch.draw(doorRight, - 90, 0,
-                doorRight.getWidth() * scale + 230, doorRight.getHeight() * scale);
+            //draw doorleft apear
+            if(timeLeft != 0) {
+                if(timeLeft >= -100)
+                    timeLeft += 20;
+                else timeLeft += 10;
+                game.batch.draw(doorLeft, timeLeft, 0, doorLeft.getWidth() * scale + 355, doorLeft.getHeight() * scale);
+            }
 
+            //draw doorRight apear
+            if(timeRight != -100){
+                if(timeRight <= 0)
+                    timeRight -=25;
+                else timeRight -= 10;
+                game.batch.draw(doorRight, timeRight, 0, doorRight.getWidth() * scale + 355, doorRight.getHeight() * scale);
+
+            }
+            count++;
+            if(count == 201)
+                goout = true;
+            game.batch.draw(doorLeft, timeLeft, 0, doorLeft.getWidth() * scale + 355, doorLeft.getHeight() * scale);
+            game.batch.draw(doorRight, timeRight, 0, doorRight.getWidth() * scale + 355, doorRight.getHeight() * scale);
+        }
+        if  ((timeLeft <= 0 && goout) || (timeRight >= -100 && goout))
+        {
+            //draw doorLeft go out
+            if(timeLeft != -1000)
+            {
+                timeLeft -= 10;
+                game.batch.draw(doorLeft, timeLeft, 0, doorLeft.getWidth() * scale + 355, doorLeft.getHeight() * scale);
+            }
+            //draw doorRight out
+            if(timeRight != 920)
+            {
+                timeRight += 10;
+                game.batch.draw(doorRight, timeRight, 0, doorRight.getWidth() * scale + 355, doorRight.getHeight() * scale);
+            }
+
+        }
 
         helpSpr.draw(batch);
         game.batch.end();
 
         stage.act(delta);
         stage.draw();
-        //System.out.println(timecount);
-
 
     }
 
     @Override
-    public void resize(int width, int height)
-    {
-
-    }
+    public void resize(int width, int height) { }
 
     @Override
-    public void pause()
-    {
-
-    }
+    public void pause() { }
 
     @Override
-    public void resume()
-    {
-
-    }
+    public void resume() { }
 
     @Override
-    public void hide()
-    {
-
-    }
+    public void hide() { }
 
     @Override
-    public void dispose()
-    {
-        stage.dispose();
-    }
+    public void dispose() { stage.dispose(); }
 }

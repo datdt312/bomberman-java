@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
         String path = "core/img/";
         Texture background = new Texture(path + "Background.png");
         img_bg = new Image(background);
-        img_bg.setSize(1366, 768);
+        img_bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         img_bg.setPosition(0,0);
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
@@ -55,7 +55,7 @@ public class MenuScreen implements Screen {
 
         jingleBell1 = new Animation<TextureRegion>(0.15f, frames, Animation.PlayMode.LOOP_PINGPONG);
         start_game = new Sprite(jingleBell1.getKeyFrame(0));
-        start_game.setBounds(1366 / 2.5f, 768 / 3.5f,  97 * 3, 97 * 3 );
+        start_game.setBounds(Gdx.graphics.getWidth() / 2.5f, Gdx.graphics.getHeight() / 3.5f,  97 * 3, 97 * 3 );
         frames.clear();
 
         for(int i = 0; i< 5; i++)
@@ -67,7 +67,7 @@ public class MenuScreen implements Screen {
 
         jingleBell2 = new Animation<TextureRegion>(0.15f, frames, Animation.PlayMode.LOOP_PINGPONG);
         quit_game = new Sprite(jingleBell2.getKeyFrame(0));
-        quit_game.setBounds(1366 / 2.5f, 768 / 3.5f,  97 * 3 , 97 * 3 );
+        quit_game.setBounds(Gdx.graphics.getWidth() / 2.5f, Gdx.graphics.getHeight() / 3.5f,  97 * 3 , 97 * 3 );
         frames.clear();
 
         for(int i = 0; i < 10; i++)
@@ -75,7 +75,7 @@ public class MenuScreen implements Screen {
                     .findRegion("Title_fixed"), 0, i * 171, 597, 171));
         title = new Animation<TextureRegion>(0.2f, frames, Animation.PlayMode.LOOP_PINGPONG);
         titlesprite = new Sprite(title.getKeyFrame(0));
-        titlesprite.setBounds(1366 / 3.6f, 768 / 1.3f, 597, 171);
+        titlesprite.setBounds(Gdx.graphics.getWidth() / 3.6f, Gdx.graphics.getHeight() / 1.3f, 597, 171);
         frames.clear();
 
     }
@@ -120,7 +120,7 @@ public class MenuScreen implements Screen {
     @Override
     public void show() {
         Music_SoundManager.getInstance().playMusic("WARRIORS.ogg", true);
-        FitViewport viewport = new FitViewport(1366, 768);
+        FitViewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
 
         stage.addActor(img_bg);
