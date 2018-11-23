@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="108">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="20" height="20" tilewidth="16" tileheight="16" infinite="0" nextlayerid="11" nextobjectid="114">
  <tileset firstgid="1" name="bnb" tilewidth="16" tileheight="16" tilecount="9" columns="9">
   <image source="Block_Brick.png" width="144" height="16"/>
  </tileset>
@@ -18,8 +18,19 @@
    eJxjYKAdYIZiWgNS7SCknlI3U9vP2MyjxA50vZTGEz38S21Arh3MaJhS8/DZM5zMwxVugw3QI04HexiQAgAxOwBe
   </data>
  </layer>
- <objectgroup id="8" name="Player">
-  <object id="107" name="Player" x="16" y="288" width="16" height="16">
+ <objectgroup id="9" name="Player">
+  <object id="110" x="16" y="288" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup id="10" name="Ballooms">
+  <object id="111" x="288" y="288" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="112" x="224" y="256" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="113" x="256" y="224" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>

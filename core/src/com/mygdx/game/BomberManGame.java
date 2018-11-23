@@ -25,6 +25,7 @@ public class BomberManGame extends Game
     public void create()
     {
         batch = new SpriteBatch();
+        //setScreen(new PlayScreen());
         setScreen(new MenuScreen(this));
     }
 

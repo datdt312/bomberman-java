@@ -53,7 +53,7 @@ public class Hud implements Disposable
         liveCount = 3;
 
         FitViewport viewport = new FitViewport(1366, 768, new OrthographicCamera());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(viewport, this.batch);
 
         font = new BitmapFont(Gdx.files.internal("core/font/foo.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);

@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -22,7 +24,7 @@ import java.util.ArrayList;
  */
 public class MapCreator
 {
-    private static final float UNIT_SCALE = 2f;
+    private static final float UNIT_SCALE = 3f;
     private TiledMap map;
 
     private OrthographicCamera mapCam;
@@ -35,12 +37,15 @@ public class MapCreator
 
     private Vector2 posPlayer;
 
+    private ArrayList<MapObject> obj_ballooms;
+
     private ArrayList<Rectangle> walls;
     private ArrayList<Rectangle> bricks;
 
 
     /**
      * Constructor
+     *
      * @param path link to file map
      */
     public MapCreator(String path)
@@ -52,20 +57,40 @@ public class MapCreator
         height_number = map.getProperties().get("height", Integer.class);
         tileWidth = map.getProperties().get("tilewidth", Integer.class);
         tileHeight = map.getProperties().get("tileheight", Integer.class);
+
         createMapRectangle();
 
         MapLayer tmp = map.getLayers().get("Player");
-        MapObject objectPlayer = tmp.getObjects().get("Player");
+        MapObject objectPlayer = tmp.getObjects().get(0);
         float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
         float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
-        posPlayer = new Vector2(x*UNIT_SCALE, y*UNIT_SCALE);
+        posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
+
+        createBallooms();
 
 
+        setupCamera();
+
+
+    }
+
+    private void setupCamera()
+    {
         mapCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         mapCam.translate(Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2);
         mapCam.update();
-        mapCam.lookAt(0, 0, 0);
         renderer.setView(mapCam);
+    }
+
+    private void createBallooms()
+    {
+        obj_ballooms = new ArrayList<MapObject>();
+        MapLayer tmp = map.getLayers().get("Ballooms");
+        MapObjects objects = tmp.getObjects();
+        for (MapObject mo : objects)
+        {
+            obj_ballooms.add(mo);
+        }
     }
 
     /**
@@ -133,6 +158,7 @@ public class MapCreator
 
     /**
      * Get Width Size Of Map
+     *
      * @return Width Size Of Map
      */
     public int getV_WIDTH()
@@ -142,6 +168,7 @@ public class MapCreator
 
     /**
      * Get Height Size Of Map
+     *
      * @return Height Size Of Map
      */
     public int getV_HEIGHT()
@@ -151,6 +178,7 @@ public class MapCreator
 
     /**
      * Get Renderer Of Map
+     *
      * @return Renderer Of Map
      */
     public OrthogonalTiledMapRenderer getRenderer()
@@ -160,6 +188,7 @@ public class MapCreator
 
     /**
      * Get Map
+     *
      * @return Map
      */
     public TiledMap getMap()
@@ -169,6 +198,7 @@ public class MapCreator
 
     /**
      * Get Bounded Walls
+     *
      * @return Bounded Walls
      */
     public ArrayList<Rectangle> getWalls()
@@ -178,6 +208,7 @@ public class MapCreator
 
     /**
      * Get Bounded Bricks
+     *
      * @return Bounded Bricks
      */
     public ArrayList<Rectangle> getBricks()
@@ -187,6 +218,7 @@ public class MapCreator
 
     /**
      * Get Scale Of Map
+     *
      * @return Number Scale Of Map
      */
     public float getUNIT_SCALE()
@@ -196,6 +228,7 @@ public class MapCreator
 
     /**
      * Get Number Of Tile In Width
+     *
      * @return Number Of Tile In Width
      */
     public int getWidth_number()
@@ -205,6 +238,7 @@ public class MapCreator
 
     /**
      * Get Number Of Tile In Height
+     *
      * @return Number Of Tile In Height
      */
     public int getHeight_number()
@@ -214,6 +248,7 @@ public class MapCreator
 
     /**
      * Get Width Of A Tile
+     *
      * @return Width Of A Tile
      */
     public int getTileWidth()
@@ -223,6 +258,7 @@ public class MapCreator
 
     /**
      * Get Height Of A Tile
+     *
      * @return Height Of A Tile
      */
     public int getTileHeight()
@@ -232,10 +268,23 @@ public class MapCreator
 
     /**
      * Get Spawn Position Of Player
+     *
      * @return Spawn Position Of Player
      */
     public Vector2 getPosPlayer()
     {
         return posPlayer;
+    }
+
+    public ArrayList<Vector2> getPositionBallooms()
+    {
+        ArrayList<Vector2> res = new ArrayList<Vector2>();
+        for (MapObject o : obj_ballooms)
+        {
+            float x = Float.parseFloat(o.getProperties().get("x").toString());
+            float y = Float.parseFloat(o.getProperties().get("y").toString());
+            res.add(new Vector2(x * UNIT_SCALE, y * UNIT_SCALE));
+        }
+        return res;
     }
 }

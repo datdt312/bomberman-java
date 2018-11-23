@@ -83,7 +83,7 @@ public class PlayScreen implements Screen
         handleInput();
         if(!pause)
             update(delta);
-        update(delta);
+        //update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -103,7 +103,6 @@ public class PlayScreen implements Screen
      */
     public void update(float delta)
     {
-
         player.update(delta);
         hud.update(delta);
     }

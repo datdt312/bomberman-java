@@ -22,7 +22,7 @@ public class MapManager
     {
         map = new ArrayList<MapCreator>();
         MapCreator tmp;
-        tmp = new MapCreator("core/maps/level1.tmx");
+        tmp = new MapCreator("core/maps/map_0/map_0.tmx");
         this.map.add(tmp);
         tmp= new MapCreator("core/maps/map_1/map_1.tmx");
         this.map.add(tmp);
