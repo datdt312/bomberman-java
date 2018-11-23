@@ -4,11 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
@@ -24,11 +27,15 @@ public class Hud implements Disposable
     private BitmapFont font;
 
     private Texture bg;
+    private Sprite hudsprite;
+    private Animation<Texture> anim;
 
     private boolean timeUp; // true if timecount == 0
     private Integer timeCount;
     private float timecountdown;
     private Label timecountLabel;
+
+    private float statetime = 0;
 
     public Hud(SpriteBatch batch, float width, float height) {
         WIDTH_SCREEN = Gdx.graphics.getWidth();
@@ -72,6 +79,13 @@ public class Hud implements Disposable
         timeimg.setSize(30,30);
         timeimg.setPosition(20f * SCALE, 12.5f * SCALE);
 
+        Array<Texture> frame = new Array<Texture>();
+        for(int i = 1; i <= 26; i++)
+            frame.add(new Texture("core/img/hudsprite/" + i +".png"));
+        anim = new Animation<Texture>(0.5f, frame, Animation.PlayMode.LOOP);
+        hudsprite = new Sprite(anim.getKeyFrame(0));
+        hudsprite.setBounds( 0, HEIGHT_SCREEN / 1.23f, WIDTH_SCREEN + 1, bg.getHeight());
+
         stage.addActor(liveimg);
         stage.addActor(timeimg);
         stage.addActor(liveLabel);
@@ -96,11 +110,11 @@ public class Hud implements Disposable
 
     public void draw(float delta) {
 
+        statetime += delta;
+        hudsprite.setRegion(anim.getKeyFrame(statetime));
         batch.begin();
-        batch.draw(bg, 0, HEIGHT_SCREEN / 1.23f, WIDTH_SCREEN, bg.getHeight());
+        hudsprite.draw(batch);
         batch.end();
-
-
 
         stage.draw();
     }

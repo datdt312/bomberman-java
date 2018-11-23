@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
+import com.mygdx.game.Managers.Music_SoundManager;
 
 public class ControlScreen implements Screen
 {
@@ -55,7 +56,7 @@ public class ControlScreen implements Screen
         for (int i = 1; i <= 10; i++)
             frames.add(new TextureRegion(new TextureAtlas(path + "help.pack").findRegion(i + ""),
                     0, 0, 479, 320));
-        helpAnim = new Animation<TextureRegion>(0.32f, frames, Animation.PlayMode.LOOP_PINGPONG);
+        helpAnim = new Animation<TextureRegion>(0.33f, frames, Animation.PlayMode.LOOP_PINGPONG);
         helpSpr = new Sprite(helpAnim.getKeyFrame(0));
         helpSpr.setBounds(150, 50, 479 * 2, 320 * 2);
 
@@ -78,8 +79,9 @@ public class ControlScreen implements Screen
 
         helpSpr.setRegion(helpAnim.getKeyFrame(statetime));
 
-        if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || (timeLeft == -1000 && timeRight == 920))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (timeLeft == -1000 && timeRight == 920))
         {
+            Music_SoundManager.getInstance().playSound("selectchoice.wav");
             RunnableAction runnableAction = new RunnableAction();
             runnableAction.setRunnable(new Runnable()
             {

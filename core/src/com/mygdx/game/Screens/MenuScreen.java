@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
         String path = "core/img/";
         Texture background = new Texture(path + "Background.png");
         img_bg = new Image(background);
-        img_bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        img_bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() + 69);
         img_bg.setPosition(0,0);
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
