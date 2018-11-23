@@ -17,6 +17,8 @@ import com.mygdx.game.Screens.PlayScreen;
 
 public class Hud implements Disposable
 {
+    private float WIDTH_SCREEN;
+    private float HEIGHT_SCREEN;
     private PlayScreen paused;
 
     private final SpriteBatch batch;
@@ -43,6 +45,9 @@ public class Hud implements Disposable
     private StringBuilder stringBuilder;
 
     public Hud(SpriteBatch batch, float width, float height) {
+        WIDTH_SCREEN = Gdx.graphics.getWidth();
+        HEIGHT_SCREEN = Gdx.graphics.getHeight();
+
         this.batch = batch;
 
         textureAtlas = new TextureAtlas("core/sprites/beginning.pack");
@@ -52,9 +57,8 @@ public class Hud implements Disposable
         timecountdown = 0;
         liveCount = 3;
 
-        FitViewport viewport = new FitViewport(1366, 768, new OrthographicCamera());
+        FitViewport viewport = new FitViewport(WIDTH_SCREEN, HEIGHT_SCREEN, new OrthographicCamera());
         stage = new Stage(viewport, this.batch);
-
         font = new BitmapFont(Gdx.files.internal("core/font/foo.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 

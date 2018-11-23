@@ -29,6 +29,8 @@ import com.mygdx.game.Scene.Hud;
  */
 public class PlayScreen implements Screen
 {
+    private float WIDTH_SCREEN;
+    private float HEIGHT_SCREEN;
     private SpriteBatch batch;
     private OrthographicCamera camera;
 
@@ -52,6 +54,9 @@ public class PlayScreen implements Screen
      */
     public PlayScreen()
     {
+        WIDTH_SCREEN = Gdx.graphics.getWidth();
+        HEIGHT_SCREEN = Gdx.graphics.getHeight();
+
         this.game = game;
         mapManager = new MapManager();
         map = mapManager.getMapLevel(0);
@@ -128,9 +133,9 @@ public class PlayScreen implements Screen
         pause = false;
 
         skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));
-        stage = new Stage(new FitViewport(1366, 768), batch);
+        stage = new Stage(new FitViewport(WIDTH_SCREEN, HEIGHT_SCREEN), batch);
         pauseWindow = new Window("            Pause", skin);
-        pauseWindow.setPosition((1366 - pauseWindow.getWidth()) / 2, (768 - pauseWindow.getHeight()) / 2);
+        pauseWindow.setPosition((WIDTH_SCREEN - pauseWindow.getWidth()) / 2, (HEIGHT_SCREEN - pauseWindow.getHeight()) / 2);
         pauseWindow.setVisible(pause);
 
         TextButton continueButton = new TextButton("Continue", skin);
@@ -195,5 +200,15 @@ public class PlayScreen implements Screen
     public void dispose()
     {
         map.dispose();
+    }
+
+    public float getWIDTH_SCREEN()
+    {
+        return WIDTH_SCREEN;
+    }
+
+    public float getHEIGHT_SCREEN()
+    {
+        return HEIGHT_SCREEN;
     }
 }
