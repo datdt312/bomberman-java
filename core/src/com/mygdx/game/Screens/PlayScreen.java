@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Components.Boomber;
+import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Managers.MapManager;
@@ -40,6 +41,7 @@ public class PlayScreen implements Screen
     private MapCreator map;
 
     private Boomber player;
+    private BalloomManager enemy_ballooms;
 
     //pause window
     private Skin skin;
@@ -74,6 +76,8 @@ public class PlayScreen implements Screen
         batch = new SpriteBatch();
         player = new Boomber(this.map, this.camera);
 
+        enemy_ballooms = new BalloomManager(map);
+
         hud = new Hud(batch, 31, 13);
     }
 
@@ -96,6 +100,7 @@ public class PlayScreen implements Screen
 
         camera.position.x =  player.getShape().getX();
         player.draw(batch, delta);
+        enemy_ballooms.draw(batch);
 
         pauseWindow.setVisible(pause);
         stage.draw();
@@ -108,8 +113,8 @@ public class PlayScreen implements Screen
      */
     public void update(float delta)
     {
-
         player.update(delta);
+        enemy_ballooms.update(map, delta);
         hud.update(delta);
     }
 

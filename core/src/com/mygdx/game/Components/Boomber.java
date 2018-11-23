@@ -72,9 +72,6 @@ public class Boomber
         shape.setOriginBasedPosition(this.map.getPosPlayer().x, this.map.getPosPlayer().y);
 
         texture = new Texture("core/assets/BBM_SPRITE_MOVE_19_21.png");
-        sprite = new Sprite(texture);
-        sprite.setOriginCenter();
-        sprite.setPosition(shape.getX(), shape.getY());
 
         // MoveSide: 0 - DOWN _ _ _ 1 - RIGHT _ _ _ 2 - UP _ _ _ 3 - LEFT
         moveSide = 2;
