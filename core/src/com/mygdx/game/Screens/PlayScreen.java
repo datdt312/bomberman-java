@@ -103,6 +103,7 @@ public class PlayScreen implements Screen
      */
     public void update(float delta)
     {
+
         player.update(delta);
         hud.update(delta);
     }
@@ -123,6 +124,7 @@ public class PlayScreen implements Screen
     @Override
     public void show()
     {
+        Music_SoundManager.getInstance().playMusic("SOY.ogg", true);
         pause = false;
 
         skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));
@@ -140,17 +142,17 @@ public class PlayScreen implements Screen
             }
         });
 
-        TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ClickListener() {
+        TextButton menuButton = new TextButton("Menu", skin);
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                game.setScreen(new MenuScreen(game));
             }
 
         });
         pauseWindow.add(continueButton).padBottom(16f);
         pauseWindow.row();
-        pauseWindow.add(exitButton);
+        pauseWindow.add(menuButton);
 
         stage.addActor(pauseWindow);
         Gdx.input.setInputProcessor(stage);

@@ -208,8 +208,11 @@ public class Bomb implements Comparable<Bomb>
         }
         else if (exploding)
         {
-            if (countTime < animationFlameSize)
+
+            if (countTime < animationFlameSize) {
+                Music_SoundManager.getInstance().playSound("Explosion.ogg");
                 drawExploding(batch, map);
+            }
         }
     }
 
@@ -240,6 +243,7 @@ public class Bomb implements Comparable<Bomb>
         drawVerticalExploding(batch, map);
 
         batch.begin();
+
         batch.draw(flameMiddle[countTime], posX, posY, BOMB_WIDTH, BOMB_HEIGHT);
         batch.end();
     }
@@ -255,7 +259,7 @@ public class Bomb implements Comparable<Bomb>
         boolean checkLeft = true;
         boolean checkRight = true;
         batch.begin();
-        Music_SoundManager.getInstance().playSound("Explosion.ogg");
+
         for (int i = 0; i < lengthFlame; i++)
         {
             // Check Horizontal Flame On The Left Side
@@ -309,6 +313,7 @@ public class Bomb implements Comparable<Bomb>
         boolean checkUp = true;
         boolean checkDown = true;
         batch.begin();
+
 
         for (int i = 0; i < lengthFlame; i++)
         {
