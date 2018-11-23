@@ -50,7 +50,7 @@ public class PlayScreen implements Screen
     /**
      * Construtor
      */
-    public PlayScreen()
+    public PlayScreen(BomberManGame game)
     {
         this.game = game;
         mapManager = new MapManager();
@@ -83,7 +83,6 @@ public class PlayScreen implements Screen
         handleInput();
         if(!pause)
             update(delta);
-        update(delta);
         Gdx.gl.glClearColor(1, 1, 1, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -124,6 +123,7 @@ public class PlayScreen implements Screen
     @Override
     public void show()
     {
+        Music_SoundManager.getInstance().playMusic("SOY.ogg", true);
         pause = false;
 
         skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));
@@ -141,17 +141,17 @@ public class PlayScreen implements Screen
             }
         });
 
-        TextButton exitButton = new TextButton("Exit", skin);
-        exitButton.addListener(new ClickListener() {
+        TextButton menuButton = new TextButton("Menu", skin);
+        menuButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
+                game.setScreen(new MenuScreen(game));
             }
 
         });
         pauseWindow.add(continueButton).padBottom(16f);
         pauseWindow.row();
-        pauseWindow.add(exitButton);
+        pauseWindow.add(menuButton);
 
         stage.addActor(pauseWindow);
         Gdx.input.setInputProcessor(stage);
