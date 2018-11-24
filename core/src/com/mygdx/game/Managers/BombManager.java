@@ -93,7 +93,12 @@ public class BombManager
     {
         for (Bomb b : bomb_manage)
         {
-            b.draw(batch, map);
+            b.draw(batch, map, this);
         }
+    }
+
+    public ArrayList<Bomb> getBomb_manage()
+    {
+        return bomb_manage;
     }
 }

@@ -178,7 +178,6 @@ public class MapCreator
         if (countTime == 0)
         {
             TiledMapTileLayer temp = (TiledMapTileLayer) map.getLayers().get("Bricks");
-            deleteRectangleBrick(r);
             temp.getCell((int) (r.getX() / tileWidth / UNIT_SCALE), (int) (r.getY() / tileHeight / UNIT_SCALE)).setTile(null);
             destroyed.add(new DestroyedBrick(r));
         }
@@ -230,6 +229,7 @@ public class MapCreator
         {
             if (destroyed.get(i).done)
             {
+                deleteRectangleBrick(destroyed.get(i).rect);
                 destroyed.remove(i);
             }
         }

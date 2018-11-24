@@ -61,7 +61,6 @@ public class Balloom
         TextureRegion[][] textureRegions = TextureRegion.split(texture, 16, 16);
         lengthAnimation = textureRegions[0].length;
         moveLength = 6;
-        System.out.println("LENGTH: " + lengthAnimation);
         animation = new TextureRegion[lengthAnimation];
         for (int i = 0; i < lengthAnimation; i++)
             animation[i] = textureRegions[0][i];
