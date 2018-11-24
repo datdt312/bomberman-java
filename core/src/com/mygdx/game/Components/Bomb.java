@@ -49,6 +49,7 @@ public class Bomb implements Comparable<Bomb>
     private float animationFlameSize;
     private float elapsedTime;
     private int countTime;
+    private int countsound = 0;
 
     /**
      * Constructor
@@ -219,10 +220,12 @@ public class Bomb implements Comparable<Bomb>
         {
 
             if (countTime < animationFlameSize) {
-                Music_SoundManager.getInstance().playSound("Explosion.ogg");
+               countsound++;
                 drawExploding(batch, map,bombManager);
             }
         }
+        if (countsound == 1)
+            Music_SoundManager.getInstance().playSound("Explosion.ogg");
     }
 
     /**

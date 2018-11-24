@@ -119,7 +119,7 @@ public class MenuScreen implements Screen {
     }
     @Override
     public void show() {
-        Music_SoundManager.getInstance().playMusic("WARRIORS.ogg", true);
+        Music_SoundManager.getInstance().playMusic("WARRIORS.mp3", true);
         FitViewport viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
 
