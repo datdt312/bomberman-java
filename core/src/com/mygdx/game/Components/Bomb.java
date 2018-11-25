@@ -42,6 +42,7 @@ public class Bomb implements Comparable<Bomb>
     private float timeLimitWaiting;
     private float timeLimitExploding;
 
+    private Sprite shape;
     private TextureRegion[][] textureRegions;
     private TextureRegion[] animationBomb;
     private TextureRegion[] flameVertical, flameHorizontal, flameMiddle, flameRight, flameLeft, flameUp, flameDown;
@@ -114,6 +115,10 @@ public class Bomb implements Comparable<Bomb>
 
         x_posFlameVertical += DISTANCE_HEIGHT / 2f;
         y_posFlameHorizontal += DISTANCE_WIDTH / 2f;
+
+        shape = new Sprite();
+        shape.setSize(BOMB_WIDTH, BOMB_HEIGHT);
+        shape.setPosition(posX, posY);
     }
 
     /**
@@ -236,8 +241,7 @@ public class Bomb implements Comparable<Bomb>
     {
         batch.begin();
 
-        Sprite sprite = new Sprite(animationBomb[countTime]);
-        batch.draw(sprite, posX, posY, BOMB_WIDTH, BOMB_HEIGHT);
+        batch.draw(animationBomb[countTime], posX, posY, BOMB_WIDTH, BOMB_HEIGHT);
 
         batch.end();
     }
@@ -427,6 +431,11 @@ public class Bomb implements Comparable<Bomb>
     public float getPosY()
     {
         return posY;
+    }
+
+    public Sprite getShape()
+    {
+        return shape;
     }
 
     /**

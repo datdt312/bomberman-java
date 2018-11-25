@@ -29,6 +29,7 @@ public class Boomber
     private int moveSide;
     private boolean moving;
     private boolean justPlanBomb;
+    private Bomb bombStandingOn;
 
     private Texture texture;
     private Sprite sprite, shape;
@@ -126,6 +127,8 @@ public class Boomber
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         {
             justPlanBomb = bombManager.addNewBomb(this.map, this);
+            if (justPlanBomb && bombStandingOn==null)
+                bombStandingOn = bombManager.getBomb_manage().get(bombManager.getBomb_manage().size()-1);
         }
     }
 
@@ -173,6 +176,12 @@ public class Boomber
      */
     public boolean detectCollision(MapCreator map)
     {
+        for (Bomb b: bombManager.getBomb_manage())
+        if (b!=bombStandingOn)
+        {
+            if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+                return true;
+        }
         for (Rectangle i : map.getWalls())
             if (shape.getBoundingRectangle().overlaps(i))
                 return true;
@@ -189,9 +198,10 @@ public class Boomber
     public void update(MapCreator map, float dt)
     {
         handleInput(dt);
+        bombStandingOn = checkStandingOnBomb();
         if (moving)
             updateMovement();
-        if (detectCollision(map))
+        if (moving && detectCollision(map))
             revertMovement();
 
         animationFrames = new TextureRegion[4];
@@ -200,8 +210,17 @@ public class Boomber
             for (int j = 0; j < 4; j++)
                 animationFrames[index++] = animationRegion[moveSide][j];
         animation = new Animation(1f / 4f, animationFrames);
-
         bombManager.update(this.map, this, dt);
+    }
+
+    private Bomb checkStandingOnBomb()
+    {
+        for (Bomb b: bombManager.getBomb_manage())
+        {
+            if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+                return b;
+        }
+        return null;
     }
 
     /**

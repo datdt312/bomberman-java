@@ -22,7 +22,7 @@ public class Balloom
     private TextureRegion[] animation;
     private Sprite shape;
 
-    private int lengthAnimation;
+    private int animationLength;
     private int moveLength;
     private int countTime;
 
@@ -58,12 +58,12 @@ public class Balloom
     private void createAnimation()
     {
         texture = new Texture("core/assets/Balloom.png");
-        TextureRegion[][] textureRegions = TextureRegion.split(texture, 16, 16);
-        lengthAnimation = textureRegions[0].length;
+        TextureRegion[][] regions = TextureRegion.split(texture, 16, 16);
+        animationLength = regions[0].length;
         moveLength = 6;
-        animation = new TextureRegion[lengthAnimation];
-        for (int i = 0; i < lengthAnimation; i++)
-            animation[i] = textureRegions[0][i];
+        animation = new TextureRegion[animationLength];
+        for (int i = 0; i < animationLength; i++)
+            animation[i] = regions[0][i];
     }
 
     private int calculateDirection()
@@ -160,7 +160,7 @@ public class Balloom
         }
         else
         {
-            if (!done && countDie < lengthAnimation)
+            if (!done && countDie < animationLength)
                 batch.draw(animation[countDie], shape.getX(), shape.getY(), BALLOOM_WIDTH, BALLOOM_HEIGHT);
             else
             {
