@@ -40,7 +40,7 @@ public class BombApearSprite implements Disposable
         for (int i = 0; i < 9; i++) {
             keyFrames.add(new TextureRegion(textureAtlas1.findRegion("apear_sprite"), i * 24, 0, 24, 32));
         }
-        apear2 = new Animation<TextureRegion>(0.1f, keyFrames, Animation.PlayMode.LOOP);
+        apear2 = new Animation<TextureRegion>(0.2f, keyFrames, Animation.PlayMode.LOOP);
         apearsprite2 = new Sprite(apear2.getKeyFrame(0));
         apearsprite2.setBounds(Gdx.graphics.getWidth() / 1.5f, Gdx.graphics.getHeight() / 2.8f, 24f * scale, 32f * scale);
         stateTime = 0;
@@ -48,7 +48,7 @@ public class BombApearSprite implements Disposable
         for (int i = 0; i < 9; i++) {
             keyFrames.add(new TextureRegion(textureAtlas1.findRegion("apear_sprite"), i * 24, 0, 24, 32));
         }
-        apear = new Animation<TextureRegion>(0.1f, keyFrames, Animation.PlayMode.LOOP);
+        apear = new Animation<TextureRegion>(0.2f, keyFrames, Animation.PlayMode.LOOP);
         apearsprite = new Sprite(apear.getKeyFrame(0));
         apearsprite.setBounds(Gdx.graphics.getWidth() / 3.4f, Gdx.graphics.getHeight() / 2.8f, 24 * scale, 32 * scale);
         keyFrames.clear();

@@ -82,7 +82,7 @@ public class Hud implements Disposable
         Array<Texture> frame = new Array<Texture>();
         for(int i = 1; i <= 26; i++)
             frame.add(new Texture("core/img/hudsprite/" + i +".png"));
-        anim = new Animation<Texture>(0.5f, frame, Animation.PlayMode.LOOP);
+        anim = new Animation<Texture>(0.66f, frame, Animation.PlayMode.LOOP);
         hudsprite = new Sprite(anim.getKeyFrame(0));
         hudsprite.setBounds( 0, HEIGHT_SCREEN / 1.23f, WIDTH_SCREEN + 1, bg.getHeight());
 
