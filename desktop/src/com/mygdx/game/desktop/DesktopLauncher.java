@@ -1,5 +1,7 @@
 package com.mygdx.game.desktop;
 
+import com.badlogic.gdx.Files;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.mygdx.game.BomberManGame;
@@ -14,7 +16,7 @@ public class DesktopLauncher
         config.width = 1488;
         //config.width = 1366;
         config.height = 768;
-        //config.addIcon();
+        config.addIcon("core/assets/bomb.png", Files.FileType.Internal);
         //config.fullscreen = true;
         new LwjglApplication(new BomberManGame(), config);
     }

@@ -3,6 +3,7 @@ package com.mygdx.game.Managers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.Components.Balloom;
+import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Maps.MapCreator;
 
 import java.util.ArrayList;
@@ -22,11 +23,11 @@ public class BalloomManager
         }
     }
 
-    public void update(MapCreator map, float delta)
+    public void update(MapCreator map, Boomber player, float delta)
     {
         for (Balloom b : ballooms)
         {
-            b.update(map, delta);
+            b.update(map,player, delta);
         }
         deleteDeadBalloom();
     }

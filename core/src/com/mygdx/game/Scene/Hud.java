@@ -19,7 +19,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class Hud implements Disposable
 {
     private float HEIGHT_SCREEN;
-    float WIDTH_SCREEN;
+    private float WIDTH_SCREEN;
+    private float SCALE;
 
     private final SpriteBatch batch;
 
@@ -37,6 +38,8 @@ public class Hud implements Disposable
 
     private float statetime = 0;
 
+    private Integer liveCount;
+
     public Hud(SpriteBatch batch, float width, float height) {
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
@@ -45,7 +48,7 @@ public class Hud implements Disposable
 
         timeCount = 200;
         timecountdown = 0;
-        Integer liveCount = 3;
+        liveCount = 3;
 
         bg = new Texture("core/img/hud_bg.png");
 
@@ -56,7 +59,8 @@ public class Hud implements Disposable
 
         Label livecountLabel = new Label("X" + String.format("%02d", liveCount), labelStyle);
         livecountLabel.setFontScale(1f);
-        float SCALE = 55f;
+
+        SCALE = 55f;
         livecountLabel.setPosition(3f * SCALE, 12.4f * SCALE);
 
         timecountLabel = new Label("X" + String.format("%03d", timeCount), labelStyle);
@@ -126,4 +130,18 @@ public class Hud implements Disposable
     }
     public boolean isTimeUp() { return timeUp; }
 
+    public void decreaseLiveCount()
+    {
+        liveCount--;
+    }
+
+    public Integer getLiveCount()
+    {
+        return liveCount;
+    }
+
+    public void setLiveCount(Integer liveCount)
+    {
+        this.liveCount = liveCount;
+    }
 }

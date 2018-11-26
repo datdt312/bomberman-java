@@ -83,7 +83,7 @@ public class Balloom
         return false;
     }
 
-    public void update(MapCreator map, float dt)
+    public void update(MapCreator map,Boomber player, float dt)
     {
         elapsedTime += 2 * dt;
         countTime = (int) elapsedTime % moveLength;
@@ -96,6 +96,10 @@ public class Balloom
                 revertMovement();
                 moveSide = calculateDirection();
             }
+            if (shape.getBoundingRectangle().overlaps(player.getShape().getBoundingRectangle()) && !player.isDie())
+            {
+                player.setDie();
+            }
         }
         else
         {
@@ -106,6 +110,7 @@ public class Balloom
                 timeDie = 0f;
             }
         }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.G))
         {
             setDie(true);

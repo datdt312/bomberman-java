@@ -117,8 +117,13 @@ public class PlayScreen implements Screen
     {
         map.update(delta);
         player.update(this.map, delta);
-        enemy_ballooms.update(map, delta);
+        enemy_ballooms.update(map, player, delta);
         hud.update(delta);
+
+        if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount()>0)
+        {
+            player = new Boomber(map, camera);
+        }
     }
 
     /**
