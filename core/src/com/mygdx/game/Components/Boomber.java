@@ -28,11 +28,12 @@ public class Boomber
 
     private int moveSide;
     private boolean moving;
+    private boolean isDie;
     private boolean justPlanBomb;
     private Bomb bombStandingOn;
 
     private Texture texture;
-    private Sprite sprite, shape;
+    private Sprite shape;
 
     private MapCreator map;
     private OrthographicCamera camera;
@@ -41,7 +42,11 @@ public class Boomber
     private TextureRegion[][] animationRegion;
     private TextureRegion[] animationFrames;
     private Animation animation;
+    private TextureRegion[] animationDead;
+    private int lengthAnimationDead;
     private float elapsedTime;
+    private float timeDie;
+    private int frameDie;
 
     private float maxSpeed;
     private int lengthFlame;
@@ -77,13 +82,28 @@ public class Boomber
         // MoveSide: 0 - DOWN _ _ _ 1 - RIGHT _ _ _ 2 - UP _ _ _ 3 - LEFT
         moveSide = 2;
         moving = false;
+        isDie = false;
+        timeDie = 0f;
+        frameDie = 0;
         justPlanBomb = false;
         elapsedTime = 0;
 
         animationRegion = TextureRegion.split(texture, TILE_WIDTH, TILE_HEIGHT);
 
+        createAnimationDead();
+
         bombManager = new BombManager(this);
 
+    }
+
+    private void createAnimationDead()
+    {
+        Texture txt = new Texture("core/assets/BBM_SPRITE_DIE_23_23.png");
+        TextureRegion[][] regions = TextureRegion.split(txt,23,23);
+        lengthAnimationDead = regions[0].length;
+        animationDead = new TextureRegion[lengthAnimationDead];
+        for (int i=0; i<lengthAnimationDead; i++)
+            animationDead[i] = regions[0][i];
     }
 
     /**
@@ -101,7 +121,6 @@ public class Boomber
      */
     private void handleInput(float dt)
     {
-        float step = maxSpeed;
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
@@ -127,8 +146,6 @@ public class Boomber
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
         {
             justPlanBomb = bombManager.addNewBomb(this.map, this);
-            if (justPlanBomb && bombStandingOn==null)
-                bombStandingOn = bombManager.getBomb_manage().get(bombManager.getBomb_manage().size()-1);
         }
     }
 
@@ -197,20 +214,33 @@ public class Boomber
      */
     public void update(MapCreator map, float dt)
     {
-        handleInput(dt);
-        bombStandingOn = checkStandingOnBomb();
-        if (moving)
-            updateMovement();
-        if (moving && detectCollision(map))
-            revertMovement();
+        if (!isDie)
+        {
+            handleInput(dt);
+            bombStandingOn = checkStandingOnBomb();
+            if (moving)
+                updateMovement();
+            if (moving && detectCollision(map))
+                revertMovement();
 
-        animationFrames = new TextureRegion[4];
-        int index = 0;
-        for (int i = 0; i < 1; i++)
-            for (int j = 0; j < 4; j++)
-                animationFrames[index++] = animationRegion[moveSide][j];
-        animation = new Animation(1f / 4f, animationFrames);
-        bombManager.update(this.map, this, dt);
+            animationFrames = new TextureRegion[4];
+            int index = 0;
+            for (int i = 0; i < 1; i++)
+                for (int j = 0; j < 4; j++)
+                    animationFrames[index++] = animationRegion[moveSide][j];
+            animation = new Animation(1f / 4f, animationFrames);
+        }
+        else
+        {
+            timeDie += dt;
+            if (timeDie>=0.2f)
+            {
+                frameDie++;
+                timeDie = 0f;
+            }
+        }
+
+        bombManager.update(this, dt);
     }
 
     private Bomb checkStandingOnBomb()
@@ -231,24 +261,39 @@ public class Boomber
      */
     public void draw(Batch batch, float dt)
     {
-        bombManager.draw(batch, this.map);
+        bombManager.draw(batch, this.map, this);
 
         batch.begin();
-
-        if (moving)
+        if (!isDie)
         {
-            elapsedTime += maxSpeed * dt;
-            batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+
+            if (moving)
+            {
+                elapsedTime += maxSpeed * dt;
+                batch.draw((TextureRegion) animation.getKeyFrame(elapsedTime, true), shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+            }
+            else
+            {
+                elapsedTime += 1.5f * maxSpeed * dt;
+                batch.draw(animationRegion[10][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+            }
         }
         else
         {
-            elapsedTime += 2 * maxSpeed * dt;
-            batch.draw(animationRegion[10][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+            if (frameDie<lengthAnimationDead)
+            {
+                batch.draw(animationDead[frameDie], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+            }
         }
 
         batch.end();
 
         moving = false;
+    }
+
+    public boolean isDeadNoHopeAndEndGame()
+    {
+        return frameDie>lengthAnimationDead;
     }
 
     /**
@@ -294,5 +339,15 @@ public class Boomber
     public int getMaxBombs()
     {
         return maxBombs;
+    }
+
+    public boolean isDie()
+    {
+        return isDie;
+    }
+
+    public void setDie()
+    {
+        isDie = true;
     }
 }

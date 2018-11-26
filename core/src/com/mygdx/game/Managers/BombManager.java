@@ -21,6 +21,7 @@ public class BombManager
 
     /**
      * Constructor
+     *
      * @param player Player of the game
      */
     public BombManager(Boomber player)
@@ -31,15 +32,15 @@ public class BombManager
 
     /**
      * Update Bombs
-     * @param map map of the game
+     *
      * @param player Player of the game
-     * @param dt deltaTime
+     * @param dt     deltaTime
      */
-    public void update(MapCreator map, Boomber player, float dt)
+    public void update(Boomber player, float dt)
     {
         for (Bomb b : bomb_manage)
         {
-            b.update(dt);
+            b.update(player, dt);
         }
         deleteExplodedBomb();
     }
@@ -89,11 +90,11 @@ public class BombManager
      * @param batch . . .
      * @param map   map of the game
      */
-    public void draw(Batch batch, MapCreator map)
+    public void draw(Batch batch, MapCreator map, Boomber player)
     {
         for (Bomb b : bomb_manage)
         {
-            b.draw(batch, map, this);
+            b.draw(batch, map, this, player);
         }
     }
 

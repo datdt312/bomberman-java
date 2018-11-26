@@ -63,7 +63,7 @@ public class BomberManGame extends Game
 
         }
 
-        else Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap
+        else  Gdx.graphics.setCursor(Gdx.graphics.newCursor(new Pixmap
                (Gdx.files.internal("core/img/pokecur/"+ (count) + ".png")),0 ,10));
 
     }
