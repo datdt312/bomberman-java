@@ -113,7 +113,7 @@ public class Balloom
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.G))
         {
-            setDie(true);
+            killed();
         }
     }
 
@@ -175,9 +175,9 @@ public class Balloom
         batch.end();
     }
 
-    public void setDie(boolean die)
+    public void killed()
     {
-        isDie = die;
+        isDie = true;
         done = false;
         timeDie = 0;
     }
@@ -186,4 +186,16 @@ public class Balloom
     {
         return done;
     }
+
+    public Sprite getShape()
+    {
+        return shape;
+    }
+
+    public boolean isDie()
+    {
+        return isDie;
+    }
+
+
 }

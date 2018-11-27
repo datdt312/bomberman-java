@@ -101,7 +101,7 @@ public class PlayScreen implements Screen
         map.render();
 
         camera.position.x =  player.getShape().getX();
-        player.draw(batch, delta);
+        player.draw(batch, delta, enemy_ballooms);
         enemy_ballooms.draw(batch);
 
         pauseWindow.setVisible(pause);
@@ -123,6 +123,7 @@ public class PlayScreen implements Screen
         if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount()>0)
         {
             player = new Boomber(map, camera);
+            hud.decreaseLiveCount();
         }
     }
 

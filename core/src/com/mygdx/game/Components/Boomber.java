@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
+import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.BombManager;
 import com.mygdx.game.Maps.MapCreator;
 
@@ -259,9 +260,9 @@ public class Boomber
      * @param batch
      * @param dt
      */
-    public void draw(Batch batch, float dt)
+    public void draw(Batch batch, float dt, BalloomManager balloomManager)
     {
-        bombManager.draw(batch, this.map, this);
+        bombManager.draw(batch, this.map, this, balloomManager);
 
         batch.begin();
         if (!isDie)
@@ -349,5 +350,6 @@ public class Boomber
     public void setDie()
     {
         isDie = true;
+
     }
 }

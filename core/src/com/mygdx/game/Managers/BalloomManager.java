@@ -53,5 +53,8 @@ public class BalloomManager
         }
     }
 
-
+    public ArrayList<Balloom> getBallooms()
+    {
+        return ballooms;
+    }
 }
