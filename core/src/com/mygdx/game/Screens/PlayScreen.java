@@ -103,8 +103,7 @@ public class PlayScreen implements Screen
 
         handleInput();
 
-        stage.draw();
-        stage.act();
+
 
         if(!pause)
             update(delta);
@@ -123,7 +122,8 @@ public class PlayScreen implements Screen
 
         pauseWindow.setVisible(pause);
 
-
+        stage.draw();
+        stage.act();
 
         hud.draw(delta);
     }
@@ -144,8 +144,9 @@ public class PlayScreen implements Screen
         {
             player = new Boomber(map, camera);
             hud.decreaseLiveCount();
+
         }
-        if (hud.getLiveCount() == 0) {
+        if (hud.getLiveCount() == 0 || hud.getTimeCount() == 0) {
 
             Music_SoundManager.getInstance().stopMusic();
             game.setScreen(new GameOverScreen(game));
@@ -170,7 +171,7 @@ public class PlayScreen implements Screen
     public void show()
     {
 
-        Music_SoundManager.getInstance().playMusic("SOY.ogg", true);
+        Music_SoundManager.getInstance().playMusic("victory.mp3", true);
         pause = false;
 
         skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));

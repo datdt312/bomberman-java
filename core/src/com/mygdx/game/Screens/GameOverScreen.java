@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
+import com.mygdx.game.Managers.Music_SoundManager;
 
 public class GameOverScreen implements Screen {
 
@@ -33,13 +34,14 @@ public class GameOverScreen implements Screen {
     }
     @Override
     public void show() {
+        Music_SoundManager.getInstance().playSound("gameover.mp3");
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
 
         stage.addActor(bgimg);
 
         stage.addAction(Actions.sequence(
-                Actions.delay(1f),
+                Actions.delay(2f),
                 Actions.fadeOut(2f),
                 Actions.run(new Runnable() {
                     @Override
@@ -51,6 +53,7 @@ public class GameOverScreen implements Screen {
 
     @Override
     public void render(float delta) {
+
 
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

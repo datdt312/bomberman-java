@@ -140,6 +140,8 @@ public class Hud implements Disposable
     {
         return liveCount;
     }
+    
+    public Integer getTimeCount() { return  timeCount;}
 
     public void setLiveCount(Integer liveCount)
     {

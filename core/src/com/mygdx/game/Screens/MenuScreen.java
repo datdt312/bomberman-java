@@ -29,6 +29,7 @@ public class MenuScreen implements Screen {
     private Sprite titlesprite;
 
     private Image img_bg;
+    private Image img_indica;
 
     private int currentoption;
     private float statetime;
@@ -40,12 +41,15 @@ public class MenuScreen implements Screen {
 
         bomApear = new BombApearSprite(game.batch, 0,0);
 
-
         String path = "core/img/";
+
         Texture background = new Texture(path + "Background.png");
         img_bg = new Image(background);
         img_bg.setSize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight() + 69);
         img_bg.setPosition(0,0);
+
+        img_indica = new Image(new Texture(path + "indicate.png"));
+        img_indica.setBounds(Gdx.graphics.getWidth() / 1.22f, Gdx.graphics.getHeight() / 3f, 240, 125);
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 0; i < 5; i++) {
@@ -124,6 +128,7 @@ public class MenuScreen implements Screen {
         stage = new Stage(viewport, batch);
 
         stage.addActor(img_bg);
+        stage.addActor(img_indica);
 
     }
 

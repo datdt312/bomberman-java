@@ -22,8 +22,8 @@ public class BomberManGame extends Game
 
     public SpriteBatch getSpriteBatch(){return batch;}
 
-    private Pixmap pm1;
-    private Pixmap pm2;
+    private Pixmap pm1 = null;
+    private Pixmap pm2 = null;
     private int count = 50;
     @Override
     public void create()

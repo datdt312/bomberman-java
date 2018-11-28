@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.BombManager;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 
 /**
@@ -52,6 +53,7 @@ public class Boomber
     private float maxSpeed;
     private int lengthFlame;
     private int maxBombs;
+    private int count=0;
 
     private BombManager bombManager;
 
@@ -69,6 +71,7 @@ public class Boomber
 
         BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7)-2;
         BOMBER_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
+        count=0;
 
         maxSpeed = 2f;
         lengthFlame = 2;
@@ -94,6 +97,8 @@ public class Boomber
         createAnimationDead();
 
         bombManager = new BombManager(this);
+
+
 
     }
 
@@ -215,6 +220,7 @@ public class Boomber
      */
     public void update(MapCreator map, float dt)
     {
+
         if (!isDie)
         {
             handleInput(dt);
@@ -233,6 +239,8 @@ public class Boomber
         }
         else
         {
+            count++;
+            System.out.println(count);
             timeDie += dt;
             if (timeDie>=0.2f)
             {
@@ -240,6 +248,8 @@ public class Boomber
                 timeDie = 0f;
             }
         }
+        if(count == 1)
+            Music_SoundManager.getInstance().playSound("playerdie.mp3");
 
         bombManager.update(this, dt);
     }
