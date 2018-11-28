@@ -100,6 +100,17 @@ public class Balloom
             {
                 player.setDie();
             }
+            for (Bomb b:player.getBombManager().getBomb_manage())
+            {
+                if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+                {
+                    while (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+                    {
+                        revertMovement();
+                    }
+                    moveSide = calculateDirection();
+                }
+            }
         }
         else
         {

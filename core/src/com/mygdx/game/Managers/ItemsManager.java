@@ -3,6 +3,7 @@ package com.mygdx.game.Managers;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.math.Vector2;
+import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Components.Item;
 import com.mygdx.game.Maps.MapCreator;
 
@@ -34,11 +35,11 @@ public class ItemsManager
         }
     }
 
-    public void update(MapCreator map, float dt)
+    public void update(MapCreator map, Boomber player,  float dt)
     {
         for (Item itm:items)
         {
-            itm.update(map,dt);
+            itm.update(map, player, dt);
         }
         deleteEatenItems();
     }
@@ -47,7 +48,7 @@ public class ItemsManager
     {
         for (int i=items.size()-1; i>=0; i--)
         {
-            if (items.get(i).isEaten())
+            if (items.get(i).isEquipped())
             {
                 items.remove(i);
             }

@@ -21,6 +21,7 @@ public class Item
 
     private boolean hidingBehindBrick;
     private boolean eaten;
+    private boolean equipped;
 
     private float elapsedTime;
     private int frames;
@@ -92,7 +93,7 @@ public class Item
         }
     }
 
-    public void update(MapCreator map, float dt)
+    public void update(MapCreator map, Boomber player, float dt)
     {
         hidingBehindBrick = false;
         for (Rectangle r:map.getBricks())
@@ -110,6 +111,28 @@ public class Item
             {
                 elapsedTime = 0f;
                 frames = (frames + 1) % animationLength;
+            }
+        }
+        if (shape.getBoundingRectangle().overlaps(player.getShape().getBoundingRectangle()))
+        {
+            setEaten();
+        }
+        if (isEaten())
+        {
+            if ("Bomb".equals(name))
+            {
+                player.upBomb();
+                equipped = true;
+            }
+            else if ("Flame".equals(name))
+            {
+                player.upFlame();
+                equipped = true;
+            }
+            else if ("Speed".equals(name))
+            {
+                player.upSpeed();
+                equipped = true;
             }
         }
     }
@@ -143,5 +166,10 @@ public class Item
     public String getName()
     {
         return name;
+    }
+
+    public boolean isEquipped()
+    {
+        return equipped;
     }
 }

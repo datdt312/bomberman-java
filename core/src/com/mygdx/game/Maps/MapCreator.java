@@ -40,6 +40,7 @@ public class MapCreator
             countTime = 3;
             done = false;
         }
+
         public Rectangle rect;
         public float elapsedTime;
         public int countTime;
@@ -61,6 +62,7 @@ public class MapCreator
     private int tileWidth;
     private int tileHeight;
 
+    private Vector2 posPortal;
     private Vector2 posPlayer;
 
     private ArrayList<MapObject> obj_ballooms;
@@ -88,16 +90,32 @@ public class MapCreator
 
         createMapRectangle();
 
-        MapLayer tmp = map.getLayers().get("Player");
-        MapObject objectPlayer = tmp.getObjects().get(0);
-        float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
-        float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
-        posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
+        createPlayerPosition();
+        createPortalPosition();
+
 
         createBallooms();
         createItems();
         setupCamera();
         setupAnimationDestroyedBricks();
+    }
+
+    private void createPortalPosition()
+    {
+        MapLayer tmp = map.getLayers().get("Portal");
+        MapObject objectPlayer = tmp.getObjects().get(0);
+        float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
+        float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
+        posPortal = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
+    }
+
+    private void createPlayerPosition()
+    {
+        MapLayer tmp = map.getLayers().get("Player");
+        MapObject objectPlayer = tmp.getObjects().get(0);
+        float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
+        float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
+        posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
     }
 
     private void setupAnimationDestroyedBricks()
@@ -106,7 +124,7 @@ public class MapCreator
         TextureRegion[][] regions = TextureRegion.split(texture, 16, 16);
         animationLength = regions[0].length;
         animation = new TextureRegion[animationLength];
-        for (int i=0; i<animationLength; i++)
+        for (int i = 0; i < animationLength; i++)
             animation[i] = regions[0][i];
 
     }
@@ -135,10 +153,9 @@ public class MapCreator
         obj_items = new ArrayList<MapObject>();
         MapLayer tmp = map.getLayers().get("Items");
         MapObjects objects = tmp.getObjects();
-        for (MapObject mo:objects)
+        for (MapObject mo : objects)
         {
             obj_items.add(mo);
-            System.out.println(mo.getName());
         }
     }
 
@@ -201,7 +218,7 @@ public class MapCreator
 
     private void deleteRectangleBrick(Rectangle r)
     {
-        for (int i=bricks.size()-1; i>=0; i--)
+        for (int i = bricks.size() - 1; i >= 0; i--)
         {
             if (bricks.get(i).equals(r))
             {
@@ -220,11 +237,11 @@ public class MapCreator
             }
         }
 
-        for (DestroyedBrick db:destroyed)
+        for (DestroyedBrick db : destroyed)
         {
-            if (!db.done)
-            db.elapsedTime+=10*dt;
-            if (db.elapsedTime>1)
+            if (! db.done)
+                db.elapsedTime += 10 * dt;
+            if (db.elapsedTime > 1)
             {
                 db.elapsedTime = 0;
                 db.countTime++;
@@ -232,12 +249,13 @@ public class MapCreator
         }
         deleteDestroyedBricks();
     }
+
     public void draw(Batch batch)
     {
         batch.begin();
         for (DestroyedBrick db : destroyed)
         {
-            if (!db.done && db.countTime<animationLength)
+            if (! db.done && db.countTime < animationLength)
                 batch.draw(animation[db.countTime], db.rect.getX(), db.rect.getY(), db.rect.getWidth(), db.rect.getHeight());
             else
             {
@@ -249,7 +267,7 @@ public class MapCreator
 
     public void deleteDestroyedBricks()
     {
-        for (int i = destroyed.size()-1; i>=0; i--)
+        for (int i = destroyed.size() - 1; i >= 0; i--)
         {
             if (destroyed.get(i).done)
             {
@@ -258,6 +276,7 @@ public class MapCreator
             }
         }
     }
+
     /**
      * Render Map
      */
@@ -393,6 +412,11 @@ public class MapCreator
     public Vector2 getPosPlayer()
     {
         return posPlayer;
+    }
+
+    public Vector2 getPosPortal()
+    {
+        return posPortal;
     }
 
     public ArrayList<Vector2> getPositionBallooms()

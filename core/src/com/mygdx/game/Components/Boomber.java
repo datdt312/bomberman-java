@@ -53,7 +53,7 @@ public class Boomber
     private float maxSpeed;
     private int lengthFlame;
     private int maxBombs;
-    private int count=0;
+    private int count = 0;
 
     private BombManager bombManager;
 
@@ -69,9 +69,9 @@ public class Boomber
         this.map = map;
         this.camera = camera;
 
-        BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7)-2;
+        BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7) - 2;
         BOMBER_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
-        count=0;
+        count = 0;
 
         maxSpeed = 2f;
         lengthFlame = 2;
@@ -99,21 +99,21 @@ public class Boomber
         bombManager = new BombManager(this);
 
 
-
     }
 
     private void createAnimationDead()
     {
         Texture txt = new Texture("core/assets/BBM_SPRITE_DIE_23_23.png");
-        TextureRegion[][] regions = TextureRegion.split(txt,23,23);
+        TextureRegion[][] regions = TextureRegion.split(txt, 23, 23);
         lengthAnimationDead = regions[0].length;
         animationDead = new TextureRegion[lengthAnimationDead];
-        for (int i=0; i<lengthAnimationDead; i++)
+        for (int i = 0; i < lengthAnimationDead; i++)
             animationDead[i] = regions[0][i];
     }
 
     /**
      * get Shape (Main Player Not sprite =)))) )
+     *
      * @return
      */
     public Sprite getShape()
@@ -123,6 +123,7 @@ public class Boomber
 
     /**
      * Handle Input Of Player
+     *
      * @param dt deltaTime
      */
     private void handleInput(float dt)
@@ -182,10 +183,10 @@ public class Boomber
                 shape.translateY(maxSpeed);
                 break;
             case 1:
-                shape.translateX(-maxSpeed);
+                shape.translateX(- maxSpeed);
                 break;
             case 2:
-                shape.translateY(-maxSpeed);
+                shape.translateY(- maxSpeed);
                 break;
             case 3:
                 shape.translateX(maxSpeed);
@@ -195,16 +196,17 @@ public class Boomber
 
     /**
      * Detect Collision With Map
+     *
      * @return true if collision; false if not
      */
     public boolean detectCollision(MapCreator map)
     {
-        for (Bomb b: bombManager.getBomb_manage())
-        if (b!=bombStandingOn)
-        {
-            if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
-                return true;
-        }
+        for (Bomb b : bombManager.getBomb_manage())
+            if (b != bombStandingOn)
+            {
+                if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+                    return true;
+            }
         for (Rectangle i : map.getWalls())
             if (shape.getBoundingRectangle().overlaps(i))
                 return true;
@@ -216,12 +218,13 @@ public class Boomber
 
     /**
      * Update Player
+     *
      * @param dt deltaTime
      */
     public void update(MapCreator map, float dt)
     {
 
-        if (!isDie)
+        if (! isDie)
         {
             handleInput(dt);
             bombStandingOn = checkStandingOnBomb();
@@ -240,15 +243,14 @@ public class Boomber
         else
         {
             count++;
-            System.out.println(count);
             timeDie += dt;
-            if (timeDie>=0.2f)
+            if (timeDie >= 0.15f)
             {
                 frameDie++;
                 timeDie = 0f;
             }
         }
-        if(count == 1)
+        if (count == 1)
             Music_SoundManager.getInstance().playSound("playerdie.mp3");
 
         bombManager.update(this, dt);
@@ -256,7 +258,7 @@ public class Boomber
 
     private Bomb checkStandingOnBomb()
     {
-        for (Bomb b: bombManager.getBomb_manage())
+        for (Bomb b : bombManager.getBomb_manage())
         {
             if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
                 return b;
@@ -275,7 +277,7 @@ public class Boomber
         bombManager.draw(batch, this.map, this, balloomManager);
 
         batch.begin();
-        if (!isDie)
+        if (! isDie)
         {
 
             if (moving)
@@ -291,7 +293,7 @@ public class Boomber
         }
         else
         {
-            if (frameDie<lengthAnimationDead)
+            if (frameDie < lengthAnimationDead)
             {
                 batch.draw(animationDead[frameDie], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
             }
@@ -302,13 +304,29 @@ public class Boomber
         moving = false;
     }
 
+    public void upSpeed()
+    {
+        maxSpeed += 0.5f;
+    }
+
+    public void upBomb()
+    {
+        maxBombs += 1;
+    }
+
+    public void upFlame()
+    {
+        lengthFlame += 1;
+    }
+
     public boolean isDeadNoHopeAndEndGame()
     {
-        return frameDie>lengthAnimationDead;
+        return frameDie > lengthAnimationDead;
     }
 
     /**
      * Get Position Of Main Player On X-axis
+     *
      * @return Position Of Main Player On X-axis
      */
     public float getPosX()
@@ -318,6 +336,7 @@ public class Boomber
 
     /**
      * Get Position Of Main Player On Y-axis
+     *
      * @return Position Of Main Player On Y-axis
      */
     public float getPosY()
@@ -327,6 +346,7 @@ public class Boomber
 
     /**
      * Get Speed Of Player
+     *
      * @return Speed Of Player
      */
     public float getMaxSpeed()
@@ -336,6 +356,7 @@ public class Boomber
 
     /**
      * Get Length Of Flame Of Bomb
+     *
      * @return Length Of Flame Of Bomb
      */
     public int getLengthFlame()
@@ -345,6 +366,7 @@ public class Boomber
 
     /**
      * Get Number Of Bombs Player have
+     *
      * @return Number Of Bombs Player have
      */
     public int getMaxBombs()
@@ -360,6 +382,10 @@ public class Boomber
     public void setDie()
     {
         isDie = true;
-
+    }
+    
+    public BombManager getBombManager()
+    {
+        return bombManager;
     }
 }

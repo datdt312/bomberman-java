@@ -17,7 +17,7 @@ public class DesktopLauncher
         //config.width = 1366;
         config.height = 768;
         config.addIcon("core/assets/bomb.png", Files.FileType.Internal);
-        //config.fullscreen = true;
+        config.x = config.y = -1;
         new LwjglApplication(new BomberManGame(), config);
     }
 }

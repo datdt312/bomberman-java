@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Components.Boomber;
+import com.mygdx.game.Components.Portal;
 import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.ItemsManager;
 import com.mygdx.game.Managers.Music_SoundManager;
@@ -45,6 +46,7 @@ public class PlayScreen implements Screen
     private MapManager mapManager;
     private MapCreator map;
 
+    private Portal portal;
     private Boomber player;
     private BalloomManager enemy_ballooms;
     private ItemsManager itemsManager;
@@ -77,15 +79,16 @@ public class PlayScreen implements Screen
         float width_camera = Gdx.graphics.getWidth();
         float height_camera = Gdx.graphics.getHeight();
 
-        Gdx.graphics.setWindowedMode((int)width_camera, (int)height_camera);
+        Gdx.graphics.setWindowedMode((int) width_camera, (int) height_camera);
         System.out.println(width_camera + " " + height_camera);
 
         camera = new OrthographicCamera(width_camera, height_camera);
-        camera.translate(width_camera/2, height_camera/2, 0);
+        camera.translate(width_camera / 2, height_camera / 2, 0);
         camera.update();
 
         batch = new SpriteBatch();
         player = new Boomber(this.map, this.camera);
+        portal = new Portal(map);
 
         enemy_ballooms = new BalloomManager(map);
         itemsManager = new ItemsManager(map);
@@ -95,6 +98,7 @@ public class PlayScreen implements Screen
 
     /**
      * Render Game
+     *
      * @param delta deltaTime
      */
     @Override
@@ -104,11 +108,10 @@ public class PlayScreen implements Screen
         handleInput();
 
 
-
-        if(!pause)
+        if (! pause)
             update(delta);
         //update(delta);
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         map.draw(batch);
@@ -116,7 +119,7 @@ public class PlayScreen implements Screen
 
         itemsManager.draw(batch);
 
-        camera.position.x =  player.getShape().getX();
+        portal.draw(batch);
         player.draw(batch, delta, enemy_ballooms);
         enemy_ballooms.draw(batch);
 
@@ -130,23 +133,26 @@ public class PlayScreen implements Screen
 
     /**
      * Update Game
+     *
      * @param delta deltaTime
      */
     public void update(float delta)
     {
         map.update(delta);
-        itemsManager.update(map, delta);
+        itemsManager.update(map, player, delta);
+        portal.update(map, player,enemy_ballooms,delta);
         player.update(this.map, delta);
         enemy_ballooms.update(map, player, delta);
         hud.update(delta);
 
-        if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount()>0)
+        if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount() > 0)
         {
             player = new Boomber(map, camera);
             hud.decreaseLiveCount();
 
         }
-        if (hud.getLiveCount() == 0 || hud.getTimeCount() == 0) {
+        if (hud.getLiveCount() == 0 || hud.getTimeCount() == 0)
+        {
 
             Music_SoundManager.getInstance().stopMusic();
             game.setScreen(new GameOverScreen(game));
@@ -156,7 +162,8 @@ public class PlayScreen implements Screen
 
     /**
      * Resize The Size Of Screen
-     * @param width Width Of Screen
+     *
+     * @param width  Width Of Screen
      * @param height Height Of Screen
      */
     @Override
@@ -181,18 +188,22 @@ public class PlayScreen implements Screen
         pauseWindow.setVisible(pause);
 
         TextButton continueButton = new TextButton("Continue", skin);
-        continueButton.addListener(new ClickListener() {
+        continueButton.addListener(new ClickListener()
+        {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y)
+            {
                 pause = false;
                 Music_SoundManager.getInstance().playMusic();
             }
         });
 
         TextButton menuButton = new TextButton("Menu", skin);
-        menuButton.addListener(new ClickListener() {
+        menuButton.addListener(new ClickListener()
+        {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y)
+            {
                 game.setScreen(new MenuScreen(game));
             }
 
@@ -206,14 +217,19 @@ public class PlayScreen implements Screen
 
     }
 
-    public void handleInput(){
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            pause = !pause;
+    public void handleInput()
+    {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))
+        {
+            pause = ! pause;
 
-            if (pause) {
+            if (pause)
+            {
                 Music_SoundManager.getInstance().playSound("Pause.ogg");
                 Music_SoundManager.getInstance().pauseMusic();
-            } else {
+            }
+            else
+            {
                 Music_SoundManager.getInstance().playMusic();
             }
         }
@@ -221,13 +237,19 @@ public class PlayScreen implements Screen
 
 
     @Override
-    public void hide() { }
+    public void hide()
+    {
+    }
 
     @Override
-    public void pause() { }
+    public void pause()
+    {
+    }
 
     @Override
-    public void resume() { }
+    public void resume()
+    {
+    }
 
     @Override
     public void dispose()
