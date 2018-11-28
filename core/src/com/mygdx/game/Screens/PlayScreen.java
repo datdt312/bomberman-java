@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Managers.BalloomManager;
+import com.mygdx.game.Managers.ItemsManager;
 import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import com.mygdx.game.Managers.MapManager;
@@ -46,6 +47,7 @@ public class PlayScreen implements Screen
 
     private Boomber player;
     private BalloomManager enemy_ballooms;
+    private ItemsManager itemsManager;
 
     //pause window
     private Skin skin;
@@ -86,6 +88,7 @@ public class PlayScreen implements Screen
         player = new Boomber(this.map, this.camera);
 
         enemy_ballooms = new BalloomManager(map);
+        itemsManager = new ItemsManager(map);
 
         hud = new Hud(batch, 31, 13);
     }
@@ -106,11 +109,13 @@ public class PlayScreen implements Screen
         if(!pause)
             update(delta);
         //update(delta);
-        Gdx.gl.glClearColor(1, 1, 1, 1);
+        Gdx.gl.glClearColor(0,0,0,1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         map.draw(batch);
         map.render();
+
+        itemsManager.draw(batch);
 
         camera.position.x =  player.getShape().getX();
         player.draw(batch, delta, enemy_ballooms);
@@ -130,6 +135,7 @@ public class PlayScreen implements Screen
     public void update(float delta)
     {
         map.update(delta);
+        itemsManager.update(map, delta);
         player.update(this.map, delta);
         enemy_ballooms.update(map, player, delta);
         hud.update(delta);

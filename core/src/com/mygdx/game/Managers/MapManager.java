@@ -24,8 +24,8 @@ public class MapManager
         MapCreator tmp;
         tmp = new MapCreator("core/maps/map_0/map_0.tmx");
         this.map.add(tmp);
-        tmp= new MapCreator("core/maps/map_1/map_1.tmx");
-        this.map.add(tmp);
+        //tmp= new MapCreator("core/maps/map_1/map_1.tmx");
+        //this.map.add(tmp);
     }
 
     /**
