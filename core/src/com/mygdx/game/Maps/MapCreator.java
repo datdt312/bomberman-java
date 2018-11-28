@@ -1,6 +1,7 @@
 package com.mygdx.game.Maps;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +16,7 @@ import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import org.w3c.dom.css.Rect;
 
 import java.util.ArrayList;
 import java.util.FormatFlagsConversionMismatchException;
@@ -62,6 +64,7 @@ public class MapCreator
     private Vector2 posPlayer;
 
     private ArrayList<MapObject> obj_ballooms;
+    private ArrayList<MapObject> obj_items;
 
     private ArrayList<Rectangle> walls;
     private ArrayList<Rectangle> bricks;
@@ -92,6 +95,7 @@ public class MapCreator
         posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
 
         createBallooms();
+        createItems();
         setupCamera();
         setupAnimationDestroyedBricks();
     }
@@ -123,6 +127,18 @@ public class MapCreator
         for (MapObject mo : objects)
         {
             obj_ballooms.add(mo);
+        }
+    }
+
+    private void createItems()
+    {
+        obj_items = new ArrayList<MapObject>();
+        MapLayer tmp = map.getLayers().get("Items");
+        MapObjects objects = tmp.getObjects();
+        for (MapObject mo:objects)
+        {
+            obj_items.add(mo);
+            System.out.println(mo.getName());
         }
     }
 
@@ -196,6 +212,14 @@ public class MapCreator
 
     public void update(float dt)
     {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0))
+        {
+            for (Rectangle r : getBricks())
+            {
+                destroyBrick(r, 0);
+            }
+        }
+
         for (DestroyedBrick db:destroyed)
         {
             if (!db.done)
@@ -381,5 +405,10 @@ public class MapCreator
             res.add(new Vector2(x * UNIT_SCALE, y * UNIT_SCALE));
         }
         return res;
+    }
+
+    public ArrayList<MapObject> getObj_items()
+    {
+        return obj_items;
     }
 }

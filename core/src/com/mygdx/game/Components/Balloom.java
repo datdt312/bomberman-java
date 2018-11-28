@@ -111,7 +111,7 @@ public class Balloom
             }
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.G))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_9))
         {
             killed();
         }
