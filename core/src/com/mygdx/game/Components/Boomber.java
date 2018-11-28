@@ -126,28 +126,40 @@ public class Boomber
      *
      * @param dt deltaTime
      */
-    private void handleInput(float dt)
+    private void handleInput(MapCreator map, float dt)
     {
 
         if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT))
         {
             moveSide = 1;
+            updateMovement();
+            if (detectCollision(map))
+                revertMovement();
             moving = true;
         }
 
         if (Gdx.input.isKeyPressed(Input.Keys.W) || Gdx.input.isKeyPressed(Input.Keys.UP))
         {
             moveSide = 2;
+            updateMovement();
+            if (detectCollision(map))
+                revertMovement();
             moving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.A) || Gdx.input.isKeyPressed(Input.Keys.LEFT))
         {
             moveSide = 3;
+            updateMovement();
+            if (detectCollision(map))
+                revertMovement();
             moving = true;
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN))
         {
             moveSide = 0;
+            updateMovement();
+            if (detectCollision(map))
+                revertMovement();
             moving = true;
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE))
@@ -226,12 +238,8 @@ public class Boomber
 
         if (! isDie)
         {
-            handleInput(dt);
+            handleInput(map, dt);
             bombStandingOn = checkStandingOnBomb();
-            if (moving)
-                updateMovement();
-            if (moving && detectCollision(map))
-                revertMovement();
 
             animationFrames = new TextureRegion[4];
             int index = 0;

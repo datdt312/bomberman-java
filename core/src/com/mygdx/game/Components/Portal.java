@@ -87,7 +87,7 @@ public class Portal
             }
             if (standTime >= 2f)
             {
-                // Next Level
+                // Next Level or Winner
             }
         }
 
