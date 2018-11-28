@@ -35,6 +35,7 @@ public class Hud implements Disposable
     private Integer timeCount;
     private float timecountdown;
     private Label timecountLabel;
+    private Label livecountLabel;
 
     private float statetime = 0;
 
@@ -46,6 +47,7 @@ public class Hud implements Disposable
 
         this.batch = batch;
 
+        SCALE = 55f;
         timeCount = 200;
         timecountdown = 0;
         liveCount = 3;
@@ -57,10 +59,8 @@ public class Hud implements Disposable
         font = new BitmapFont(Gdx.files.internal("core/font/foo.fnt"));
         Label.LabelStyle labelStyle = new Label.LabelStyle(font, Color.WHITE);
 
-        Label livecountLabel = new Label("X" + String.format("%02d", liveCount), labelStyle);
+        livecountLabel = new Label("X" + String.format("%02d", liveCount), labelStyle);
         livecountLabel.setFontScale(1f);
-
-        SCALE = 55f;
         livecountLabel.setPosition(3f * SCALE, 12.4f * SCALE);
 
         timecountLabel = new Label("X" + String.format("%03d", timeCount), labelStyle);
@@ -133,6 +133,7 @@ public class Hud implements Disposable
     public void decreaseLiveCount()
     {
         liveCount--;
+        livecountLabel.setText("X" + String.format("%02d", liveCount));
     }
 
     public Integer getLiveCount()

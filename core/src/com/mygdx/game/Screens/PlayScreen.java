@@ -9,6 +9,9 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
+import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -52,6 +55,9 @@ public class PlayScreen implements Screen
 
     private Hud hud;
 
+    private boolean isOver;
+    private boolean changescreen;
+
     /**
      * Construtor
      */
@@ -60,6 +66,8 @@ public class PlayScreen implements Screen
         this.game = game;
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
+        isOver = false;
+        changescreen = false;
 
         mapManager = new MapManager();
         map = mapManager.getMapLevel(0);
@@ -91,6 +99,10 @@ public class PlayScreen implements Screen
     {
 
         handleInput();
+
+        stage.draw();
+        stage.act();
+
         if(!pause)
             update(delta);
         //update(delta);
@@ -105,7 +117,9 @@ public class PlayScreen implements Screen
         enemy_ballooms.draw(batch);
 
         pauseWindow.setVisible(pause);
-        stage.draw();
+
+
+
         hud.draw(delta);
     }
 
@@ -124,6 +138,12 @@ public class PlayScreen implements Screen
         {
             player = new Boomber(map, camera);
             hud.decreaseLiveCount();
+        }
+        if (hud.getLiveCount() == 0) {
+
+            Music_SoundManager.getInstance().stopMusic();
+            game.setScreen(new GameOverScreen(game));
+
         }
     }
 
