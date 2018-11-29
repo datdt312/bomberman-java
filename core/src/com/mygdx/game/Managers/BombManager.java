@@ -40,7 +40,7 @@ public class BombManager
     {
         for (Bomb b : bomb_manage)
         {
-            b.update(player, dt);
+            b.update(dt);
         }
         deleteExplodedBomb();
     }

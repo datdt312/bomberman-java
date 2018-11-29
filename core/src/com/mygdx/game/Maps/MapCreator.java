@@ -21,6 +21,7 @@ import org.w3c.dom.css.Rect;
 import java.util.ArrayList;
 import java.util.FormatFlagsConversionMismatchException;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Define A Map
@@ -66,6 +67,7 @@ public class MapCreator
     private Vector2 posPlayer;
 
     private ArrayList<MapObject> obj_ballooms;
+    private ArrayList<MapObject> obj_oneals;
     private ArrayList<MapObject> obj_items;
 
     private ArrayList<Rectangle> walls;
@@ -93,9 +95,10 @@ public class MapCreator
         createPlayerPosition();
         createPortalPosition();
 
-
         createBallooms();
+        createOneals();
         createItems();
+
         setupCamera();
         setupAnimationDestroyedBricks();
     }
@@ -145,6 +148,17 @@ public class MapCreator
         for (MapObject mo : objects)
         {
             obj_ballooms.add(mo);
+        }
+    }
+
+    private void createOneals()
+    {
+        obj_oneals = new ArrayList<MapObject>();
+        MapLayer tmp = map.getLayers().get("Oneals");
+        MapObjects objects = tmp.getObjects();
+        for (MapObject mo : objects)
+        {
+            obj_oneals.add(mo);
         }
     }
 
@@ -423,6 +437,18 @@ public class MapCreator
     {
         ArrayList<Vector2> res = new ArrayList<Vector2>();
         for (MapObject o : obj_ballooms)
+        {
+            float x = Float.parseFloat(o.getProperties().get("x").toString());
+            float y = Float.parseFloat(o.getProperties().get("y").toString());
+            res.add(new Vector2(x * UNIT_SCALE, y * UNIT_SCALE));
+        }
+        return res;
+    }
+
+    public ArrayList<Vector2> getPositionOneals()
+    {
+        ArrayList<Vector2> res = new ArrayList<Vector2>();
+        for (MapObject o:obj_oneals)
         {
             float x = Float.parseFloat(o.getProperties().get("x").toString());
             float y = Float.parseFloat(o.getProperties().get("y").toString());

@@ -20,11 +20,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Components.Boomber;
 import com.mygdx.game.Components.Portal;
-import com.mygdx.game.Managers.BalloomManager;
-import com.mygdx.game.Managers.ItemsManager;
-import com.mygdx.game.Managers.Music_SoundManager;
+import com.mygdx.game.Managers.*;
 import com.mygdx.game.Maps.MapCreator;
-import com.mygdx.game.Managers.MapManager;
 import com.mygdx.game.Scene.Hud;
 
 /**
@@ -49,6 +46,7 @@ public class PlayScreen implements Screen
     private Portal portal;
     private Boomber player;
     private BalloomManager enemy_ballooms;
+    private OnealManager enemy_oneals;
     private ItemsManager itemsManager;
 
     //pause window
@@ -92,6 +90,7 @@ public class PlayScreen implements Screen
         portal = new Portal(map);
 
         enemy_ballooms = new BalloomManager(map);
+        enemy_oneals = new OnealManager(map);
         itemsManager = new ItemsManager(map);
 
         hud = new Hud(batch, 31, 13);
@@ -123,6 +122,7 @@ public class PlayScreen implements Screen
         portal.draw(batch);
         player.draw(batch, delta, enemy_ballooms);
         enemy_ballooms.draw(batch);
+        enemy_oneals.draw(batch);
 
         pauseWindow.setVisible(pause);
 
@@ -144,6 +144,7 @@ public class PlayScreen implements Screen
         portal.update(map, player,enemy_ballooms,delta);
         player.update(this.map, delta);
         enemy_ballooms.update(map, player, delta);
+        enemy_oneals.update(map, player, delta);
         hud.update(delta);
 
         if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount() > 0)

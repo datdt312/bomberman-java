@@ -115,7 +115,7 @@ public class Balloom
         else
         {
             timeDie += 2.5*dt;
-            if (timeDie >= 1)
+            if (timeDie >= 1f)
             {
                 countDie++;
                 timeDie = 0f;
@@ -177,7 +177,9 @@ public class Balloom
         else
         {
             if (!done && countDie < animationLength)
+            {
                 batch.draw(animation[countDie], shape.getX(), shape.getY(), BALLOOM_WIDTH, BALLOOM_HEIGHT);
+            }
             else
             {
                 done = true;

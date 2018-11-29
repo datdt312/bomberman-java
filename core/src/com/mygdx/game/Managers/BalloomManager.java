@@ -42,14 +42,12 @@ public class BalloomManager
 
     private void deleteDeadBalloom()
     {
-        Iterator<Balloom> iter = ballooms.iterator();
-
-        while (iter.hasNext())
+        for (int i=ballooms.size()-1; i>=0; i--)
         {
-            Balloom b = iter.next();
-
-            if (b.isDone())
-                iter.remove();
+            if (ballooms.get(i).isDone())
+            {
+                ballooms.remove(i);
+            }
         }
     }
 

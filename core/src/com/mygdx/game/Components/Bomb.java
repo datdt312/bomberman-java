@@ -180,7 +180,7 @@ public class Bomb implements Comparable<Bomb>
      *
      * @param dt deltaTime
      */
-    public void update(Boomber player, float dt)
+    public void update(float dt)
     {
         elapsedTime += dt;
         if (waiting)
