@@ -59,7 +59,7 @@ public class PlayScreen implements Screen
 
     private Hud hud;
     
-    private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "DRA.ogg", "SOY.ogg", "WARRIORS.mp3", "WTF.ogg"};
+    private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "SOY.ogg", "WARRIORS.mp3", "WTF.ogg", "KDA.mp3"};
     private int count;
 
     
