@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BalloomManager;
+import com.mygdx.game.Managers.EnemyManager;
 import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 
@@ -54,7 +55,7 @@ public class Portal
         }
     }
 
-    public void update(MapCreator map, Boomber player, BalloomManager balloomManager, float dt)
+    public void update(MapCreator map, Boomber player, EnemyManager enemyManager, float dt)
     {
         hidingBehindBrick = false;
         for (Rectangle r:map.getBricks())
@@ -65,7 +66,7 @@ public class Portal
                 break;
             }
         }
-        if (balloomManager.getBallooms().isEmpty())
+        if (enemyManager.getBallooms().isEmpty() && enemyManager.getOneals().isEmpty())
         {
             canConnect = true;
         }
@@ -91,8 +92,6 @@ public class Portal
                 // Next Level or Winner
                 Music_SoundManager.getInstance().playSound("comeportal.mp3");
             }
-
-            System.out.println(standTime);
         }
 
     }

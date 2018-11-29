@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.BombManager;
+import com.mygdx.game.Managers.EnemyManager;
 import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 
@@ -280,9 +281,9 @@ public class Boomber
      * @param batch
      * @param dt
      */
-    public void draw(Batch batch, float dt, BalloomManager balloomManager)
+    public void draw(Batch batch, float dt, EnemyManager enemyManager)
     {
-        bombManager.draw(batch, this.map, this, balloomManager);
+        bombManager.draw(batch, this.map, this, enemyManager);
 
         batch.begin();
         if (! isDie)

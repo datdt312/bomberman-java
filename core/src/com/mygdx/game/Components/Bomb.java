@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BalloomManager;
 import com.mygdx.game.Managers.BombManager;
+import com.mygdx.game.Managers.EnemyManager;
 import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 import org.jetbrains.annotations.NotNull;
@@ -216,7 +217,7 @@ public class Bomb implements Comparable<Bomb>
      * @param batch . . .
      * @param map   map of the game
      */
-    public void draw(Batch batch, MapCreator map, BombManager bombManager, Boomber player, BalloomManager balloomManager)
+    public void draw(Batch batch, MapCreator map, BombManager bombManager, Boomber player, EnemyManager enemyManager)
     {
         if (waiting)
         {
@@ -229,7 +230,7 @@ public class Bomb implements Comparable<Bomb>
             if (countTime < animationFlameSize)
             {
                 countsound++;
-                drawExploding(batch, map, bombManager, player, balloomManager);
+                drawExploding(batch, map, bombManager, player, enemyManager);
             }
         }
         if (countsound == 1)
@@ -256,11 +257,11 @@ public class Bomb implements Comparable<Bomb>
      * @param batch . . .
      * @param map   map of the game
      */
-    private void drawExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, BalloomManager balloomManager)
+    private void drawExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, EnemyManager enemyManager)
     {
 
-        drawHorizontalExploding(batch, map, bombManager, player, balloomManager);
-        drawVerticalExploding(batch, map, bombManager, player, balloomManager);
+        drawHorizontalExploding(batch, map, bombManager, player, enemyManager);
+        drawVerticalExploding(batch, map, bombManager, player, enemyManager);
 
         batch.begin();
         Rectangle rect = new Rectangle(posX, posY, BOMB_WIDTH, BOMB_HEIGHT);
@@ -278,7 +279,7 @@ public class Bomb implements Comparable<Bomb>
      * @param batch . . .
      * @param map   map of the game
      */
-    private void drawHorizontalExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, BalloomManager balloomManager)
+    private void drawHorizontalExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, EnemyManager enemyManager)
     {
         boolean checkLeft = true;
         boolean checkRight = true;
@@ -290,7 +291,7 @@ public class Bomb implements Comparable<Bomb>
             if (checkLeft)
             {
                 Rectangle rect = new Rectangle(x_posFlameHorizontal - FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-                checkLeft = detectCollision(rect, map, bombManager, player, balloomManager);
+                checkLeft = detectCollision(rect, map, bombManager, player, enemyManager);
                 if (checkLeft)
                     batch.draw(flameHorizontal[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
             }
@@ -299,7 +300,7 @@ public class Bomb implements Comparable<Bomb>
             if (checkRight)
             {
                 Rectangle rect = new Rectangle(x_posFlameHorizontal + FLAME_SIZE_WIDTH * i, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-                checkRight = detectCollision(rect, map, bombManager, player, balloomManager);
+                checkRight = detectCollision(rect, map, bombManager, player, enemyManager);
                 if (checkRight)
                     batch.draw(flameHorizontal[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
             }
@@ -309,7 +310,7 @@ public class Bomb implements Comparable<Bomb>
         if (checkLeft)
         {
             Rectangle rect = new Rectangle(x_posFlameHorizontal - FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-            checkLeft = detectCollision(rect, map, bombManager, player, balloomManager);
+            checkLeft = detectCollision(rect, map, bombManager, player, enemyManager);
             if (checkLeft)
                 batch.draw(flameLeft[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         }
@@ -318,7 +319,7 @@ public class Bomb implements Comparable<Bomb>
         if (checkRight)
         {
             Rectangle rect = new Rectangle(x_posFlameHorizontal + FLAME_SIZE_WIDTH * lengthFlame, y_posFlameHorizontal, FLAME_SIZE_WIDTH, BOMB_HEIGHT);
-            checkRight = detectCollision(rect, map, bombManager, player, balloomManager);
+            checkRight = detectCollision(rect, map, bombManager, player, enemyManager);
             if (checkRight)
                 batch.draw(flameRight[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         }
@@ -332,7 +333,7 @@ public class Bomb implements Comparable<Bomb>
      * @param batch . . .
      * @param map   map of the game
      */
-    private void drawVerticalExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, BalloomManager balloomManager)
+    private void drawVerticalExploding(Batch batch, MapCreator map, BombManager bombManager, Boomber player, EnemyManager enemyManager)
     {
         boolean checkUp = true;
         boolean checkDown = true;
@@ -344,7 +345,7 @@ public class Bomb implements Comparable<Bomb>
             if (checkUp)
             {
                 Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-                checkUp = detectCollision(rect, map, bombManager, player, balloomManager);
+                checkUp = detectCollision(rect, map, bombManager, player, enemyManager);
                 if (checkUp)
                     batch.draw(flameVertical[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
             }
@@ -352,7 +353,7 @@ public class Bomb implements Comparable<Bomb>
             if (checkDown)
             {
                 Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * i, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-                checkDown = detectCollision(rect, map, bombManager, player, balloomManager);
+                checkDown = detectCollision(rect, map, bombManager, player, enemyManager);
                 if (checkDown)
                     batch.draw(flameVertical[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
             }
@@ -361,14 +362,14 @@ public class Bomb implements Comparable<Bomb>
         if (checkUp)
         {
             Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical + FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-            checkUp = detectCollision(rect, map, bombManager, player, balloomManager);
+            checkUp = detectCollision(rect, map, bombManager, player, enemyManager);
             if (checkUp)
                 batch.draw(flameUp[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         }
         if (checkDown)
         {
             Rectangle rect = new Rectangle(x_posFlameVertical, y_posFlameVertical - FLAME_SIZE_HEIGHT * lengthFlame, BOMB_WIDTH, FLAME_SIZE_HEIGHT);
-            checkDown = detectCollision(rect, map, bombManager, player, balloomManager);
+            checkDown = detectCollision(rect, map, bombManager, player, enemyManager);
             if (checkDown)
                 batch.draw(flameDown[countTime], rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         }
@@ -383,18 +384,26 @@ public class Bomb implements Comparable<Bomb>
      * @param map  map of the game
      * @return false if flame collision with some bricks, walls; true if not
      */
-    private boolean detectCollision(Rectangle rect, MapCreator map, BombManager bombManager, Boomber player, BalloomManager balloomManager)
+    private boolean detectCollision(Rectangle rect, MapCreator map, BombManager bombManager, Boomber player, EnemyManager enemyManager)
     {
         if (rect.overlaps(player.getShape().getBoundingRectangle()) && !player.isDie())
         {
             player.setDie();
         }
 
-        for (Balloom b:balloomManager.getBallooms())
+        for (Balloom b:enemyManager.getBallooms())
         {
             if (rect.overlaps(b.getShape().getBoundingRectangle()) && !b.isDie())
             {
                 b.killed();
+            }
+        }
+
+        for (Oneal o:enemyManager.getOneals())
+        {
+            if (rect.overlaps(o.getShape().getBoundingRectangle()) && !o.isDie())
+            {
+                o.killed();
             }
         }
 

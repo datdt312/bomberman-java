@@ -90,11 +90,11 @@ public class BombManager
      * @param batch . . .
      * @param map   map of the game
      */
-    public void draw(Batch batch, MapCreator map, Boomber player, BalloomManager balloomManager)
+    public void draw(Batch batch, MapCreator map, Boomber player, EnemyManager enemyManager)
     {
         for (Bomb b : bomb_manage)
         {
-            b.draw(batch, map, this, player, balloomManager);
+            b.draw(batch, map, this, player, enemyManager);
         }
     }
 

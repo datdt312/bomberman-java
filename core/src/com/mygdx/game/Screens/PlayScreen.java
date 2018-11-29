@@ -45,8 +45,7 @@ public class PlayScreen implements Screen
 
     private Portal portal;
     private Boomber player;
-    private BalloomManager enemy_ballooms;
-    private OnealManager enemy_oneals;
+    private EnemyManager enemyManager;
     private ItemsManager itemsManager;
 
     //pause window
@@ -89,8 +88,7 @@ public class PlayScreen implements Screen
         player = new Boomber(this.map, this.camera);
         portal = new Portal(map);
 
-        enemy_ballooms = new BalloomManager(map);
-        enemy_oneals = new OnealManager(map);
+        enemyManager = new EnemyManager(map);
         itemsManager = new ItemsManager(map);
 
         hud = new Hud(batch, 31, 13);
@@ -120,9 +118,8 @@ public class PlayScreen implements Screen
         itemsManager.draw(batch);
 
         portal.draw(batch);
-        player.draw(batch, delta, enemy_ballooms);
-        enemy_ballooms.draw(batch);
-        enemy_oneals.draw(batch);
+        player.draw(batch, delta, enemyManager);
+        enemyManager.draw(batch);
 
         pauseWindow.setVisible(pause);
 
@@ -141,10 +138,9 @@ public class PlayScreen implements Screen
     {
         map.update(delta);
         itemsManager.update(map, player, delta);
-        portal.update(map, player,enemy_ballooms,delta);
+        portal.update(map, player,enemyManager,delta);
         player.update(this.map, delta);
-        enemy_ballooms.update(map, player, delta);
-        enemy_oneals.update(map, player, delta);
+        enemyManager.update(map,player,delta);
         hud.update(delta);
 
         if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount() > 0)

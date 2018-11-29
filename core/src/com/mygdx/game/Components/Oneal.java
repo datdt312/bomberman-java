@@ -73,8 +73,15 @@ public class Oneal
             animation[i] = regions[0][i];
     }
 
-    private boolean detectCollision(MapCreator map)
+    private boolean detectCollision(MapCreator map, Boomber player)
     {
+        for (Bomb b : player.getBombManager().getBomb_manage())
+        {
+            if (shape.getBoundingRectangle().overlaps(b.getShape().getBoundingRectangle()))
+            {
+                return true;
+            }
+        }
         for (Rectangle i : map.getWalls())
             if (shape.getBoundingRectangle().overlaps(i))
                 return true;
@@ -115,29 +122,29 @@ public class Oneal
         }
 
         updateMovement(m_x, m_y);
-        if (detectCollision(map))
+        while (detectCollision(map, player))
         {
             revertMovement(m_x, m_y);
 
             updateMovement(m_x, 0);
-            if (detectCollision(map))
+            while (detectCollision(map, player))
             {
                 revertMovement(m_x, 0);
 
-                updateMovement(-m_x, 0);
-                if (detectCollision(map))
+                updateMovement(- m_x, 0);
+                while (detectCollision(map, player))
                 {
-                    revertMovement(-m_x, 0);
+                    revertMovement(- m_x, 0);
 
                     updateMovement(0, m_y);
-                    if (detectCollision(map))
+                    while (detectCollision(map, player))
                     {
                         revertMovement(0, m_y);
 
-                        updateMovement(0, -m_y);
-                        if (detectCollision(map))
+                        updateMovement(0, - m_y);
+                        while (detectCollision(map, player))
                         {
-                            revertMovement(0, -m_y);
+                            revertMovement(0, - m_y);
                         }
                     }
                 }
@@ -211,16 +218,21 @@ public class Oneal
 
                 Vector2 v = convertMoveSide();
                 updateMovement(v.x, v.y);
-                if (detectCollision(map))
+                if (detectCollision(map, player))
                 {
-                    revertMovement(v.x, v.y);
+                    while (detectCollision(map, player))
+                    {
+                        revertMovement(v.x, v.y);
+
+                    }
                     moveSide = calculateMoveSide();
                 }
             }
-            if (shape.getBoundingRectangle().overlaps(player.getShape().getBoundingRectangle()) && !player.isDie())
+            if (shape.getBoundingRectangle().overlaps(player.getShape().getBoundingRectangle()) && ! player.isDie())
             {
                 player.setDie();
             }
+
         }
         else
         {
@@ -231,6 +243,7 @@ public class Oneal
                 timeDie = 0f;
             }
         }
+
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_8))
         {
             killed();
@@ -275,5 +288,10 @@ public class Oneal
     public boolean isDone()
     {
         return done;
+    }
+
+    public Sprite getShape()
+    {
+        return shape;
     }
 }
