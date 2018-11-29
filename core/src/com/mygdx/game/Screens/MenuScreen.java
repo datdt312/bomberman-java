@@ -49,7 +49,7 @@ public class MenuScreen implements Screen {
         img_bg.setPosition(0,0);
 
         img_indica = new Image(new Texture(path + "indicate.png"));
-        img_indica.setBounds(Gdx.graphics.getWidth() / 1.22f, Gdx.graphics.getHeight() / 3f, 240, 125);
+        img_indica.setBounds(Gdx.graphics.getWidth() / 1.2f, Gdx.graphics.getHeight() / 3f, 240, 125);
 
         Array<TextureRegion> frames = new Array<TextureRegion>();
         for(int i = 0; i < 5; i++) {

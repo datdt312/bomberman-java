@@ -46,11 +46,13 @@ public class ItemsManager
 
     private void deleteEatenItems()
     {
+
         for (int i=items.size()-1; i>=0; i--)
         {
             if (items.get(i).isEquipped())
             {
                 items.remove(i);
+                Music_SoundManager.getInstance().playSound("pickitem.wav");
             }
         }
     }

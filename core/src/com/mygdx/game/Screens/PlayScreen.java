@@ -58,9 +58,11 @@ public class PlayScreen implements Screen
     private Window pauseWindow;
 
     private Hud hud;
+    
+    private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "DRA.ogg", "SOY.ogg", "WARRIORS.mp3", "WTF.ogg"};
+    private int count;
 
-    private boolean isOver;
-    private boolean changescreen;
+    
 
     /**
      * Construtor
@@ -70,8 +72,7 @@ public class PlayScreen implements Screen
         this.game = game;
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
-        isOver = false;
-        changescreen = false;
+        count = 0;
 
         mapManager = new MapManager();
         map = mapManager.getMapLevel(0);
@@ -158,6 +159,12 @@ public class PlayScreen implements Screen
             game.setScreen(new GameOverScreen(game));
 
         }
+        if(portal.getStandTime() >= 2f)
+        {
+            Music_SoundManager.getInstance().stopMusic();
+
+            game.setScreen(new VictoryScreen(game));
+        }
     }
 
     /**
@@ -232,6 +239,15 @@ public class PlayScreen implements Screen
             {
                 Music_SoundManager.getInstance().playMusic();
             }
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.M))
+        {
+            Music_SoundManager.getInstance().stopMusic();
+            count++;
+            if(count == list.length)
+                count=0;
+            Music_SoundManager.getInstance().playMusic(list[count],true);
+            
         }
     }
 

@@ -60,7 +60,7 @@ public class ControlScreen implements Screen
                     0, 0, 479, 320));
         helpAnim = new Animation<TextureRegion>(0.33f, frames, Animation.PlayMode.LOOP_PINGPONG);
         helpSpr = new Sprite(helpAnim.getKeyFrame(0));
-        helpSpr.setBounds(150, 50, 479 * 2, 320 * 2);
+        helpSpr.setBounds(180, 50, 479 * 2, 320 * 2);
         frames.clear();
 
         Array<Texture> frams = new Array<Texture>();
@@ -68,7 +68,7 @@ public class ControlScreen implements Screen
             frams.add(new Texture(path + "indicate" + i +".png"));
         indicate = new Animation<Texture>(0.5f, frams, Animation.PlayMode.LOOP_PINGPONG);
         indication = new Sprite(indicate.getKeyFrame(0));
-        indication.setBounds(WIDTH_SCREEN / 3.5f,HEIGHT_SCREEN / 7, 419 * 2, 20 * 2);
+        indication.setBounds(WIDTH_SCREEN / 4.8f,HEIGHT_SCREEN / 7, 419 * 2, 20 * 2);
 
     }
 
@@ -90,7 +90,7 @@ public class ControlScreen implements Screen
         helpSpr.setRegion(helpAnim.getKeyFrame(statetime));
         indication.setRegion(indicate.getKeyFrame(statetime));
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (timeLeft == -1000 && timeRight == 920))
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY) || (timeLeft == -1000 ))
         {
             Music_SoundManager.getInstance().playSound("selectchoice.wav");
             RunnableAction runnableAction = new RunnableAction();

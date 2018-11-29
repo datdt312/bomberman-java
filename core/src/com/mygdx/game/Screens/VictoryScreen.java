@@ -6,61 +6,46 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Managers.Music_SoundManager;
 
-public class GameOverScreen implements Screen {
-
+public class VictoryScreen implements Screen {
     private SpriteBatch batch;
     private BomberManGame game;
 
     private FitViewport viewport;
     private Stage stage;
 
-    private Image bgimg;
+    private Image img_bg;
 
-    public GameOverScreen(BomberManGame game)
+    public VictoryScreen (BomberManGame game)
     {
         this.game = game;
         this.batch = game.getSpriteBatch();
 
-        Texture bg = new Texture("core/img/gameover.png");
-        bgimg = new Image(bg);
-        bgimg.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() + 69);
-
+        Texture bg = new Texture("core/img/end.png");
+        img_bg = new Image(bg);
+        img_bg.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() + 69);
     }
     @Override
     public void show() {
-        Music_SoundManager.getInstance().playSound("gameover.mp3");
+        Music_SoundManager.getInstance().playMusic("WTF.ogg", true);
         viewport = new FitViewport(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         stage = new Stage(viewport, batch);
 
-        stage.addActor(bgimg);
-
-        stage.addAction(Actions.sequence(
-                Actions.delay(2f),
-                Actions.fadeOut(2f),
-                Actions.run(new Runnable() {
-                    @Override
-                    public void run() {
-                        game.setScreen(new MenuScreen(game));
-                    }
-                })));
+        stage.addActor(img_bg);
     }
 
     @Override
     public void render(float delta) {
-
-
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
         stage.draw();
-        stage.act(delta);
+        //stage.act(delta);
 
         batch.begin();
         batch.end();

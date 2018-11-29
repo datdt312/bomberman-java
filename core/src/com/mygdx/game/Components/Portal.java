@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Rectangle;
 import com.mygdx.game.Managers.BalloomManager;
+import com.mygdx.game.Managers.Music_SoundManager;
 import com.mygdx.game.Maps.MapCreator;
 
 public class Portal
@@ -85,12 +86,19 @@ public class Portal
             {
                 standTime = 0f;
             }
-            if (standTime >= 2f)
+            if (standTime >= 0.5f && standTime < 0.51f)
             {
                 // Next Level or Winner
+                Music_SoundManager.getInstance().playSound("comeportal.mp3");
             }
+
+            System.out.println(standTime);
         }
 
+    }
+
+    public float getStandTime() {
+        return standTime;
     }
 
     public void draw(Batch batch)

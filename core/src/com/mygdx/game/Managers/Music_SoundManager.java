@@ -18,7 +18,7 @@ public class Music_SoundManager implements Disposable{
         String[] songs = {musicPath + "BAAM.ogg", musicPath + "BADBOY.ogg", musicPath + "DDU.ogg", musicPath + "DRA.ogg",
                 musicPath + "SOY.ogg", musicPath + "WARRIORS.mp3", musicPath + "WTF.ogg", musicPath + "victory.mp3"};
 
-        String[] sounds = {soundPath + "menuselect.wav", soundPath + "selectchoice.wav", soundPath + "footstep.wav", soundPath + "pickitem.wav"
+        String[] sounds = {soundPath + "menuselect.wav", soundPath + "selectchoice.wav", soundPath + "comeportal.mp3", soundPath + "pickitem.wav"
                 , soundPath + "setBomb.mp3", soundPath + "Explosion.ogg", soundPath + "EnemyDie.ogg", soundPath + "Pause.ogg"
                 , soundPath + "playerdie.mp3", soundPath + "gameover.mp3"};
 
