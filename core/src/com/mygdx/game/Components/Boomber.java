@@ -69,7 +69,7 @@ public class Boomber
         this.map = map;
         this.camera = camera;
 
-        BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7) - 2;
+        BOMBER_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7);
         BOMBER_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
         count = 0;
 

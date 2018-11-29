@@ -118,19 +118,33 @@ public class Oneal
         if (detectCollision(map))
         {
             revertMovement(m_x, m_y);
+
+            updateMovement(m_x, 0);
+            if (detectCollision(map))
+            {
+                revertMovement(m_x, 0);
+
+                updateMovement(-m_x, 0);
+                if (detectCollision(map))
+                {
+                    revertMovement(-m_x, 0);
+
+                    updateMovement(0, m_y);
+                    if (detectCollision(map))
+                    {
+                        revertMovement(0, m_y);
+
+                        updateMovement(0, -m_y);
+                        if (detectCollision(map))
+                        {
+                            revertMovement(0, -m_y);
+                        }
+                    }
+                }
+            }
         }
 
-        updateMovement(m_x, 0);
-        if (detectCollision(map))
-        {
-            revertMovement(m_x, 0);
-        }
 
-        updateMovement(0, m_y);
-        if (detectCollision(map))
-        {
-            revertMovement(0, m_y);
-        }
     }
 
     private Vector2 convertMoveSide()
@@ -171,6 +185,8 @@ public class Oneal
             return true;
         if (Math.abs(player.getShape().getY() - shape.getY()) < TILE_HEIGHT / 2)
             return true;
+        if (catching)
+            moveSide = calculateMoveSide();
         return false;
     }
 
@@ -186,7 +202,7 @@ public class Oneal
 
             if (catching)
             {
-                speed = 1f;
+                speed = 1.2f;
                 calculateDirection(player, map);
             }
             else
@@ -200,6 +216,10 @@ public class Oneal
                     revertMovement(v.x, v.y);
                     moveSide = calculateMoveSide();
                 }
+            }
+            if (shape.getBoundingRectangle().overlaps(player.getShape().getBoundingRectangle()) && !player.isDie())
+            {
+                player.setDie();
             }
         }
         else
