@@ -1,3 +1,4 @@
+
 package com.mygdx.game.Maps;
 
 import com.badlogic.gdx.Gdx;
@@ -32,8 +33,15 @@ import java.util.Map;
  */
 public class MapCreator
 {
+    /**
+     * Destroy Brick when bomb explode on it
+     */
     class DestroyedBrick
     {
+        /**
+         * Constructor
+         * @param rect a rectangle shape
+         */
         public DestroyedBrick(Rectangle rect)
         {
             this.rect = rect;
@@ -103,6 +111,9 @@ public class MapCreator
         setupAnimationDestroyedBricks();
     }
 
+    /**
+     * Create the portal  when come in it to win
+     */
     private void createPortalPosition()
     {
         MapLayer tmp = map.getLayers().get("Portal");
@@ -112,6 +123,9 @@ public class MapCreator
         posPortal = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
     }
 
+    /**
+     * Create original position for player
+     */
     private void createPlayerPosition()
     {
         MapLayer tmp = map.getLayers().get("Player");
@@ -121,6 +135,9 @@ public class MapCreator
         posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
     }
 
+    /**
+     * Create Aninimation for Breakable
+     */
     private void setupAnimationDestroyedBricks()
     {
         texture = new Texture("core/assets/Block_Brick.png");
@@ -132,6 +149,9 @@ public class MapCreator
 
     }
 
+    /**
+     * Create Camera
+     */
     private void setupCamera()
     {
         mapCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
@@ -140,6 +160,9 @@ public class MapCreator
         renderer.setView(mapCam);
     }
 
+    /**
+     * Create Balloom position
+     */
     private void createBallooms()
     {
         obj_ballooms = new ArrayList<MapObject>();
@@ -151,6 +174,9 @@ public class MapCreator
         }
     }
 
+    /**
+     * Crate Oneal position
+     */
     private void createOneals()
     {
         obj_oneals = new ArrayList<MapObject>();
@@ -162,6 +188,9 @@ public class MapCreator
         }
     }
 
+    /**
+     * Crate items
+     */
     private void createItems()
     {
         obj_items = new ArrayList<MapObject>();
@@ -220,6 +249,11 @@ public class MapCreator
         }
     }
 
+    /**
+     * Destroy Brick
+     * @param r rectangle shape
+     * @param countTime time breaking
+     */
     public void destroyBrick(Rectangle r, int countTime)
     {
         if (countTime == 0)
@@ -230,6 +264,10 @@ public class MapCreator
         }
     }
 
+    /**
+     * Delete brick
+     * @param r rectangle shape
+     */
     private void deleteRectangleBrick(Rectangle r)
     {
         for (int i = bricks.size() - 1; i >= 0; i--)
@@ -241,6 +279,10 @@ public class MapCreator
         }
     }
 
+    /**
+     * Update time
+     * @param dt time
+     */
     public void update(float dt)
     {
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0))
@@ -264,6 +306,10 @@ public class MapCreator
         deleteDestroyedBricks();
     }
 
+    /**
+     * Draw
+     * @param batch draw objects
+     */
     public void draw(Batch batch)
     {
         batch.begin();
@@ -279,6 +325,9 @@ public class MapCreator
         batch.end();
     }
 
+    /**
+     * Delete DestroyedBricks
+     */
     public void deleteDestroyedBricks()
     {
         for (int i = destroyed.size() - 1; i >= 0; i--)

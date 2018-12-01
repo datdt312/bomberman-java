@@ -1,3 +1,8 @@
+/**
+ * This screen apears when player loses the game
+ * @author hndbp
+ * @since 2018/11/28
+ */
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
@@ -22,6 +27,10 @@ public class GameOverScreen implements Screen {
 
     private Image bgimg;
 
+    /**
+     * Constructor
+     * @param game draw objects
+     */
     public GameOverScreen(BomberManGame game)
     {
         this.game = game;
@@ -32,6 +41,10 @@ public class GameOverScreen implements Screen {
         bgimg.setBounds(0,0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight() + 69);
 
     }
+
+    /**
+     * Overriding whow music, stage
+     */
     @Override
     public void show() {
         Music_SoundManager.getInstance().playSound("gameover.mp3");
@@ -51,9 +64,11 @@ public class GameOverScreen implements Screen {
                 })));
     }
 
+    /**
+     * Overriding render objects
+     */
     @Override
     public void render(float delta) {
-
 
         Gdx.gl.glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);

@@ -1,3 +1,8 @@
+/**
+ * Create items
+ * @author HNDBP
+ * @since 2018/11/27
+ */
 package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -15,6 +20,10 @@ public class ItemsManager
     private float ITEM_HEIGHT;
     ArrayList<Item> items;
 
+    /**
+     * Constructor
+     * @param map a map
+     */
     public ItemsManager(MapCreator map)
     {
         ITEM_WIDTH = map.getTileWidth() * map.getUNIT_SCALE() * 3f / 4f;
@@ -23,6 +32,10 @@ public class ItemsManager
         generateItems(map);
     }
 
+    /**
+     * Creat items
+     * @param map a map
+     */
     private void generateItems(MapCreator map)
     {
         items = new ArrayList<Item>();
@@ -35,6 +48,12 @@ public class ItemsManager
         }
     }
 
+    /**
+     * Update map, player, time
+     * @param map a map
+     * @param player Bomber
+     * @param dt time
+     */
     public void update(MapCreator map, Boomber player,  float dt)
     {
         for (Item itm:items)
@@ -44,6 +63,9 @@ public class ItemsManager
         deleteEatenItems();
     }
 
+    /**
+     * Delete item when pick it
+     */
     private void deleteEatenItems()
     {
 
@@ -57,6 +79,10 @@ public class ItemsManager
         }
     }
 
+    /**
+     * Draw item
+     * @param batch to draw
+     */
     public void draw(Batch batch)
     {
         for (Item itm:items)

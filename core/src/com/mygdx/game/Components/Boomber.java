@@ -102,6 +102,9 @@ public class Boomber
 
     }
 
+    /**
+     * Create died animation
+     */
     private void createAnimationDead()
     {
         Texture txt = new Texture("core/assets/BBM_SPRITE_DIE_23_23.png");
@@ -169,6 +172,9 @@ public class Boomber
         }
     }
 
+    /**
+     * Update movement
+     */
     private void updateMovement()
     {
         switch (moveSide)
@@ -188,6 +194,9 @@ public class Boomber
         }
     }
 
+    /**
+     * Revert movement
+     */
     private void revertMovement()
     {
         switch (moveSide)
@@ -265,6 +274,10 @@ public class Boomber
         bombManager.update(this, dt);
     }
 
+    /**
+     * Check player with bomb
+     * @return
+     */
     private Bomb checkStandingOnBomb()
     {
         for (Bomb b : bombManager.getBomb_manage())

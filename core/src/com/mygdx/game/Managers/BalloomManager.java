@@ -1,3 +1,8 @@
+/**
+ * Generate Balloom
+ * @author HNDBP
+ * @since 2018/11/23
+ */
 package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -13,6 +18,10 @@ public class BalloomManager
 {
     private ArrayList<Balloom> ballooms;
 
+    /**
+     * Constructor
+     * @param map  a map
+     */
     public BalloomManager(MapCreator map)
     {
         ballooms = new ArrayList<Balloom>();
@@ -23,6 +32,12 @@ public class BalloomManager
         }
     }
 
+    /**
+     * Update
+     * @param map map
+     * @param player bomber
+     * @param delta time
+     */
     public void update(MapCreator map, Boomber player, float delta)
     {
         for (Balloom b : ballooms)
@@ -32,6 +47,10 @@ public class BalloomManager
         deleteDeadBalloom();
     }
 
+    /**
+     * Draw
+     * @param batch
+     */
     public void draw(Batch batch)
     {
         for (Balloom b : ballooms)
@@ -40,6 +59,9 @@ public class BalloomManager
         }
     }
 
+    /**
+     * Kill Balloom
+     */
     private void deleteDeadBalloom()
     {
         for (int i=ballooms.size()-1; i>=0; i--)
@@ -51,6 +73,10 @@ public class BalloomManager
         }
     }
 
+    /**
+     * getter
+     * @return balloom
+     */
     public ArrayList<Balloom> getBallooms()
     {
         return ballooms;

@@ -1,3 +1,8 @@
+/**
+ * Manage listsongs, listsounds
+ * @author HNDBP
+ * @since 2018/11/20
+ */
 package com.mygdx.game.Managers;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -9,9 +14,12 @@ public class Music_SoundManager implements Disposable{
     private final AssetManager assetManager;
 
     private String musicPath = "core/Music/";
-    private String soundPath = "core/sound/soundchecked/";
+    private String soundPath = "core/sound/";
     private String currentMusic = "";
 
+    /**
+     * Constructor
+     */
     public Music_SoundManager()
     {
         assetManager = new AssetManager();
@@ -20,7 +28,7 @@ public class Music_SoundManager implements Disposable{
 
         String[] sounds = {soundPath + "menuselect.wav", soundPath + "selectchoice.wav", soundPath + "comeportal.mp3", soundPath + "pickitem.wav"
                 , soundPath + "setBomb.mp3", soundPath + "Explosion.ogg", soundPath + "EnemyDie.ogg", soundPath + "Pause.ogg"
-                , soundPath + "playerdie.mp3", soundPath + "gameover.mp3"};
+                , soundPath + "playerdie.mp3", soundPath + "gameover.mp3", soundPath + "EnemyDie.ogg"};
 
         //load sound
         for(int i = 0; i < sounds.length; i++)
@@ -34,20 +42,44 @@ public class Music_SoundManager implements Disposable{
         assetManager.finishLoading();
     }
 
+    /**
+     * getter
+     * @return param to conduct
+     */
     public static Music_SoundManager getInstance() {return instance;}
 
+    /**
+     * getter
+     * @return assetmaneger
+     */
     public AssetManager getAssetManager() {return assetManager;}
 
+    /**
+     * Create form of sound
+     * @param name name of song
+     */
     public void playSound(String name)
     {
         playSound(name, 1f, 1f, 0f);
     }
 
+    /**
+     * Start another sound
+     * @param soundName name sound
+     * @param volume volumn
+     * @param pitch speed of sound
+     * @param pan repeat
+     */
     public void playSound(String soundName, float volume, float pitch, float pan) {
         Sound sound = assetManager.get(soundPath + soundName, Sound.class);
         sound.play(volume, pitch, pan);
     }
 
+    /**
+     * Play a music song
+     * @param name name of song
+     * @param isloop looping or not
+     */
     public void playMusic(String name, boolean isloop) {
         Music Music  = assetManager.get(musicPath + name);
         Music.setVolume(0.4f);
@@ -66,6 +98,9 @@ public class Music_SoundManager implements Disposable{
 
     }
 
+    /**
+     * Continue playing
+     */
     public void playMusic() {
         if (currentMusic.isEmpty()) {
             return;
@@ -74,6 +109,9 @@ public class Music_SoundManager implements Disposable{
         music.play();
     }
 
+    /**
+     * Stop current song
+     */
     public void stopMusic() {
         if (currentMusic.isEmpty()) {
             return;
@@ -83,6 +121,10 @@ public class Music_SoundManager implements Disposable{
             Music.stop();
         }
     }
+
+    /**
+     * Pause current song
+     */
     public void pauseMusic() {
         if (currentMusic.isEmpty()) {
             return;
@@ -94,6 +136,9 @@ public class Music_SoundManager implements Disposable{
         }
     }
 
+    /**
+     * Close asset
+     */
     @Override
     public void dispose() {
         assetManager.dispose();

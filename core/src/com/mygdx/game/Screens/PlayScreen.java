@@ -63,6 +63,7 @@ public class PlayScreen implements Screen
 
     /**
      * Construtor
+     * @param game draw objects, actions
      */
     public PlayScreen(BomberManGame game)
     {
@@ -91,7 +92,7 @@ public class PlayScreen implements Screen
         enemyManager = new EnemyManager(map);
         itemsManager = new ItemsManager(map);
 
-        hud = new Hud(batch, 31, 13);
+        hud = new Hud(batch);
     }
 
     /**
@@ -178,6 +179,9 @@ public class PlayScreen implements Screen
         camera.update();
     }
 
+    /**
+     * show Playmusic, PauseWindow
+     */
     @Override
     public void show()
     {
@@ -221,6 +225,9 @@ public class PlayScreen implements Screen
 
     }
 
+    /**
+     * input from keyboard to do something
+     */
     public void handleInput()
     {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE))

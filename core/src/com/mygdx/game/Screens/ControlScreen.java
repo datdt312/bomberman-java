@@ -1,3 +1,8 @@
+/**
+ * Help player know how to play this game
+ * @author hndbp
+ * @since 2018/11/23
+ */
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.Gdx;
@@ -43,6 +48,11 @@ public class ControlScreen implements Screen
 
     private float statetime = 0;
 
+    /**
+     * Constructor
+     * @param game draw objects
+     */
+
     public ControlScreen(BomberManGame game)
     {
         WIDTH_SCREEN = Gdx.graphics.getWidth();
@@ -72,6 +82,9 @@ public class ControlScreen implements Screen
 
     }
 
+    /**
+     * Tạo sân khấu để render ảnh
+     */
     @Override
     public void show()
     {
@@ -82,6 +95,9 @@ public class ControlScreen implements Screen
 
     }
 
+    /**
+     * Render objects
+     */
     @Override
     public void render(float delta)
     {
@@ -96,6 +112,9 @@ public class ControlScreen implements Screen
             RunnableAction runnableAction = new RunnableAction();
             runnableAction.setRunnable(new Runnable()
             {
+                /**
+                 * Change Screen
+                 */
                 @Override
                 public void run()
                 {

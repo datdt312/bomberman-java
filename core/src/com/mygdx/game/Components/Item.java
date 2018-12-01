@@ -1,3 +1,8 @@
+/**
+ * Item makes player power up
+ * @author HNDBP
+ * @since 2018/11/28
+ */
 package com.mygdx.game.Components;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -26,6 +31,14 @@ public class Item
     private float elapsedTime;
     private int frames;
 
+    /**
+     * Constructor
+     * @param name name item
+     * @param x posx
+     * @param y posy
+     * @param width width of item
+     * @param height height of item
+     */
     public Item(String name, float x, float y, float width, float height)
     {
         this.name = name;
@@ -55,6 +68,9 @@ public class Item
         }
     }
 
+    /**
+     * The status of item
+     */
     private void createStatus()
     {
         eaten = false;
@@ -63,6 +79,9 @@ public class Item
         frames = 0;
     }
 
+    /**
+     * Power up player speed
+     */
     private void createSpeedItem()
     {
         animationLength = regions[2].length;
@@ -73,6 +92,9 @@ public class Item
         }
     }
 
+    /**
+     * Power up player's flame lenght
+     */
     private void createFlameItem()
     {
         animationLength = regions[1].length;
@@ -83,6 +105,9 @@ public class Item
         }
     }
 
+    /**
+     * Power up amount of bombs
+     */
     private void createBombItem()
     {
         animationLength = regions[0].length;
@@ -93,6 +118,12 @@ public class Item
         }
     }
 
+    /**
+     * Update
+     * @param map map
+     * @param player bomber
+     * @param dt time
+     */
     public void update(MapCreator map, Boomber player, float dt)
     {
         hidingBehindBrick = false;
@@ -137,6 +168,10 @@ public class Item
         }
     }
 
+    /**
+     * Draw
+     * @param batch
+     */
     public void draw(Batch batch)
     {
         batch.begin();
@@ -148,26 +183,45 @@ public class Item
         batch.end();
     }
 
+    /**
+     * setter
+     */
     public void setEaten()
     {
         this.eaten = true;
     }
 
+    /**
+     * is player eaten?
+     * @return
+     */
     public boolean isEaten()
     {
         return eaten;
     }
 
+    /**
+     * getter
+     * @return shape
+     */
     public Sprite getShape()
     {
         return shape;
     }
 
+    /**
+     * getter
+     * @return name
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Is player power up
+     * @return res
+     */
     public boolean isEquipped()
     {
         return equipped;

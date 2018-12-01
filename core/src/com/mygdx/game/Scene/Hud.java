@@ -1,3 +1,8 @@
+/**
+ * Manage and show live and timeleft
+ * @author hndbp
+ * @since 2018/11/20
+ */
 package com.mygdx.game.Scene;
 
 import com.badlogic.gdx.Gdx;
@@ -41,7 +46,11 @@ public class Hud implements Disposable
 
     private Integer liveCount;
 
-    public Hud(SpriteBatch batch, float width, float height) {
+    /**
+     * Constructor
+     * @param batch draw objects
+     */
+    public Hud(SpriteBatch batch) {
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
 
@@ -99,19 +108,24 @@ public class Hud implements Disposable
 
     }
 
+    /**
+     * Update timeleft
+     * @param dt time
+     */
     public void update(float dt){
         timecountdown += dt;
         if(timecountdown >= 1){
             if (timeCount > 0) {
                 timeCount--;
-            } else {
-                timeUp = true;
             }
             timecountLabel.setText("X" + String.format("%03d", timeCount));
             timecountdown = 0;
         }
     }
-
+    /**
+     * Draw objects
+     * @param delta time
+     */
     public void draw(float delta) {
 
         statetime += delta;
@@ -123,28 +137,37 @@ public class Hud implements Disposable
         stage.draw();
     }
 
+    /**
+     * Close font, stage
+     */
     @Override
     public void dispose() {
         font.dispose();
         stage.dispose();
     }
-    public boolean isTimeUp() { return timeUp; }
 
+    /**
+     * time left of the game
+     */
     public void decreaseLiveCount()
     {
         liveCount--;
         livecountLabel.setText("X" + String.format("%02d", liveCount));
     }
 
+    /**
+     * getter
+     * @return lives of bomber
+     */
     public Integer getLiveCount()
     {
         return liveCount;
     }
-    
+
+    /**
+     * getter
+     * @return time
+     */
     public Integer getTimeCount() { return  timeCount;}
 
-    public void setLiveCount(Integer liveCount)
-    {
-        this.liveCount = liveCount;
-    }
 }

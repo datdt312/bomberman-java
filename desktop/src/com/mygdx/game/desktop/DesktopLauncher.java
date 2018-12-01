@@ -1,3 +1,8 @@
+/**
+ * Run the application
+ * @author HNDBP
+ * @since 2018/11/14
+ */
 package com.mygdx.game.desktop;
 
 import com.badlogic.gdx.Files;
@@ -8,6 +13,10 @@ import com.mygdx.game.BomberManGame;
 
 public class DesktopLauncher
 {
+    /**
+     * Main function
+     * @param arg no uses
+     */
     public static void main(String[] arg)
     {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();

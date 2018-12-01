@@ -1,3 +1,9 @@
+/**
+ * Create a Menu
+ * @author hndbp
+ * @version 1.8.2
+ * @since 2018/11/20
+ */
 package com.mygdx.game.Screens;
 
 import com.badlogic.gdx.*;
@@ -13,11 +19,12 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.BomberManGame;
 import com.mygdx.game.Managers.Music_SoundManager;
-import com.mygdx.game.Screens.SpriteMenu.BombApearSprite;
+import com.mygdx.game.Screens.SpriteMenu.NinjaBomberSprite;
 
 public class MenuScreen implements Screen {
+
     private BomberManGame game;
-    private BombApearSprite bomApear;
+    private NinjaBomberSprite bomApear;
     private SpriteBatch batch;
     private Stage stage;
 
@@ -34,12 +41,16 @@ public class MenuScreen implements Screen {
     private int currentoption;
     private float statetime;
 
+    /**
+     * Constructor
+     * @param game draw objects
+     */
     public MenuScreen(BomberManGame game)
     {
         this.game = game;
         this.batch = game.getSpriteBatch();
 
-        bomApear = new BombApearSprite(game.batch, 0,0);
+        bomApear = new NinjaBomberSprite(game.batch);
 
         String path = "core/img/";
 
@@ -84,6 +95,9 @@ public class MenuScreen implements Screen {
 
     }
 
+    /**
+     * input from keyboard to do something
+     */
     private void handleinput()
     {
         if(Gdx.input.isKeyJustPressed(Input.Keys.UP))
@@ -105,12 +119,19 @@ public class MenuScreen implements Screen {
         }
     }
 
+    /**
+     * startbutton will tranfer to ControlScreen
+     * quitbutton will quit game
+     */
     private void select()
     {
         if(currentoption == 0)
         {
             RunnableAction runnableAction = new RunnableAction();
             runnableAction.setRunnable(new Runnable() {
+                /**
+                 * Change Screen
+                 */
                 @Override
                 public void run() {
                     game.setScreen(new ControlScreen(game));
@@ -121,6 +142,10 @@ public class MenuScreen implements Screen {
         else if(currentoption == 1)
             Gdx.app.exit();
     }
+
+    /**
+     * Create a stage to conduct actions
+     */
     @Override
     public void show() {
         Music_SoundManager.getInstance().playMusic("DRA.ogg", true);
@@ -132,6 +157,10 @@ public class MenuScreen implements Screen {
 
     }
 
+    /**
+     * Render actions in menuscreen
+     * @param delta time
+     */
     @Override
     public void render(float delta) {
 
@@ -165,13 +194,15 @@ public class MenuScreen implements Screen {
 
         }
 
-
         game.batch.end();
 
         bomApear.draw(delta);
 
     }
 
+    /**
+     * Close stage
+     */
     @Override
     public void dispose() {
 

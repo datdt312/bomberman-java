@@ -1,3 +1,8 @@
+/**
+ * Generate Balloom
+ * @author HNDBP
+ * @since 2018/11/23
+ */
 package com.mygdx.game.Components;
 
 import com.badlogic.gdx.Gdx;
@@ -36,6 +41,12 @@ public class Balloom
     private boolean isDie;
     private boolean done;
 
+    /**
+     * Constructor
+     * @param map map
+     * @param posX positionx
+     * @param posY positiony
+     */
     public Balloom(MapCreator map, float posX, float posY)
     {
         BALLOOM_WIDTH = (int) (map.getTileWidth() * map.getUNIT_SCALE() * 6 / 7);
@@ -55,6 +66,9 @@ public class Balloom
         countDie = moveLength;
     }
 
+    /**
+     * create animation
+     */
     private void createAnimation()
     {
         texture = new Texture("core/assets/Balloom.png");
@@ -66,12 +80,21 @@ public class Balloom
             animation[i] = regions[0][i];
     }
 
+    /**
+     * Random movement
+     * @return random integer
+     */
     private int calculateDirection()
     {
         RandomXS128 rand = new RandomXS128();
         return rand.nextInt(4);
     }
 
+    /**
+     * Delete collision
+     * @param map map
+     * @return true or false
+     */
     private boolean detectCollision(MapCreator map)
     {
         for (Rectangle i : map.getWalls())
@@ -83,6 +106,12 @@ public class Balloom
         return false;
     }
 
+    /**
+     * Update
+     * @param map map
+     * @param player bomber
+     * @param dt time
+     */
     public void update(MapCreator map,Boomber player, float dt)
     {
         elapsedTime += 2 * dt;
@@ -128,6 +157,9 @@ public class Balloom
         }
     }
 
+    /**
+     * Update movement
+     */
     public void updateMovement()
     {
         // 0-DOWN _ _ _ 1 - UP _ _ _ 2 - LEFT _ _ _ 3 - RIGHT
@@ -148,6 +180,9 @@ public class Balloom
         }
     }
 
+    /**
+     * Revert movement
+     */
     public void revertMovement()
     {
         switch (moveSide)
@@ -167,6 +202,10 @@ public class Balloom
         }
     }
 
+    /**
+     * Draw
+     * @param batch
+     */
     public void draw(Batch batch)
     {
         batch.begin();
@@ -188,6 +227,9 @@ public class Balloom
         batch.end();
     }
 
+    /**
+     * is balloom killed
+     */
     public void killed()
     {
         isDie = true;
@@ -195,16 +237,28 @@ public class Balloom
         timeDie = 0;
     }
 
+    /**
+     * Is Balloom died?
+     * @return
+     */
     public boolean isDone()
     {
         return done;
     }
 
+    /**
+     * getter
+     * @return shape
+     */
     public Sprite getShape()
     {
         return shape;
     }
 
+    /**
+     * Is balloom died?
+     * @return
+     */
     public boolean isDie()
     {
         return isDie;

@@ -1,3 +1,8 @@
+/**
+ * Portal where player comes to win
+ * @author HNDBP
+ * @since 2018/11/29
+ */
 package com.mygdx.game.Components;
 
 import com.badlogic.gdx.graphics.Texture;
@@ -27,6 +32,10 @@ public class Portal
     private boolean canConnect;
     private float standTime;
 
+    /**
+     * Constructor
+     * @param map map
+     */
     public Portal(MapCreator map)
     {
         PORTAL_WIDTH = map.getTileWidth() * map.getUNIT_SCALE();
@@ -43,6 +52,9 @@ public class Portal
         createAnimation();
     }
 
+    /**
+     * Create animation for portal
+     */
     private void createAnimation()
     {
         texture = new Texture("core/assets/Portal_99_114.png");
@@ -55,6 +67,13 @@ public class Portal
         }
     }
 
+    /**
+     * Update
+     * @param map map
+     * @param player bomber
+     * @param enemyManager Enemies
+     * @param dt time
+     */
     public void update(MapCreator map, Boomber player, EnemyManager enemyManager, float dt)
     {
         hidingBehindBrick = false;
@@ -96,10 +115,18 @@ public class Portal
 
     }
 
+    /**
+     * getter
+     * @return time win
+     */
     public float getStandTime() {
         return standTime;
     }
 
+    /**
+     * Draw
+     * @param batch
+     */
     public void draw(Batch batch)
     {
         batch.begin();
