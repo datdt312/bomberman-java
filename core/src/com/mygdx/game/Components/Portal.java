@@ -106,7 +106,7 @@ public class Portal
             {
                 standTime = 0f;
             }
-            if (standTime >= 0.5f && standTime < 0.516f)
+            if (standTime >= 0.5f && standTime < 0.517f)
             {
                 // Next Level or Winner
                 Music_SoundManager.getInstance().playSound("comeportal.mp3");

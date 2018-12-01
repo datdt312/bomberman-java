@@ -82,7 +82,7 @@ public class Music_SoundManager implements Disposable{
      */
     public void playMusic(String name, boolean isloop) {
         Music Music  = assetManager.get(musicPath + name);
-        Music.setVolume(0.4f);
+        Music.setVolume(0.8f);
         if(currentMusic.equals(name))
         {
 
