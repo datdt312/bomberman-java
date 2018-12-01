@@ -93,7 +93,7 @@ public class Boomber
         justPlanBomb = false;
         elapsedTime = 0;
 
-        animationRegion = TextureRegion.split(texture, TILE_WIDTH, TILE_HEIGHT);
+        animationRegion = TextureRegion.split(texture, 19, 21);
 
         createAnimationDead();
 
@@ -297,7 +297,7 @@ public class Boomber
             else
             {
                 elapsedTime += 1.5f * maxSpeed * dt;
-                batch.draw(animationRegion[10][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
+                batch.draw(animationRegion[5][(int) elapsedTime % 4], shape.getX(), shape.getY(), BOMBER_WIDTH, BOMBER_HEIGHT);
             }
         }
         else
