@@ -11,6 +11,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapImageLayer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
@@ -40,13 +41,14 @@ public class MapCreator
     {
         /**
          * Constructor
+         *
          * @param rect a rectangle shape
          */
         public DestroyedBrick(Rectangle rect)
         {
             this.rect = rect;
             elapsedTime = 0;
-            countTime = 3;
+            countTime = 0;
             done = false;
         }
 
@@ -60,7 +62,10 @@ public class MapCreator
     private TiledMap map;
 
     private Texture texture;
-    private TextureRegion[] animation;
+    private TextureRegion[][] regions;
+
+    private TextureRegion[] animationNice;
+    private TextureRegion[] animationBreak;
     private int animationLength;
 
     private OrthographicCamera mapCam;
@@ -74,13 +79,28 @@ public class MapCreator
     private Vector2 posPortal;
     private Vector2 posPlayer;
 
+    private MapLayer layerBricks;
+    private MapLayer layerWalls;
+    private MapLayer layerBackground;
+    private MapLayer layerOneals;
+    private MapLayer layerBallooms;
+    private MapLayer layerItems;
+    private MapLayer layerPortal;
+    private MapLayer layerPlayer;
+
     private ArrayList<MapObject> obj_ballooms;
     private ArrayList<MapObject> obj_oneals;
     private ArrayList<MapObject> obj_items;
 
     private ArrayList<Rectangle> walls;
     private ArrayList<Rectangle> bricks;
+
     private ArrayList<DestroyedBrick> destroyed;
+
+    private float elapsedTime;
+    private int frame;
+
+    private String path;
 
 
     /**
@@ -90,6 +110,8 @@ public class MapCreator
      */
     public MapCreator(String path)
     {
+        // path: core/maps/map_N/map_N.tmx
+        this.path = path;
         map = new TmxMapLoader().load(path);
         renderer = new OrthogonalTiledMapRenderer(map, UNIT_SCALE);
 
@@ -98,6 +120,10 @@ public class MapCreator
         tileWidth = map.getProperties().get("tilewidth", Integer.class);
         tileHeight = map.getProperties().get("tileheight", Integer.class);
 
+        elapsedTime = 0f;
+        frame = 0;
+
+        createMapLayerForEachElement();
         createMapRectangle();
 
         createPlayerPosition();
@@ -108,7 +134,26 @@ public class MapCreator
         createItems();
 
         setupCamera();
+
+
+        setupTexture();
+        setupAnimationBricks();
         setupAnimationDestroyedBricks();
+    }
+
+    private void createMapLayerForEachElement()
+    {
+        layerBackground = map.getLayers().get("Background");
+        layerWalls = map.getLayers().get("Walls");
+        layerBricks = map.getLayers().get("Bricks");
+
+        layerBallooms = map.getLayers().get("Ballooms");
+        layerOneals = map.getLayers().get("Oneals");
+
+        layerItems = map.getLayers().get("Items");
+
+        layerPlayer = map.getLayers().get("Player");
+        layerPortal = map.getLayers().get("Portal");
     }
 
     /**
@@ -116,8 +161,7 @@ public class MapCreator
      */
     private void createPortalPosition()
     {
-        MapLayer tmp = map.getLayers().get("Portal");
-        MapObject objectPlayer = tmp.getObjects().get(0);
+        MapObject objectPlayer = layerPortal.getObjects().get(0);
         float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
         float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
         posPortal = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
@@ -128,11 +172,31 @@ public class MapCreator
      */
     private void createPlayerPosition()
     {
-        MapLayer tmp = map.getLayers().get("Player");
-        MapObject objectPlayer = tmp.getObjects().get(0);
+        MapObject objectPlayer = layerPlayer.getObjects().get(0);
         float x = Float.parseFloat(objectPlayer.getProperties().get("x").toString());
         float y = Float.parseFloat(objectPlayer.getProperties().get("y").toString());
         posPlayer = new Vector2(x * UNIT_SCALE, y * UNIT_SCALE);
+    }
+
+    private String convertPath()
+    {
+        String res = path.substring(0, path.lastIndexOf("/") + 1);
+        res = res + "breakable.png";
+        return res;
+    }
+
+    private void setupTexture()
+    {
+        texture = new Texture(convertPath());
+        regions = TextureRegion.split(texture, 16, 16);
+        animationLength = regions[0].length;
+    }
+
+    private void setupAnimationBricks()
+    {
+        animationNice = new TextureRegion[animationLength];
+        for (int i = 0; i < animationLength; i++)
+            animationNice[i] = regions[0][i];
     }
 
     /**
@@ -140,13 +204,9 @@ public class MapCreator
      */
     private void setupAnimationDestroyedBricks()
     {
-        texture = new Texture("core/assets/Block_Brick.png");
-        TextureRegion[][] regions = TextureRegion.split(texture, 16, 16);
-        animationLength = regions[0].length;
-        animation = new TextureRegion[animationLength];
+        animationBreak = new TextureRegion[animationLength];
         for (int i = 0; i < animationLength; i++)
-            animation[i] = regions[0][i];
-
+            animationBreak[i] = regions[1][i];
     }
 
     /**
@@ -166,8 +226,7 @@ public class MapCreator
     private void createBallooms()
     {
         obj_ballooms = new ArrayList<MapObject>();
-        MapLayer tmp = map.getLayers().get("Ballooms");
-        MapObjects objects = tmp.getObjects();
+        MapObjects objects = layerBallooms.getObjects();
         for (MapObject mo : objects)
         {
             obj_ballooms.add(mo);
@@ -180,8 +239,7 @@ public class MapCreator
     private void createOneals()
     {
         obj_oneals = new ArrayList<MapObject>();
-        MapLayer tmp = map.getLayers().get("Oneals");
-        MapObjects objects = tmp.getObjects();
+        MapObjects objects = layerOneals.getObjects();
         for (MapObject mo : objects)
         {
             obj_oneals.add(mo);
@@ -194,8 +252,7 @@ public class MapCreator
     private void createItems()
     {
         obj_items = new ArrayList<MapObject>();
-        MapLayer tmp = map.getLayers().get("Items");
-        MapObjects objects = tmp.getObjects();
+        MapObjects objects = layerItems.getObjects();
         for (MapObject mo : objects)
         {
             obj_items.add(mo);
@@ -213,7 +270,7 @@ public class MapCreator
         TiledMapTileLayer layers;
 
         // create Walls bodies/fixtures
-        layers = (TiledMapTileLayer) map.getLayers().get("Walls");
+        layers = (TiledMapTileLayer) layerWalls;
         for (int i = 0; i < layers.getWidth(); i++)
         {
             for (int j = 0; j < layers.getHeight(); j++)
@@ -231,7 +288,7 @@ public class MapCreator
         }
 
         // create Bricks bodies/fixtures
-        layers = (TiledMapTileLayer) map.getLayers().get("Bricks");
+        layers = (TiledMapTileLayer) layerBricks;
         for (int i = 0; i < layers.getWidth(); i++)
         {
             for (int j = 0; j < layers.getHeight(); j++)
@@ -251,14 +308,15 @@ public class MapCreator
 
     /**
      * Destroy Brick
-     * @param r rectangle shape
+     *
+     * @param r         rectangle shape
      * @param countTime time breaking
      */
     public void destroyBrick(Rectangle r, int countTime)
     {
         if (countTime == 0)
         {
-            TiledMapTileLayer temp = (TiledMapTileLayer) map.getLayers().get("Bricks");
+            TiledMapTileLayer temp = (TiledMapTileLayer) layerBricks;
             temp.getCell((int) (r.getX() / tileWidth / UNIT_SCALE), (int) (r.getY() / tileHeight / UNIT_SCALE)).setTile(null);
             destroyed.add(new DestroyedBrick(r));
         }
@@ -266,6 +324,7 @@ public class MapCreator
 
     /**
      * Delete brick
+     *
      * @param r rectangle shape
      */
     private void deleteRectangleBrick(Rectangle r)
@@ -281,10 +340,17 @@ public class MapCreator
 
     /**
      * Update time
+     *
      * @param dt time
      */
     public void update(float dt)
     {
+        elapsedTime += dt;
+        if (elapsedTime>=0.1f)
+        {
+            frame = (frame+1)%animationLength;
+            elapsedTime = 0f;
+        }
         if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_0))
         {
             for (Rectangle r : getBricks())
@@ -308,15 +374,21 @@ public class MapCreator
 
     /**
      * Draw
+     *
      * @param batch draw objects
      */
     public void draw(Batch batch)
     {
         batch.begin();
+        for (Rectangle r:bricks)
+        {
+            batch.draw(animationNice[frame],r.getX(),r.getY(),r.getWidth(),r.getHeight());
+        }
+
         for (DestroyedBrick db : destroyed)
         {
             if (! db.done && db.countTime < animationLength)
-                batch.draw(animation[db.countTime], db.rect.getX(), db.rect.getY(), db.rect.getWidth(), db.rect.getHeight());
+                batch.draw(animationBreak[db.countTime], db.rect.getX(), db.rect.getY(), db.rect.getWidth(), db.rect.getHeight());
             else
             {
                 db.done = true;
@@ -328,7 +400,7 @@ public class MapCreator
     /**
      * Delete DestroyedBricks
      */
-    public void deleteDestroyedBricks()
+    private void deleteDestroyedBricks()
     {
         for (int i = destroyed.size() - 1; i >= 0; i--)
         {
@@ -345,7 +417,11 @@ public class MapCreator
      */
     public void render()
     {
-        renderer.render();
+        //renderer.renderObjects(layerBackground);
+        renderer.getBatch().begin();
+        renderer.renderTileLayer((TiledMapTileLayer) layerBackground);
+        renderer.renderTileLayer((TiledMapTileLayer) layerWalls);
+        renderer.getBatch().end();
     }
 
     /**
@@ -497,7 +573,7 @@ public class MapCreator
     public ArrayList<Vector2> getPositionOneals()
     {
         ArrayList<Vector2> res = new ArrayList<Vector2>();
-        for (MapObject o:obj_oneals)
+        for (MapObject o : obj_oneals)
         {
             float x = Float.parseFloat(o.getProperties().get("x").toString());
             float y = Float.parseFloat(o.getProperties().get("y").toString());

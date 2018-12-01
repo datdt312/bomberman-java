@@ -82,7 +82,7 @@ public class Boomber
         shape.setSize(BOMBER_WIDTH, BOMBER_HEIGHT * 1f / 2f);
         shape.setOriginBasedPosition(map.getPosPlayer().x, map.getPosPlayer().y);
 
-        texture = new Texture("core/assets/BBM_SPRITE_MOVE_19_21.png");
+        texture = new Texture("core/assets/BBM_SPRITE_MOVE_19_22.png");
 
         // MoveSide: 0 - DOWN _ _ _ 1 - RIGHT _ _ _ 2 - UP _ _ _ 3 - LEFT
         moveSide = 2;
@@ -93,7 +93,7 @@ public class Boomber
         justPlanBomb = false;
         elapsedTime = 0;
 
-        animationRegion = TextureRegion.split(texture, 19, 21);
+        animationRegion = TextureRegion.split(texture, 19, 22);
 
         createAnimationDead();
 

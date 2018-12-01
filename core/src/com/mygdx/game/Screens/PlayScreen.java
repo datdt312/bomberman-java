@@ -73,7 +73,7 @@ public class PlayScreen implements Screen
         count = 0;
 
         mapManager = new MapManager();
-        map = mapManager.getMapLevel(0);
+        map = mapManager.getMapLevel(1);
 
         float width_camera = Gdx.graphics.getWidth();
         float height_camera = Gdx.graphics.getHeight();
@@ -113,8 +113,8 @@ public class PlayScreen implements Screen
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        map.draw(batch);
         map.render();
+        map.draw(batch);
 
         itemsManager.draw(batch);
 
