@@ -118,7 +118,7 @@ public class ControlScreen implements Screen
                 @Override
                 public void run()
                 {
-                    game.setScreen(new PlayScreen(game, 1));
+                    game.setScreen(new PlayScreen(game, 1,1,1,1));
                 }
             });
             stage.addAction(new SequenceAction(Actions.delay(0.2f), Actions.fadeOut(0.2f), runnableAction));

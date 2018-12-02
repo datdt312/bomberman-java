@@ -57,16 +57,17 @@ public class PlayScreen implements Screen
     private Window pauseWindow;
 
     private Hud hud;
-    
+
     private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "SOY.ogg", "WARRIORS.mp3", "KDA.mp3"};
 
     private Integer level;
 
     /**
      * Construtor
+     *
      * @param game draw objects, actions
      */
-    public PlayScreen(BomberManGame game, int level)
+    public PlayScreen(BomberManGame game, int level, float maxSpeed, int lengthFlame, int maxBombs)
     {
         this.game = game;
         this.level = level;
@@ -76,18 +77,19 @@ public class PlayScreen implements Screen
 
         mapManager = new MapManager();
 
-        switch (level) {
+        switch (level)
+        {
             case 4:
                 map = mapManager.getMapLevel(3);
-                Music_SoundManager.getInstance().playMusic(list[3] ,true);
+                Music_SoundManager.getInstance().playMusic(list[3], true);
                 break;
             case 3:
                 map = mapManager.getMapLevel(2);
-                Music_SoundManager.getInstance().playMusic(list[6] ,true);
+                Music_SoundManager.getInstance().playMusic(list[6], true);
                 break;
             case 2:
                 map = mapManager.getMapLevel(1);
-                Music_SoundManager.getInstance().playMusic(list[4] ,true);
+                Music_SoundManager.getInstance().playMusic(list[4], true);
                 break;
             case 1:
             default:
@@ -107,7 +109,7 @@ public class PlayScreen implements Screen
         camera.update();
 
         batch = new SpriteBatch();
-        player = new Boomber(this.map, this.camera);
+        player = new Boomber(this.map, this.camera, maxSpeed, lengthFlame, maxBombs);
         portal = new Portal(map);
 
         enemyManager = new EnemyManager(map);
@@ -150,10 +152,6 @@ public class PlayScreen implements Screen
         stage.act();
 
         hud.draw(delta);
-
-
-
-
     }
 
     /**
@@ -165,14 +163,14 @@ public class PlayScreen implements Screen
     {
         map.update(delta);
         itemsManager.update(map, player, delta);
-        portal.update(map, player,enemyManager,delta);
+        portal.update(map, player, enemyManager, delta);
         player.update(this.map, delta);
-        enemyManager.update(map,player,delta);
+        enemyManager.update(map, player, delta);
         hud.update(delta);
 
         if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount() > 0)
         {
-            player = new Boomber(map, camera);
+            player = new Boomber(map, camera, 1, 1, 1);
             hud.decreaseLiveCount();
 
         }
@@ -184,24 +182,26 @@ public class PlayScreen implements Screen
 
         }
 
-        if (portal.getStandTime() >= 2f && level <4)
+        if (portal.getStandTime() >= 2f && level < 4)
         {
             Music_SoundManager.getInstance().stopMusic();
-            game.setScreen(new PlayScreen(game, level + 1));
+            game.setScreen(new PlayScreen(game, level + 1, this.player.getMaxSpeed(), this.player.getLengthFlame(), this.player.getMaxBombs()));
         }
-       else if(portal.getStandTime() >= 2f && level+1 == 5)
+        else if (portal.getStandTime() >= 2f && level + 1 == 5)
         {
 
             Music_SoundManager.getInstance().stopMusic();
             game.setScreen(new VictoryScreen(game));
         }
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
-            if(level < 4) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.NUM_7))
+        {
+            if (level < 4)
+            {
                 Music_SoundManager.getInstance().stopMusic();
-                game.setScreen(new PlayScreen(game, level + 1));
+                game.setScreen(new PlayScreen(game, level + 1, this.player.getMaxSpeed(), this.player.getLengthFlame(), this.player.getMaxBombs()));
             }
-            else if( level+1 == 5)
+            else if (level + 1 == 5)
             {
                 Music_SoundManager.getInstance().stopMusic();
                 game.setScreen(new VictoryScreen(game));

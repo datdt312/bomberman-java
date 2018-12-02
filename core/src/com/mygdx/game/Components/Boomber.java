@@ -65,7 +65,7 @@ public class Boomber
      * @param map    map of the game
      * @param camera dont know for what :v
      */
-    public Boomber(MapCreator map, OrthographicCamera camera)
+    public Boomber(MapCreator map, OrthographicCamera camera, float maxSpeed, int lengthFlame, int maxBombs)
     {
         this.map = map;
         this.camera = camera;
@@ -74,9 +74,9 @@ public class Boomber
         BOMBER_HEIGHT = (int) (map.getTileHeight() * map.getUNIT_SCALE() * 6 / 7);
         count = 0;
 
-        maxSpeed = 2f;
-        lengthFlame = 2;
-        maxBombs = 2;
+        this.maxSpeed = maxSpeed;
+        this.lengthFlame = lengthFlame;
+        this.maxBombs = maxBombs;
 
         shape = new Sprite();
         shape.setSize(BOMBER_WIDTH, BOMBER_HEIGHT * 1f / 2f);
