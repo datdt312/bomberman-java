@@ -1,0 +1,47 @@
+
+Sprites.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+BombermanDieNew
+  rotate: false
+  xy: 0, 106
+  size: 207, 22
+  orig: 207, 22
+  offset: 0, 0
+  index: -1
+Enemy
+  rotate: false
+  xy: 0, 90
+  size: 192, 16
+  orig: 192, 16
+  offset: 0, 0
+  index: -1
+Block_Brick
+  rotate: false
+  xy: 207, 112
+  size: 144, 16
+  orig: 144, 16
+  offset: 0, 0
+  index: -1
+BomerMovement
+  rotate: false
+  xy: 0, 6
+  size: 72, 84
+  orig: 72, 84
+  offset: 0, 0
+  index: -1
+BombExplode
+  rotate: false
+  xy: 207, 0
+  size: 64, 112
+  orig: 64, 112
+  offset: 0, 0
+  index: -1
+Bomb
+  rotate: false
+  xy: 351, 112
+  size: 64, 16
+  orig: 64, 16
+  offset: 0, 0
+  index: -1

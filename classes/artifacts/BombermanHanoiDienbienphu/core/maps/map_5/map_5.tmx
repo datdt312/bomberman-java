@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextobjectid="12">
+ <tileset firstgid="1" source="Wall.tsx"/>
+ <tileset firstgid="13" source="../map_4/breakable.tsx"/>
+ <tileset firstgid="25" source="breakable.tsx"/>
+ <layer name="Background" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYWBgYBnFo3gUj+JRPIopwADnSQZN
+  </data>
+ </layer>
+ <layer name="Walls" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBoAzAzErAwDA9iR7GajM41sN73BqL9H/T3qb9rSA+1vTiDmGgDMDcQAlEwDnQ==
+  </data>
+ </layer>
+ <layer name="Bricks" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJzNVEEKACAI6xv9/6OdghCnmwa1k20jnEZj/IHpnC13+jLd45HGwuuR8UU8upO5Q6k72bs5ldysf3NR7qw/NBuks7uKZq3OppK7ixvvOvOwu6nUt9DJi7xKbqsr/90LLHphByI=
+  </data>
+ </layer>
+ <objectgroup name="Player">
+  <object id="2" name="Player" x="16" y="16" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Items">
+  <object id="3" name="Speed" x="112" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="4" name="Bomb" x="272" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Ballooms">
+  <object id="5" x="176" y="16" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="6" x="304" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="7" x="16" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Oneals">
+  <object id="8" x="400" y="80" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="9" x="400" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="10" x="464" y="176" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+ <objectgroup name="Portal">
+  <object id="11" name="Portal" x="240" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

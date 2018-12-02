@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="34">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="35">
  <tileset firstgid="1" source="Wall.tsx"/>
  <tileset firstgid="13" source="breakable.tsx"/>
  <tileset firstgid="25" source="../map_2/breakable.tsx"/>
@@ -9,12 +9,12 @@
    eJxjYWBgYBnFo3gUj+JRPIopwADnSQZN
   </data>
  </layer>
- <objectgroup id="2" name="Portal" visible="0">
-  <object id="26" x="240" y="80" width="16" height="16">
+ <objectgroup id="2" name="Portal">
+  <object id="34" x="240" y="96" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup id="3" name="Items" visible="0">
+ <objectgroup id="3" name="Items">
   <object id="28" name="Flame" x="240" y="64" width="16" height="16">
    <ellipse/>
   </object>
@@ -30,7 +30,7 @@
    eJxjYBh6gBcJU8s8fHxaq8NFk2sPIfMIqSdkL6n2E9JPqr3E2k9tfbjMoVZ8k+rv4RLfhOwn1j+EALn+I9c8UgG1yzV6AwCj4QOP
   </data>
  </layer>
- <objectgroup id="5" name="Player" visible="0">
+ <objectgroup id="5" name="Player">
   <object id="31" x="240" y="96" width="16" height="16">
    <ellipse/>
   </object>
@@ -73,7 +73,7 @@
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup id="7" name="Ballooms" visible="0"/>
+ <objectgroup id="7" name="Ballooms"/>
  <layer id="8" name="Walls" width="31" height="13">
   <data encoding="base64" compression="zlib">
    eJxjZGBgYBoAzAzErAwDA9iR7GajM41sN73BqL9H/T3qb9rSA+1vTiDmGgDMDcQAlEwDnQ==
