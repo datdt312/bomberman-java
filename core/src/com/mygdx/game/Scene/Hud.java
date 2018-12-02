@@ -19,6 +19,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.mygdx.game.BomberManGame;
+import com.mygdx.game.Screens.PlayScreen;
 
 
 public class Hud implements Disposable
@@ -41,20 +43,24 @@ public class Hud implements Disposable
     private float timecountdown;
     private Label timecountLabel;
     private Label livecountLabel;
+    private Image levelLabel;
 
     private float statetime = 0;
 
     private Integer liveCount;
 
+    private int level;
+
     /**
      * Constructor
      * @param batch draw objects
      */
-    public Hud(SpriteBatch batch) {
+    public Hud(SpriteBatch batch, int level) {
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
 
         this.batch = batch;
+        this.level = level;
 
         SCALE = 55f;
         timeCount = 200;
@@ -92,6 +98,10 @@ public class Hud implements Disposable
         timeimg.setSize(30,30);
         timeimg.setPosition(20f * SCALE, 12.5f * SCALE);
 
+        Texture lv = new Texture("core/maps/level" + level + ".png");
+        levelLabel = new Image(lv);
+        levelLabel.setBounds(WIDTH_SCREEN / 3.2f, HEIGHT_SCREEN / 1.2f, lv.getWidth(), lv.getHeight());
+
         Array<Texture> frame = new Array<Texture>();
         for(int i = 1; i <= 26; i++)
             frame.add(new Texture("core/img/hudsprite/" + i +".png"));
@@ -105,6 +115,7 @@ public class Hud implements Disposable
         stage.addActor(timeLabel);
         stage.addActor(livecountLabel);
         stage.addActor(timecountLabel);
+        stage.addActor(levelLabel);
 
     }
 

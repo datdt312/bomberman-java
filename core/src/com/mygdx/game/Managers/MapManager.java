@@ -32,10 +32,8 @@ public class MapManager
         this.map.add(tmp);
         tmp= new MapCreator("core/maps/map_4/map_4.tmx");
         this.map.add(tmp);
-        tmp= new MapCreator("core/maps/map_5/map_5.tmx");
-        this.map.add(tmp);
-        tmp= new MapCreator("core/maps/map_6/map_6.tmx");
-        this.map.add(tmp);
+        //tmp= new MapCreator("core/maps/map_5/map_5.tmx");
+        //this.map.add(tmp);
 
     }
 

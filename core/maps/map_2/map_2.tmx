@@ -35,7 +35,7 @@
   <object id="11" x="32" y="112" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="12" x="352" y="112" width="16" height="16">
+  <object id="12" x="336" y="144" width="16" height="16">
    <ellipse/>
   </object>
   <object id="14" x="176" y="112" width="16" height="16">
@@ -63,7 +63,7 @@
  </objectgroup>
  <layer name="Bricks" width="31" height="13">
   <data encoding="base64" compression="zlib">
-   eJxjYBh4IIlGY5MjJEaMHDHy9AK43EGsOKn6ByPAF+/IaiRxqBnouCbXfFz+IdZ85HCjxBxyAaXmkZN2qRFe5JhJDUBu3iUmfxAyk54AALyZA9A=
+   eJxjYBgcQBKKsYkTI0aMHDHy9AK43EGsOKn6ByOQRKNxqSElbZAiTykg13xc/iHWfORwo8QccgGl5pGTdqkRXuSYSQ1Abt4lJn8QMpOeAAC8NQPQ
   </data>
  </layer>
 </map>

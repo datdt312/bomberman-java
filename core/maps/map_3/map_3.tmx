@@ -15,11 +15,6 @@
    eJxjZGBgYBoAzAzErAwDA9iR7GajM41sN73BqL9H/T3qb9rSA+1vTiDmGgDMDcQAlEwDnQ==
   </data>
  </layer>
- <layer name="Bricks" width="31" height="13">
-  <data encoding="base64" compression="zlib">
-   eJxjYBh8QBIPH12OGD3IfGz6iTWTECCknhx/EWMWqe6ntr+oCdD9hS8eiXEXPd1ODMCV/sj1C6F0T6p5tAD40iol7ifGfHIAvrKCHDOIMY9Q+YQtnAZb2gYAIM0E4w==
-  </data>
- </layer>
  <objectgroup name="Player">
   <object id="1" name="Player" x="16" y="16" width="16" height="16">
    <ellipse/>
@@ -66,4 +61,9 @@
    <ellipse/>
   </object>
  </objectgroup>
+ <layer name="Bricks" width="31" height="13">
+  <data encoding="base64" compression="zlib">
+   eJxjYBh8QBIPH12OGD3IfGz6iTWTECCknhx/EWMWqe6ntr+oCdD9hS8eiXEXPd1ODMCV/sj1C6F0T6p5tAD40iol7ifGfHIAvrKCHDOIMY9Q+YQtnAZb2gYAIM0E4w==
+  </data>
+ </layer>
 </map>

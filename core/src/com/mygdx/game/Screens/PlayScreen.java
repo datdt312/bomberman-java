@@ -6,12 +6,14 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.RunnableAction;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Window;
@@ -56,24 +58,43 @@ public class PlayScreen implements Screen
 
     private Hud hud;
     
-    private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "SOY.ogg", "WARRIORS.mp3", "WTF.ogg", "KDA.mp3"};
-    private int count;
+    private final String[] list = {"victory.mp3", "BAAM.ogg", "BADBOY.ogg", "DDU.ogg", "SOY.ogg", "WARRIORS.mp3", "KDA.mp3"};
 
-    
+    private Integer level;
 
     /**
      * Construtor
      * @param game draw objects, actions
      */
-    public PlayScreen(BomberManGame game)
+    public PlayScreen(BomberManGame game, int level)
     {
         this.game = game;
+        this.level = level;
+
         WIDTH_SCREEN = Gdx.graphics.getWidth();
         HEIGHT_SCREEN = Gdx.graphics.getHeight();
-        count = 0;
 
         mapManager = new MapManager();
-        map = mapManager.getMapLevel(1);
+
+        switch (level) {
+            case 4:
+                map = mapManager.getMapLevel(3);
+                Music_SoundManager.getInstance().playMusic(list[3] ,true);
+                break;
+            case 3:
+                map = mapManager.getMapLevel(2);
+                Music_SoundManager.getInstance().playMusic(list[6] ,true);
+                break;
+            case 2:
+                map = mapManager.getMapLevel(1);
+                Music_SoundManager.getInstance().playMusic(list[4] ,true);
+                break;
+            case 1:
+            default:
+                map = mapManager.getMapLevel(0);
+                Music_SoundManager.getInstance().playMusic(list[1], true);
+                break;
+        }
 
         float width_camera = Gdx.graphics.getWidth();
         float height_camera = Gdx.graphics.getHeight();
@@ -92,7 +113,9 @@ public class PlayScreen implements Screen
         enemyManager = new EnemyManager(map);
         itemsManager = new ItemsManager(map);
 
-        hud = new Hud(batch);
+        hud = new Hud(batch, level);
+
+        System.out.println(level);
     }
 
     /**
@@ -106,10 +129,9 @@ public class PlayScreen implements Screen
 
         handleInput();
 
-
         if (! pause)
             update(delta);
-        //update(delta);
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -128,6 +150,10 @@ public class PlayScreen implements Screen
         stage.act();
 
         hud.draw(delta);
+
+
+
+
     }
 
     /**
@@ -157,11 +183,29 @@ public class PlayScreen implements Screen
             game.setScreen(new GameOverScreen(game));
 
         }
-        if(portal.getStandTime() >= 2f)
+
+        if (portal.getStandTime() >= 2f && level <4)
         {
             Music_SoundManager.getInstance().stopMusic();
+            game.setScreen(new PlayScreen(game, level + 1));
+        }
+       else if(portal.getStandTime() >= 2f && level+1 == 5)
+        {
 
+            Music_SoundManager.getInstance().stopMusic();
             game.setScreen(new VictoryScreen(game));
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.NUM_7)) {
+            if(level < 4) {
+                Music_SoundManager.getInstance().stopMusic();
+                game.setScreen(new PlayScreen(game, level + 1));
+            }
+            else if( level+1 == 5)
+            {
+                Music_SoundManager.getInstance().stopMusic();
+                game.setScreen(new VictoryScreen(game));
+            }
         }
     }
 
@@ -186,7 +230,6 @@ public class PlayScreen implements Screen
     public void show()
     {
 
-        Music_SoundManager.getInstance().playMusic("victory.mp3", true);
         pause = false;
 
         skin = new Skin(Gdx.files.internal("core/uiskin/uiskin.json"));
@@ -243,15 +286,6 @@ public class PlayScreen implements Screen
             {
                 Music_SoundManager.getInstance().playMusic();
             }
-        }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.M))
-        {
-            Music_SoundManager.getInstance().stopMusic();
-            count++;
-            if(count == list.length)
-                count=0;
-            Music_SoundManager.getInstance().playMusic(list[count],true);
-            
         }
     }
 

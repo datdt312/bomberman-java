@@ -123,7 +123,7 @@ public class VictoryScreen implements Screen {
                  */
                 @Override
                 public void run() {
-                    game.setScreen(new PlayScreen(game));
+                    game.setScreen(new PlayScreen(game, 1));
                 }
             });
             stage.addAction(new SequenceAction(Actions.delay(0.1f), Actions.fadeOut(0.2f), runnableAction));
