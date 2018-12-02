@@ -170,7 +170,7 @@ public class PlayScreen implements Screen
 
         if (player.isDeadNoHopeAndEndGame() && hud.getLiveCount() > 0)
         {
-            player = new Boomber(map, camera, 1, 1, 1);
+            player = new Boomber(map, camera, 1.5f, 1, 1);
             hud.decreaseLiveCount();
 
         }

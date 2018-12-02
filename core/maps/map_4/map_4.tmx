@@ -1,48 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.3" orientation="orthogonal" renderorder="right-down" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextobjectid="26">
+<map version="1.2" tiledversion="1.2.0" orientation="orthogonal" renderorder="right-down" width="31" height="13" tilewidth="16" tileheight="16" infinite="0" nextlayerid="9" nextobjectid="34">
  <tileset firstgid="1" source="Wall.tsx"/>
  <tileset firstgid="13" source="breakable.tsx"/>
  <tileset firstgid="25" source="../map_2/breakable.tsx"/>
  <tileset firstgid="37" source="../map_1/beakable.tsx"/>
- <layer name="Background" width="31" height="13">
+ <layer id="1" name="Background" width="31" height="13">
   <data encoding="base64" compression="zlib">
    eJxjYWBgYBnFo3gUj+JRPIopwADnSQZN
   </data>
  </layer>
- <objectgroup name="Portal">
-  <object id="2" name="Portal" x="241" y="96" width="16" height="16">
+ <objectgroup id="2" name="Portal" visible="0">
+  <object id="26" x="240" y="80" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="Items">
-  <object id="3" name="Speed" x="208" y="96" width="16" height="16">
+ <objectgroup id="3" name="Items" visible="0">
+  <object id="28" name="Flame" x="240" y="64" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="4" name="Bomb" x="242" y="136" width="16" height="16">
+  <object id="29" name="Bomb" x="240" y="128" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="5" name="Flame" x="242" y="63" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="6" name="Speed" x="224" y="251" height="1">
+  <object id="30" name="Speed" x="208" y="96" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
- <layer name="Bricks" width="31" height="13">
+ <layer id="4" name="Bricks" width="31" height="13">
   <data encoding="base64" compression="zlib">
    eJxjYBh6gBcJU8s8fHxaq8NFk2sPIfMIqSdkL6n2E9JPqr3E2k9tfbjMoVZ8k+rv4RLfhOwn1j+EALn+I9c8UgG1yzV6AwCj4QOP
   </data>
  </layer>
- <objectgroup name="Player">
-  <object id="1" name="Player" x="240" y="94" width="16" height="16">
+ <objectgroup id="5" name="Player" visible="0">
+  <object id="31" x="240" y="96" width="16" height="16">
    <ellipse/>
   </object>
  </objectgroup>
- <objectgroup name="Oneals">
+ <objectgroup id="6" name="Oneals">
   <object id="10" x="48" y="48" width="16" height="16">
-   <ellipse/>
-  </object>
-  <object id="12" x="80" y="80" width="16" height="16">
    <ellipse/>
   </object>
   <object id="13" x="432" y="112" width="16" height="16">
@@ -63,9 +57,6 @@
   <object id="18" x="80" y="144" width="16" height="16">
    <ellipse/>
   </object>
-  <object id="19" x="400" y="112" width="16" height="16">
-   <ellipse/>
-  </object>
   <object id="20" x="432" y="48" width="16" height="16">
    <ellipse/>
   </object>
@@ -75,9 +66,15 @@
   <object id="24" x="48" y="112" width="16" height="16">
    <ellipse/>
   </object>
+  <object id="32" x="400" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
+  <object id="33" x="80" y="96" width="16" height="16">
+   <ellipse/>
+  </object>
  </objectgroup>
- <objectgroup name="Ballooms"/>
- <layer name="Walls" width="31" height="13">
+ <objectgroup id="7" name="Ballooms" visible="0"/>
+ <layer id="8" name="Walls" width="31" height="13">
   <data encoding="base64" compression="zlib">
    eJxjZGBgYBoAzAzErAwDA9iR7GajM41sN73BqL9H/T3qb9rSA+1vTiDmGgDMDcQAlEwDnQ==
   </data>
