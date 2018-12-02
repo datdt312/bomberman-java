@@ -331,7 +331,7 @@ public class Oneal
                 done = true;
             }
         }
-        if(count == 1)
+        if(count == 20)
             Music_SoundManager.getInstance().playSound("EnemyDie.ogg");
         batch.end();
     }
